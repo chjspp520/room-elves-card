@@ -7,3 +7,5 @@
   <img src="https://github.com/chjspp520/room-elves-card/blob/main/1.png" alt="截图" style="width: 30%; height: auto; margin: 5px;">
   <img src="https://github.com/chjspp520/room-elves-card/blob/main/2.png" alt="截图" style="width: 30%; height: auto; margin: 5px;">
   <img src="https://github.com/chjspp520/room-elves-card/blob/main/3.png" alt="截图" style="width: 30%; height: auto; margin: 5px;">
+  <img src="https://github.com/chjspp520/room-elves-card/blob/main/GIF.gif" alt="截图" style="width: 80%; height: auto; margin: 5px;">
+
