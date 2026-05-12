@@ -9,3 +9,4 @@
   <img src="https://github.com/chjspp520/room-elves-card/blob/main/3.png" alt="截图" style="width: 30%; height: auto; margin: 5px;">
   <img src="https://github.com/chjspp520/room-elves-card/blob/main/GIF.gif" alt="截图" style="width: 80%; height: auto; margin: 5px;">
 
+配置代码请前往：https://bbs.hassbian.com/thread-31645-1-1.html
