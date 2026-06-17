@@ -3,12 +3,7 @@
 
 ---适用于v5.x.x，部分说明不适用于与之前的版本
 
-<div style="display: flex; justify-content: space-around; align-items: center; flex-wrap: wrap;">
-
-<img width="512" height="913" alt="1" src="https://github.com/user-attachments/assets/42967603-6a86-4be8-b1ca-0e05bc07bfc8" />
-
-
-
+<img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 
 ## 一、卡片简介
 
