@@ -2209,7 +2209,7 @@ badge_entity 示例：
         position: 0
       - name: 底部
         position: 100
-    card:                                      # 功能开关卡片（灯光开关已自动添加，此处只需配其他功能）
+    button:                                      # 功能开关卡片（灯光开关已自动添加，此处只需配其他功能）
       - type: switch
         entity: switch.dryer_heat
         name: 恒温烘干
@@ -2230,7 +2230,7 @@ badge_entity 示例：
 | `width` | ❌ | `string` | 弹窗宽度，默认 `440px` |
 | `locker` | ❌ | `boolean` | 锁定模式，默认 `true`。锁定时位置固定 75%，隐藏拖拽手柄和收藏位置按钮，仅通过上升/下降按钮控制电机方向；设为 `false` 时启用拖拽交互和收藏位置快捷按钮 |
 | `collect_position` | ❌ | `array` | 收藏位置快捷按钮，最多 3 个，每个含 `name` 和 `position` 字段（仅在 `locker: false` 时显示） |
-| `card` | ❌ | `array` | 功能开关卡片列表，使用统一卡片系统渲染，2 列网格布局 |
+| `button` | ❌ | `array` | 功能开关卡片列表，使用统一卡片系统渲染，2 列网格布局 |
 
 **交互功能说明：**
 
@@ -2241,7 +2241,7 @@ badge_entity 示例：
    - 壳体右上角的灯光按钮可直接切换 `light_entity` 开关
    - 灯光开启时，壳体下方出现暖黄色倒置梯形光晕照射效果（上窄下宽）
    - 光晕效果实时响应灯光状态变化
-5. **功能卡片**：底部 2 列网格展示功能开关卡片；配置了 `light_entity` 时，灯光开关会自动插入首位，无需在 `card` 中手动添加
+5. **功能卡片**：底部 2 列网格展示功能开关卡片；配置了 `light_entity` 时，灯光开关会自动插入首位，无需在 `button` 中手动添加
 6. **位置反转自动适配**：自动检测 cover 实体的 `position_reverse` 属性，适配不同品牌晾衣架的正反转逻辑
 
 **`collect_position` 子项字段：**
@@ -2272,7 +2272,7 @@ collect_position:
     position: 0
   - name: 底部
     position: 100
-card:                                                    # func grid 功能开关
+button:                                                    # func grid 功能开关
   - type: switch
     entity: switch.dryer_heat
     name: 恒温烘干
