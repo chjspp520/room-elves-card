@@ -2,7 +2,7 @@
 # Room Elves Card - 房间精灵卡片 完整使用说明
 
 
----适用于v5.x.x，部分说明不适用于与之前的版本
+---适用于v5.1.11
 
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
@@ -157,20 +157,18 @@ overview:
 #### 基本结构
 
 ```
-┌──────────────────────────────────────────────────────┐
-│  room_name                         [概览栏 overview]  │  ← 顶部：名称 + 概览
-│  [公告栏 notice]                                       │  ← 公告通知（可选）
-├──────────────────────────────────────────────────────┤
-│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ │
-│  │ 按钮1 │ │ 按钮2 │ │ 按钮3 │ │ 按钮4 │ │ 按钮5 │ │ 按钮6 │ │  ← 网格排列
-│  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘ └──────┘ │
+┌──────────────────────────────────────────────────────────┐
+│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐   │
+│  │ 按钮1 │ │ 按钮2 │ │ 按钮3 │ │ 按钮4 │ │ 按钮5 │ │ 按钮6 │   ← 网格排列
+│  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘ └──────┘   │
 │  ┌────────────────────┐ ┌──────┐ ┌──────────────────────┐│
 │  │   按钮7 (2行3列)    │ │ 按钮8 │ │   按钮9 (1行4列)     ││  ← 支持跨行跨列
 │  │                    │ └──────┘ │                      ││
 │  └────────────────────┘          └──────────────────────┘│
-├──────────────────────────────────────────────────────┤
-│ [person]                                [automation]  │  ← 底部：人员 + 自动化
-└──────────────────────────────────────────────────────┘
+├──────────────────────────────────────────────────────────┤
+│  [公告栏 notice]                                          │  ← 公告通知（可选）
+│  [概览栏 overview]                                        │  ← 概览
+└───────────────────────────────────────────────────────────┘
 ```
 
 #### 网格列数与行数
@@ -264,6 +262,16 @@ overview:
       电力:
         entity: sensor.electricity_meter
         power: sensor.electricity_power
+      空调:
+        level: 2                    # 电力下的二级子集
+        icon: mdi:air-conditioner
+        content: >-
+          今日：{{ states('sensor.ac_daily') | float(0) | round(1) }}kWh
+      新风:
+        level: 2                    # 电力下的二级子集
+        icon: mdi:air-filter
+        content: >-
+          今日：{{ states('sensor.fan_daily') | float(0) | round(1) }}kWh
 buttons:
   - type: user
     persons:
@@ -461,6 +469,11 @@ overview:                           # 概览栏（⚠️ 仅 head 模式可用�
         entity: sensor.electricity_meter
         power: sensor.electricity_power
         cost_entity: sensor.balance
+      空调:
+        level: 2                          # 电力下的二级子集
+        icon: mdi:air-conditioner
+        content: >-
+          今日：{{ states('sensor.ac_daily') | float(0) | round(1) }}kWh
   - type: weather                        # 天气概览：显示天气预报
     entity: sensor.he_feng_tian_qi
 ```
@@ -508,21 +521,20 @@ overview:                           # 概览栏（⚠️ 仅 head 模式可用�
 
 **头部模式 (`head: true`)：**
 ```
-┌─────────────────────────────────────────┐
-│  room_name                               │  ← 顶部：房间名称
-├─────────────────────────────────────────┤
-│ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐ ┌───┐   │
-│ │ 1 │ │ 2 │ │ 3 │ │ 4 │ │ 5 │ │ 6 │   │  ← 按钮网格排列
-│ └───┘ └───┘ └───┘ └───┘ └───┘ └───┘   │
-│ ┌───────────────┐ ┌───┐ ┌───────────┐   │
-│ │   7 (2行3列)  │ │ 8 │ │ 9 (1行2列) │   │  ← 支持跨行跨列
-│ │               │ └───┘ │           │   │
-│ └───────────────┘       └───────────┘   │
-├─────────────────────────────────────────┤
-│  [公告栏 notice]                          │  ← 公告通知（可选）
-├─────────────────────────────────────────┤
-│  [概览栏 overview]                       │  ← 全屋态势概览
-└─────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────┐
+│  ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐   │
+│  │ 按钮1│  │ 按钮2│ │ 按钮3│ │ 按钮4│  │ 按钮5│ │ 按钮6│   │← 网格排列
+│  └──────┘ └──────┘ └──────┘ └──────┘ └──────┘ └──────┘   │
+│  ┌────────────────────┐ ┌──────┐ ┌──────────────────────┐│
+│  │   按钮7 (2行3列)    │ │ 按钮8 │ │   按钮9 (1行4列)     ││  ← 支持跨行跨列
+│  │                    │ └──────┘ │                      ││
+│  └────────────────────┘          └──────────────────────┘│
+├──────────────────────────────────────────────────────────┤
+│  [公告栏 notice]                                          │  ← 公告通知（可选）
+│  [概览栏 overview]                                        │  ← 全屋态势概览
+└───────────────────────────────────────────────────────────┘
+
 ```
 
 > **注意：**
@@ -569,6 +581,7 @@ name: 客厅空调                    # 显示名称（可选）
 | `button` | 按钮卡片 | 任意 |
 | `slider` | 滑块卡片 | `number` / `input_number` |
 | `usage` | 用量卡片（电费/水费等） | `sensor` |
+| `usage_calendar` | 使用量日历卡片（日历视图 + 年/月/日 ECharts 图表） | 任意 |
 
 **图表类型（基于 ECharts / SVG）：**
 
@@ -598,6 +611,24 @@ standalone_type: ac
 entity: climate.bedroom
 name: 卧室空调
 ```
+
+**使用量日历独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: usage_calendar
+api:
+  entity: climate.keting_ac_keting_ac
+title: 客厅空调用电量日历
+show_title: false
+width: 400px
+show_popup: true
+calc_value_choose: value
+units: "°,h"
+series: "用量,时长"
+```
+
+> 💡 `api_base_url` 和 `key` 省略时自动从顶层配置继承（如有）。
 
 **窗帘独立卡片**
 
@@ -742,7 +773,7 @@ entities_tap_action:                  # 全局配置，所有实体共用
 `buttons` 是卡片最重要的配置，每个按钮可以控制一种或一组设备。
 
 > **`icon_text` 通用支持**：所有按钮类型（含 `type: button`、独立按钮、设备分组等）均支持 `icon_text` 配置项，
-> 用于在图标右上角显示一个斜三角徽章文字。支持 `preset_xx` 预设映射（如 `preset_state` 自动显示 开/关/家/离）
+> 用于在图标右上角显示一个斜三角徽章文字。支持 `preset_xx` 预设映射（如 `preset_state`、`preset_ac`、`preset_fan`、`preset_humidifier`、`preset_qweather`、`preset_media`）
 > 和 Jinja2 模板语法。当不配置 `icon_text` 时不显示该斜三角。详见各类型配置表和 25.4 节。
 
 **buttons 支持两种格式：**
@@ -904,6 +935,9 @@ power_display_entity: sensor.living_ac_power
 humidity_entity: sensor.living_room_humidity
 current_temperature: sensor.living_room_temp
 width: 400px
+page_1: both_page                         # 第二页：日历使用统计 + 图表
+api_base_url: /api/ha_data_store/         # 日历图表 API 地址（可选）
+key: your_api_key                         # API 密钥（可选）
 ```
 
 #### 方式二：单个按钮（buttons 中使用单设备）
@@ -959,6 +993,444 @@ buttons:
 | `icon` | ❌ | `string` | 自动 | 自定义图标（默认随模式变化） |
 | `width` | ❌ | `string` | `auto` | 弹窗宽度 |
 | `popup_position` | ❌ | `string` | `null` | 弹窗位置 |
+| `page_1` | ❌ | `string` | 无 | 第二页类型。`power_page`=只显示用电量；`duration_page`=只显示使用时长；`both_page`=同时显示用电量和时长。配置后卡片变为左右滑动双页模式，左页为控制面板，右页为日历使用统计 + 年/月/历史图表 |
+| `api_base_url` | ❌ | `string` | 继承顶层 | API 数据接口地址，用于日历图表数据查询。不配置时自动从顶层配置继承 |
+| `key` | ❌ | `string` | 继承顶层 | API 密钥，不配置时自动从顶层配置继承 |
+| `mode_buttons` | ❌ | `array` | 无 | 自定义模式按钮列表（见 5.3.1） |
+| `fan_buttons` | ❌ | `array` | 无 | 自定义风速按钮列表（见 5.3.2） |
+| `swing_buttons` | ❌ | `array` | 无 | 自定义摆风按钮列表（见 5.3.3） |
+| `swing_select` | ❌ | `string` | 无 | 摆风下拉模式（见 5.3.3.2）。`true`=两行都用下拉；`vertical`=仅垂直用下拉；`horizontal`=仅水平用下拉；`both`=两行都用下拉 |
+| `swing_select_labels` | ❌ | `object` | 无 | 自定义摆风选项显示名称（见 5.3.3.2）。`{ vertical: {off:'关',...}, horizontal: {off:'关',...} }` |
+| `hide` | ❌ | `string/array` | 无 | 隐藏指定摆风档位（见 5.3.3.3）。支持模式名（如 `swing_upper`）或特殊值 `swing_horizontal_modes`（隐藏整行水平摆风） |
+| `features` | ❌ | `array` | 无 | 功能按钮列表（见 5.3.4） |
+
+---
+
+#### 5.3.1 自定义模式按钮 (mode_buttons)
+
+**配置值支持三种形式：**
+
+| 配置值 | 行为 |
+|--------|------|
+| 不配置 / `mode_buttons: emoji` | 内置 emoji 预设（关`关` / 制冷`❄️` / 制热`🔥` / 除湿`💧` / 送风`🌀` / 自动`A`），无动画 |
+| `mode_buttons: icon` | 内置图标预设（mdi 图标 + 动画），制冷/制热/送风/自动旋转，除湿呼吸 |
+| 数组 `[{...}, {...}]` | 完全自定义（支持 toggle / mode 两种类型，支持 animation 字段） |
+
+**快捷用法：一行切换图标模式**
+
+```yaml
+mode_buttons: icon       # 使用内置图标预设（带动画）
+# 或
+mode_buttons: emoji      # 使用内置 emoji 预设（等于不配置）
+```
+
+**自定义场景：** 部分空调的模式值非标准，或通过 `select.*` 实体控制；或需要自定义图标/顺序/子集。配置数组后可完全自定义模式按钮列表，支持两种类型：
+
+**类型 1：`toggle` —— 通过外部实体控制模式**（适配非标空调）
+
+```yaml
+mode_buttons:
+  - type: toggle
+    switch_entity: select.xiaomi_ac_hvac_mode       # select 实体
+    switch_name: 制冷
+    icon: mdi:snowflake
+    toggle_attribute: current_option
+    toggle_value: cool
+  - type: toggle
+    switch_entity: select.xiaomi_ac_hvac_mode
+    switch_name: 制热
+    icon: mdi:fire
+    toggle_attribute: current_option
+    toggle_value: heat
+```
+
+**类型 2：`mode` —— 映射到 `climate.set_hvac_mode`**（用于自定义文本/顺序/子集）
+
+下面示例覆盖空调全部 6 种标准模式，可直接复制使用：
+
+```yaml
+mode_buttons:
+  - type: mode
+    name: 关闭
+    value: 'off'
+    icon: mdi:power-off
+  - type: mode
+    name: 制冷
+    value: cool
+    icon: mdi:snowflake
+  - type: mode
+    name: 制热
+    value: heat
+    icon: mdi:weather-sunny
+  - type: mode
+    name: 除湿
+    value: dry
+    icon: mdi:water
+  - type: mode
+    name: 送风
+    value: fan_only
+    icon: mdi:fan
+  - type: mode
+    name: 自动
+    value: auto
+    icon: mdi:autorenew
+```
+
+> 💡 **图标速查表（空调模式推荐 mdi 图标）：**
+>
+> | 模式 | value | 推荐图标 | 备选图标 |
+> |------|-------|---------|---------|
+> | 关闭 | `off` | `mdi:power-off` | `mdi:air-conditioner` |
+> | 制冷 | `cool` | `mdi:snowflake` | `mdi:snowflake-variant` |
+> | 制热 | `heat` | `mdi:weather-sunny` | `mdi:fire` / `mdi:radiator` |
+> | 除湿 | `dry` | `mdi:water` | `mdi:water-percent` / `mdi:drop` |
+> | 送风 | `fan_only` | `mdi:fan` | `mdi:fan-spin` / `mdi:wind` |
+> | 自动 | `auto` | `mdi:autorenew` | `mdi:cached` / `mdi:shuffle` |
+
+
+> 💡 **类型可混用**：同一组 `mode_buttons` 可同时包含 `toggle` 和 `mode` 类型。
+
+**mode_buttons 子项字段：**
+
+| 字段 | toggle 类型 | mode 类型 | 说明 |
+|------|:----------:|:--------:|------|
+| `type` | ✅ `toggle` | ✅ `mode` | 按钮类型 |
+| `switch_entity` | ✅ | ❌ | 外部控制实体 ID（select/switch/input_select/light 等） |
+| `value` / `mode` | ❌ | ✅ | climate `hvac_mode` 值（缺省时回退到 `name`） |
+| `name` | ❌ | ❌ | 按钮显示文本（不配置 `icon` 时使用） |
+| `switch_name` | ❌ | ❌ | 显示文本别名（优先级高于 `name`） |
+| `icon` | ❌ | ❌ | 图标（`mdi:` 开头），配置后优先显示图标 |
+| `animation` | ❌ | ❌ | 激活态动画：`rotate`（旋转）/ `breathe`（呼吸）。仅当前模式按钮播放 |
+| `toggle_attribute` | ❌ | ❌ | 判断激活态的属性名（select 用 `current_option`） |
+| `toggle_value` | ❌ | ❌ | 属性值等于此值时按钮高亮 |
+| `service` | ❌ | ❌ | 自定义 climate 服务（高级用法） |
+| `data` | ❌ | ❌ | 自定义服务数据（高级用法，JSON 对象） |
+
+---
+
+#### 5.3.2 自定义风速按钮 (fan_buttons)
+
+**默认行为：** 不配置 `fan_buttons` 时，从 climate 实体的 `fan_modes` 属性自动生成风速按钮，文本走内置映射表（`auto`→`A`、`low`→`低`、`high`→`强` 等）。
+
+**自定义场景：** 不同品牌空调的风速值差异较大，部分通过 `select.*` 实体而非 `fan_mode` 属性控制。配置 `fan_buttons` 后可完全自定义按钮列表，支持两种类型：
+
+**类型 1：`toggle` —— 通过外部实体控制风速**（适配小米等非标空调）
+
+```yaml
+fan_buttons:
+  - type: toggle
+    switch_entity: select.xiaomi_ac_fan_level          # select 或 switch 实体
+    switch_name: 静音                                   # 按钮显示文本（不配置 icon 时使用）
+    icon: mdi:volume-low                                # 可选，配置后优先显示图标
+    toggle_attribute: current_option                   # select 实体使用 current_option
+    toggle_value: mute                                  # 当前选项等于此值时按钮高亮
+  - type: toggle
+    switch_entity: select.xiaomi_ac_fan_level
+    switch_name: 中
+    toggle_attribute: current_option
+    toggle_value: medium
+```
+
+**类型 2：`fan` —— 映射到 `climate.set_fan_mode`**（用于自定义文本/顺序/子集）
+
+```yaml
+fan_buttons:
+  - type: fan
+    name: 自动风                                        # 按钮显示文本
+    value: auto                                         # 对应 climate fan_mode 值
+    icon: mdi:fan-auto                                  # 可选
+  - type: fan
+    name: 强劲
+    value: high
+    icon: mdi:fan-speed-3
+```
+
+> 💡 **类型可混用**：同一组 `fan_buttons` 可同时包含 `toggle` 和 `fan` 类型，分别处理非标和标准风速控制。
+
+**fan_buttons 子项字段：**
+
+| 字段 | toggle 类型 | fan 类型 | 说明 |
+|------|:----------:|:--------:|------|
+| `type` | ✅ `toggle` | ✅ `fan` | 按钮类型 |
+| `switch_entity` | ✅ | ❌ | 外部控制实体 ID（select/switch/input_select/light 等） |
+| `value` / `fan_mode` | ❌ | ✅ | climate `fan_mode` 值（缺省时回退到 `name`） |
+| `name` | ❌ | ❌ | 按钮显示文本（不配置 `icon` 时使用） |
+| `switch_name` | ❌ | ❌ | 显示文本别名（优先级高于 `name`） |
+| `icon` | ❌ | ❌ | 图标（`mdi:` 开头），配置后优先显示图标 |
+| `animation` | ❌ | ❌ | 激活态动画：`rotate`（旋转）/ `breathe`（呼吸）。仅当前模式按钮播放 |
+| `toggle_attribute` | ❌ | ❌ | 判断激活态的属性名（select 用 `current_option`） |
+| `toggle_value` | ❌ | ❌ | 属性值等于此值时按钮高亮 |
+| `service` | ❌ | ❌ | 自定义 climate 服务（高级用法） |
+| `data` | ❌ | ❌ | 自定义服务数据（高级用法，JSON 对象） |
+
+---
+
+#### 5.3.3 自定义摆风按钮 (swing_buttons)
+
+**默认行为：** 不配置 `swing_buttons` 时，自动从 climate 实体属性生成摆风按钮：
+
+- **垂直摆风**（`swing_modes`）：符号统一用 `↑` + CSS 旋转角度表达导风板位置，`swing_*`（摆动档）会自动注上 "摆动" 角标。`off` → `⊘`，`full` → `⇆`。
+- **水平摆风**（`swing_horizontal_modes`）：当实体同时有 `swing_horizontal_modes` 属性时，自动展开为双行布局（垂直 + 水平，各行自带"垂直""水平"标签）。符号同样用 `↑` + 旋转角度（不同角度区间）。`off` → `⊘`，`full` → `⇆`。
+
+符号与角度完全按 `swing_modes` / `swing_horizontal_modes` 的值从内置映射表自动匹配，无需手动配置。
+
+**自定义场景：** 部分空调的摆风角度通过 `select.*` 实体控制（如小米天幕风/地毯风等定点摆风），无法通过 `swing_mode` 表达。配置 `swing_buttons` 后会**追加**到默认按钮之后。
+
+```yaml
+swing_buttons:
+  - type: toggle
+    switch_entity: select.xiaomi_ac_vertical_angle
+    switch_name: ⥔                                      # 天幕风（上定格）
+    toggle_attribute: current_option
+    toggle_value: 上定格（天幕风）
+  - type: toggle
+    switch_entity: select.xiaomi_ac_vertical_angle
+    switch_name: ↑
+    toggle_attribute: current_option
+    toggle_value: 偏上定格-定向1
+  - type: toggle
+    switch_entity: select.xiaomi_ac_vertical_angle
+    switch_name: ⥙                                      # 地毯风（下定格）
+    toggle_attribute: current_option
+    toggle_value: 下定格（地毯风）
+    icon: mdi:arrow-down-bold                           # 可选
+```
+
+> 💡 **追加模式：** `swing_buttons` 会追加到默认 `swing_modes` 按钮之后，不会替换。如果你希望完全自定义（隐藏默认摆风按钮），可在 climate 实体上清空 `swing_modes` 属性，或忽略此提示直接全部用自定义按钮。
+
+**swing_buttons 子项字段：** 与 `fan_buttons` 的 `toggle` 类型完全一致，`type` 支持 `toggle`（外部实体）和 `fan`（映射到 `climate.set_swing_mode`）。
+
+---
+
+##### 5.3.3.1 水平摆风双行布局
+
+当气候实体的属性中同时存在 `swing_modes` 和 `swing_horizontal_modes` 时，摆风区域自动切换为**双行布局**：
+
+- **垂直行**（上）：显示 `swing_modes` 中的档位，"垂直"标签
+- **水平行**（下）：显示 `swing_horizontal_modes` 中的档位，"水平"标签
+- 原来单行时的"摆风："标签自动隐藏（各行已有自己的轴标签）
+
+双行布局**无需任何额外配置**，系统自动检测实体的 `swing_horizontal_modes` 属性并渲染。
+
+```yaml
+# 示例实体属性（自动检测，无需配置）
+# swing_modes: off, full, fixed_upper, fixed_upper_middle, ...
+# swing_horizontal_modes: off, full, left, left_center, center, right_center, right
+```
+
+---
+
+##### 5.3.3.2 下拉模式 (swing_select / swing_select_labels)
+
+当摆风档位较多时，可以将按钮切换为下拉选择器（`<select>`），下拉框占用 3 个按钮位置。
+
+**swing_select 的取值：**
+
+| 值 | 行为 |
+|---|---|
+| 不配置 | 全部使用按钮（默认） |
+| `true` | 两行都使用下拉 |
+| `vertical` | 仅垂直行使用下拉 |
+| `horizontal` | 仅水平行使用下拉 |
+| `both` | 两行都使用下拉（等同 `true`） |
+
+**自定义下拉选项名称 (swing_select_labels)：**
+
+```yaml
+swing_select: both
+
+swing_select_labels:
+  vertical:
+    off: "关"
+    full: "上下扫风"
+    fixed_upper: "最上"
+    fixed_upper_middle: "偏上"
+    fixed_middle: "中间"
+    fixed_lower_middle: "偏下"
+    fixed_lower: "最下"
+  horizontal:
+    off: "关"
+    full: "左右扫风"
+    left: "最左"
+    center: "居中"
+    right: "最右"
+```
+
+> 💡 下拉模式下 `<option>` 不支持 CSS transform 旋转，显示的是内置符号文本（↑ → ↓ ◀ ▶ 等）。
+
+---
+
+##### 5.3.3.3 隐藏指定摆风档位 (hide)
+
+隐藏不需要的摆风档位或整行水平摆风。
+
+```yaml
+# 隐藏水平摆风整行（摆风区域退回单行布局，仅显示垂直摆风）
+hide: swing_horizontal_modes
+
+# 隐藏多个特定档位（逗号分隔字符串或数组均可）
+hide: swing_upper, swing_upper_middle, swing_middle, swing_lower_middle, swing_lower
+
+# 同时隐藏整行 + 特定档位
+hide:
+  - swing_horizontal_modes
+  - fixed_lower
+```
+
+---
+
+##### 5.3.3.4 摆风符号映射表
+
+垂直和水平摆风统一使用 `↑` 符号 + CSS 旋转角度，从同一个中心映射表取值。
+
+**垂直摆风（swing_modes）：**
+
+| 模式值 | 符号 | 旋转角度 | 视觉 |
+|---|---|---|---|
+| `off` | `⊘` | — | 关闭 |
+| `full` | `⇆` | — | 全范围扫风 |
+| `fixed_upper` / `top` | `↑` | 30° | 偏上 |
+| `fixed_upper_middle` | `↑` | 60° | 更偏上 |
+| `fixed_middle` / `middle` | `↑` | 90° | → 水平（中间） |
+| `fixed_lower_middle` | `↑` | 120° | 偏下 |
+| `fixed_lower` / `bottom` | `↑` | 150° | 更偏下 |
+| `swing_upper` | `↑`（摆动角标） | 30° | 上区摆动 |
+| `swing_upper_middle` | `↑`（摆动角标） | 60° | 偏上区摆动 |
+| `swing_middle` | `↑`（摆动角标） | 90° | 中区摆动 |
+| `swing_lower_middle` | `↑`（摆动角标） | 120° | 偏下区摆动 |
+| `swing_lower` | `↑`（摆动角标） | 150° | 下区摆动 |
+
+> `fixed_*` 表示**定格**（导风板固定在一个角度），`swing_*` 表示**摆动**（导风板在该区间内来回扫风）。
+
+**水平摆风（swing_horizontal_modes）：**
+
+| 模式值 | 符号 | 旋转角度 | 视觉 |
+|---|---|---|---|
+| `off` | `⊘` | — | 关闭 |
+| `full` | `⇆` | — | 全范围左右扫风 |
+| `left` | `↑` | 240° | 指向左 |
+| `left_center` | `↑` | 210° | 偏左 |
+| `center` | `↑` | 180° | ↓ 居中 |
+| `right_center` | `↑` | 150° | 偏右 |
+| `right` | `↑` | 120° | 指向右 |
+
+**兼容旧协议（非标空调）：**
+
+| 模式值 | 符号 | 旋转角度 | 说明 |
+|---|---|---|---|
+| `MIDDLE1` | `↑` | 30° | 部分空调的中间档位1 |
+| `MIDDLE2` | `↑` | 60° | 部分空调的中间档位2 |
+| `MIDDLE3` | `↑` | 90° | 部分空调的中间档位3 |
+| `SWING` | `⇆` | — | 通用摆动 |
+| `AUTO` | `A` | — | 自动 |
+
+---
+
+#### 5.3.4 功能按钮 (features)
+
+**用途：** 在空调面板底部显示附加功能开关（睡眠/辅热/干燥/节能/声音等），支持 `switch.*` 标准实体和 `select.*` 选项实体。
+
+```yaml
+features:
+  - type: toggle
+    switch_entity: switch.xiaomi_ac_sleep_mode
+    switch_name: 睡眠
+    icon: mdi:power-sleep
+  - type: toggle
+    switch_entity: switch.xiaomi_ac_heater
+    switch_name: 辅热
+    icon: mdi:fire
+  - type: toggle
+    switch_entity: switch.xiaomi_ac_eco
+    switch_name: 节能
+    icon: mdi:sprout
+  - type: toggle
+    switch_entity: select.xiaomi_ac_sound_mode          # select 实体也支持
+    switch_name: 声音
+    icon: mdi:music-circle
+    toggle_attribute: current_option
+    toggle_value: 'on'
+```
+
+**features 子项字段：** 与 `fan_buttons` 的 `toggle` 类型完全一致。
+
+---
+
+#### 5.3.5 完整配置示例（四种自定义按钮联合使用）
+
+```yaml
+- type: ac
+  entity: climate.ceshi
+  name: 虚拟空调
+  humidity_entity: sensor.keting_shidu
+  power_entity: sensor.ke_ting_kong_diao_nian_yong_dian_liang
+  power_display_entity: sensor.esp_meter_power
+  popup_position: clone_button_down
+  width: 400px
+
+  # 自定义模式（映射到 climate.set_hvac_mode，带动画）
+  mode_buttons:
+    - type: mode
+      name: 关闭
+      value: 'off'
+      icon: mdi:power-off
+    - type: mode
+      name: 制冷
+      value: cool
+      icon: mdi:snowflake
+      animation: rotate
+    - type: mode
+      name: 自动
+      value: auto
+      icon: mdi:autorenew
+      animation: rotate
+
+  # 自定义风速（通过 select 实体控制）
+  fan_buttons:
+    - type: toggle
+      switch_entity: select.xiaomi_ac_fan_level
+      switch_name: 静
+      toggle_attribute: current_option
+      toggle_value: mute
+    - type: toggle
+      switch_entity: select.xiaomi_ac_fan_level
+      switch_name: 中
+      toggle_attribute: current_option
+      toggle_value: medium
+    - type: fan                                      # 标准风速映射，可混用
+      name: 自动
+      value: auto
+
+  # 自定义摆风（追加到默认 swing_modes 之后）
+  swing_buttons:
+    - type: toggle
+      switch_entity: select.xiaomi_ac_vertical_angle
+      switch_name: ⥔
+      toggle_attribute: current_option
+      toggle_value: 上定格（天幕风）
+    - type: toggle
+      switch_entity: select.xiaomi_ac_vertical_angle
+      switch_name: ⥙
+      toggle_attribute: current_option
+      toggle_value: 下定格（地毯风）
+
+  # 功能按钮
+  features:
+    - type: toggle
+      switch_entity: switch.xiaomi_ac_sleep_mode
+      switch_name: 睡眠
+      icon: mdi:power-sleep
+    - type: toggle
+      switch_entity: switch.xiaomi_ac_heater
+      switch_name: 辅热
+      icon: mdi:fire
+    - type: toggle
+      switch_entity: switch.xiaomi_ac_eco
+      switch_name: 节能
+      icon: mdi:sprout
+```
+
+> 💡 **icon 与 name 优先级：** 四类自定义按钮（`mode_buttons`/`fan_buttons`/`swing_buttons`/`features`）均遵循统一规则——配置 `icon`（`mdi:` 开头）时优先显示图标，未配置则显示 `name` 或 `switch_name` 文本。
 
 ### 5.4 插座/开关 (type: socket)
 
@@ -1006,41 +1478,74 @@ buttons:
 
 ### 5.6 媒体播放器 (type: media)
 
-媒体播放器控制中心。支持播放控制、后台播放、播放列表管理（通过 API 接口获取，依赖 HA 数据统一存储系统）、音响仪表盘（free_layout）。
+媒体播放器控制中心。支持播放控制、后台播放、播放列表管理（通过 API 接口获取，依赖 HA 数据统一存储系统）、多页面选项卡（`tabs` 自由布局）。
 
 ```yaml
   - type: media
     name: 播放器                          # 显示名称
-    media_entity: media_player.xxx         # 媒体设备实体（必填）
+    entity: media_player.xxx               # 媒体设备实体（必填，向后兼容 media_entity）
     icon: mdi:music
+    conversation_entity: sensor.xxx_conversation  # 对话记录传感器（可选，对话时显示对话图标）
     width: 440px                          # 弹窗宽度（可选，如 430px / 90%）
     popup_position: clone_button_down      # 弹窗位置
     cover_animation: true                 # 封面 CD 旋转动画（默认 true）
     api_base_url: xxxxxxxxxx              # API 地址（可选，默认使用顶层 api_base_url）
     key: xxxxxxxxxxxx                     # API 密钥（可选，默认使用顶层 key）
+    user: 小屁孩,妈妈,爸爸                # 播放列表按用户分组（可选，逗号分隔或数组）
+    default_page: 控制中心                # 默认显示的页面（可选，值为 tab.name，不配则默认"本地播放"）
+    player_page_label: 本地播放           # "本地播放"页标签文案（可选，默认"本地播放"）
 
-    # ── 音响仪表盘（可选，通过 free_layout 配置自由布局卡片） ──
-    free_layout:
-      - row: 1
-        per_line: 2
-        title: 环境
-        items:
-          - type: sensor
-            entity: sensor.temperature
-          - type: sensor
-            entity: sensor.humidity
-      - row: 2
-        per_line: 1
-        items:
-          - type: button
-            name: 朗读温度
-            tap_action:
-              action: call-service
-              service: text.set_value
-              data:
-                entity_id: text.speaker_content
-                value: "当前温度 {{ states('sensor.temperature') }} 度"
+    # ── 顶层页面选项卡（可选，每个 tab 是一个独立页面，内部用自由布局组织内容）──
+    tabs:
+      - name: 控制中心                    # 选项卡名称（同时作为 default_page 的匹配值）
+        icon: mdi:toggle-switch-variant   # 选项卡图标（可选）
+        rows:                             # 自由布局行配置（与原 free_layout 同结构）
+          - row: 1
+            per_line: 2
+            title: 控制中心
+            show_title: false
+            items:
+              - type: sensor
+                entity: sensor.xxx_conversation
+                name: 语音控制记录
+                show_conversation: true
+              - type: switch
+                entity: switch.xxx_mute
+                name: MIC静音
+      - name: 云音乐
+        icon: mdi:music-box-multiple
+        rows:
+          - row: 1
+            per_line: 1
+            items:
+              - type: url                 # URL 嵌入卡片（替代原 xiaomusic_url 顶层字段）
+                xiaomusic_url: http://192.168.1.12:58090/static/default/index.html
 ```
+
+**页面模型：**
+
+弹窗顶部为 pill 风格的页面切换栏，基于 `tabs` 动态生成：
+
+- **第 0 项固定为"本地播放"页**（内置播放器：封面/进度/播放列表，不可在 `tabs` 中配置）
+- **后续为 `tabs` 中配置的自定义页面**，每个页面用 `rows` 自由布局组织内容
+- 页面切换通过点击顶部 pill 完成，切换有 80ms 淡入淡出过渡
+
+**配置项：**
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `tabs` | ❌ | `array` | `[]` | 顶层页面选项卡数组，每项含 `name`/`icon`/`rows` |
+| `default_page` | ❌ | `string` | `本地播放` | 默认显示的页面，值为 tab 的 `name`，匹配不到时回退到"本地播放" |
+| `player_page_label` | ❌ | `string` | `本地播放` | "本地播放"页的标签文案 |
+| `user` | ❌ | `string\|array` | — | 播放列表按用户分组，逗号分隔字符串或数组 |
+
+**tabs 每项结构：**
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|------|------|------|
+| `name` | ✅ | `string` | 选项卡名称（同时作为 `default_page` 的匹配值） |
+| `icon` | ❌ | `string` | 选项卡图标，默认 `mdi:view-dashboard-outline` |
+| `rows` | ❌ | `array` | 自由布局行配置（`row`/`per_line`/`title`/`show_title`/`items`） |
 
 **功能说明：**
 
@@ -1052,18 +1557,307 @@ buttons:
 | 媒体库浏览 | 点击「从媒体库添加」浏览 HA 媒体源，选歌添加到当前播放列表 |
 | 文件夹批量 | 媒体库中点击文件夹 `[+ 全部]`，选择目标列表或新建列表后添加全部音乐 |
 | 播放全部 | 每个播放列表头部有「播放全部」按钮 |
-| 音响仪表盘 | 配置 `free_layout` 后出现「音响」Tab，可自由布置传感器/开关/按钮等 |
+| 多页面选项卡 | 配置 `tabs` 后顶部出现多个页面 pill，可自由布置传感器/开关/按钮/URL 等任意卡片 |
+| 默认页面 | 通过 `default_page` 指定打开弹窗时默认显示的页面 |
 | 删除列表 | 播放列表头部 `🗑` 按钮删除整个列表 |
 | 删除单曲 | 展开列表后每曲右侧 `✕` 按钮删除 |
 
 **交互方式：**
 
-- 主页面顶部「播放 / 音响」切换（音响仅在有 free_layout 时显示）
+- 顶部 pill 切换页面（"本地播放" + 各自定义页），pill 溢出时可横向滚动
+- "本地播放"页内部按 `user` 配置生成用户切换 Tab（小屁孩/妈妈/爸爸），用于切换不同用户的播放列表
 - 播放列表默认折叠，点击头部展开/收起
 - 点击「从媒体库添加」打开 HA 媒体库浏览器，支持目录树导航、单曲添加、文件夹批量添加
-- Tab / 播放列表切换后状态保持
+- Tab / 播放列表切换后状态保持（`activeTabIndex`/`activePlaylistIndex` 持久化，`activePageIndex` 不持久化——每次打开按 `default_page` 决定）
+
+**URL 嵌入卡片（type: url）：**
+
+在 `tabs[].rows[].items` 中使用 `type: url` 用 iframe 嵌入外部网页（替代原 `xiaomusic_url` 顶层字段）：
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|------|------|------|--------|------|
+| `url` | ❌ | `string` | — | 嵌入的 URL（与 `xiaomusic_url` 互为别名） |
+| `xiaomusic_url` | ❌ | `string` | — | `url` 的别名，向后兼容 |
+| `height` | ❌ | `string` | `800px` | iframe 高度 |
+| `sandbox` | ❌ | `string` | `allow-scripts allow-same-origin allow-forms allow-popups` | iframe sandbox 属性 |
+| `allowfullscreen` | ❌ | `bool` | `true` | 是否允许全屏 |
+
+**动态图标自动启用（图标 + 颜色 + 动画随播放状态联动）：**
+
+当 `type: media` 按钮未配置 `on_icon` / `off_icon` / `on_color` / `off_color` 时，自动套用 `media_player` 动态图标预设，图标、颜色、动画随实体状态实时变化，同时右上角斜三角自动显示状态文字（`icon_text: preset_media`）。播放控制弹窗等全部专属能力不受影响。
+
+| state | 图标 | 颜色 | 动画 | 角标文字 |
+|-------|------|------|------|---------|
+| `playing` | `mdi:speaker-play` | 绿 `#4caf50` | breathe | 放 |
+| `paused` | `mdi:speaker-pause` | 青 `#26c6da` | — | 停 |
+| `idle` | `mdi:speaker-stop` | 浅蓝灰 `#90a4ae` | — | 闲 |
+| `standby` | `mdi:speaker` | 深灰 `#607d8b` | — | 候 |
+| `on` | `mdi:speaker` | 蓝 `#42a5f5` | breathe | 开 |
+| `off` | `mdi:speaker-off` | 灰 `#7f8c8d` | — | 关 |
+
+**对话状态检测（conversation_entity）：**
+
+配置 `conversation_entity` 后，当该实体值变化时表示正在对话，动态图标临时切换为对话图标，对话结束后恢复媒体状态图标。适用于小爱音箱等带语音对话记录传感器的设备。
+
+| 属性 | 说明 |
+|------|------|
+| 图标 | `mdi:speaker-message` |
+| 颜色 | 紫 `#9c27b0` |
+| 动画 | breathe |
+| 持续时间 | 值停止变化后 3 秒恢复 |
+
+**工作原理（防抖模式）：**
+- `conversation_entity` 值变化 → 立即显示对话图标，重置 3 秒计时器
+- 值持续变化（长时间对话）→ 计时器不断重置，对话图标持续显示
+- 值停止变化 3 秒后 → 计时器到期，恢复 `entity` / `media_entity` 状态对应的媒体图标
+
+```yaml
+  - type: media
+    name: 播放器
+    entity: media_player.xiaomi_oh2p_dac5_play_control
+    conversation_entity: sensor.xiaomi_oh2p_dac5_conversation   # 对话记录传感器
+    # ... 其他配置
+```
+
+> - 首次加载只缓存值不触发，避免页面打开就显示对话图标
+> - `conversation_entity` 已自动纳入实体订阅，状态变化即可触发图标更新
+> - `conversation_entity` 与 `tabs` 中展示同一实体互不冲突（一个用于图标判断，一个用于内容展示）
+> - 仅在动态图标模式（未配 `on_icon`/`off_icon`）下生效
+
+> - 也可显式配置 `preset: media_player` 覆盖默认预设，或配置 `on_icon` / `off_icon` 回退到手动二态模式
+> - 若需自定义角标文字，配置 `icon_text` 即可覆盖自动的 `preset_media`
+> - 实体配置项推荐使用 `entity`，旧配置的 `media_entity` 仍完全兼容（两者任一存在即生效，`entity` 优先）
 
 > 💡 **依赖说明**：播放列表管理功能依赖 [HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store/releases)，需先在 HA 中安装并配置好 API 地址和密钥。
+
+#### 5.6.1 语音对话记录气泡（show_conversation）
+
+在 `free_layout` 的任意 `items` 卡片上配置 `show_conversation: true`，点击该卡片即可弹出**仿微信聊天界面**的语音对话历史气泡。数据通过顶层 `api_base_url` 和 `key` 调用 `type=xiaoai_history` 接口获取，对话时间使用返回数据的 `conv_time` 字段。
+
+**配置项：**
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|---|---|---|---|---|
+| `show_conversation` | ✅ | `bool` | — | 开启对话气泡功能 |
+| `entity` | ✅ | `string` | — | 对话记录实体 ID（如 `sensor.xxx_conversation`），作为 API 的 `entity_id` 参数 |
+| `command_entity` | ❌ | `string` | — | 指令下发实体 ID（如 `text.xxx_execute_text_directive`），配置后在气泡底部显示输入框，可手动输入指令通过 `text.set_value` 发送给小爱 |
+| `quick_input` | ❌ | `string[]` | — | 快捷指令列表。仅在配置了 `command_entity` 时生效，在发送按钮右侧显示快捷输入按钮（⚡），点击弹出列表，选定某项直接发送该指令 |
+| `conversation_page_days` | ❌ | `number` | `7` | 每次分页加载的天数 |
+| `conversation_max_height` | ❌ | `string` | `60vh` | 气泡最大高度，超出滚动 |
+| `conversation_width` | ❌ | `string\|number` | `90%` | 气泡宽度（数字按 px，字符串原样使用），最大不超过 500px |
+
+**配置示例：**
+
+```yaml
+buttons:
+  - type: media
+    name: 播放器
+    entity: media_player.xxx
+    api_base_url: /api/ha_data_store/
+    key: your_api_key
+    free_layout:
+      - row: 1
+        per_line: 1
+        title: 语音控制记录
+        items:
+          - entity: sensor.xxx_conversation
+            type: sensor
+            name: 语音控制记录
+            icon: mdi:account-voice
+            show_conversation: true          # 必填，开启聊天气泡功能
+            command_entity: text.xxx_execute_text_directive  # 可选，开启底部指令输入框
+            quick_input:                     # 可选，快捷指令列表（需配合 command_entity）
+              - 关闭客厅大灯
+              - 关闭餐厅吊灯和壁灯
+              - 打开客厅大灯
+            conversation_page_days: 7        # 可选，每次加载天数，默认 7
+            conversation_max_height: 60vh    # 可选，气泡最大高度，默认 60vh
+            conversation_width: 90%          # 可选，气泡宽度，默认 90%
+```
+
+**功能说明：**
+
+- **加载方向**：最新对话显示在底部（iMessage/微信标准），向上滚动自动加载更早 7 天的数据
+- **数据排序**：按 `conv_time` 正序排列（最旧在顶，最新在底）
+- **时间分隔**：相邻两条对话间隔超过 5 分钟或日期不同时插入时间分隔线，今天显示 `HH:MM`，昨天显示 `昨天 HH:MM`，更早显示 `MM-DD HH:MM`
+- **用户头像**：自动匹配当前登录 HA 用户（`hass.user.id` ↔ `person.*` 实体的 `user_id`），使用其 `entity_picture` 作为右侧"我"的头像，匹配不到时降级为 `mdi:account` 图标
+- **AI 头像**：使用 `mdi:robot` 图标
+- **指令下发**：配置 `command_entity` 后，气泡底部显示输入框，回车或点击发送按钮通过 `text.set_value` 服务将指令写入 `command_entity`；发送后乐观插入本地消息并延迟 3 秒刷新对话列表拉取真实回复
+- **快捷输入**：配置 `quick_input` 数组（需配合 `command_entity`）后，发送按钮右侧出现 ⚡ 快捷输入按钮，点击弹出快捷指令列表，选定某项直接发送该指令
+- **触发范围**：`show_conversation` 可配置在任意 `type` 的 item 上（`sensor`/`text`/`switch`/`button` 等），配置后会**覆盖**该卡片原有的点击行为（`stopPropagation`）
+- **API 接口**：`GET {api_base_url}query?type=xiaoai_history&key={key}&entity_id={entity}&start={YYYY-MM-DD}&end={YYYY-MM-DD}`，返回 JSON 中 `data.rows` 数组含 `user_text`（用户语句）、`ai_text`（AI 回复）、`conv_time`（对话时间）等字段
+- **错误处理**：首次加载失败显示"加载失败 + 重试按钮"；加载更多失败仅显示临时"加载失败"提示行，不影响已有内容；无更早数据时显示"没有更早的对话了"
+
+> ⚠️ **覆盖原生点击**：在 `switch`/`button` 等有原生动作（toggle/调用服务）的卡片上配置 `show_conversation: true` 后，原生点击动作会被覆盖。如需保留原动作，请使用独立的 `sensor`/`text` 类型卡片承载对话功能。
+
+#### 5.6.2 小爱对话记录卡片 (type: xiaoai_conversation)
+
+`xiaoai_conversation` 是独立的对话记录卡片类型，直接渲染仿微信聊天界面，展示语音对话历史。与 5.6.1 的 `show_conversation` 气泡不同，它**不需要点击触发**，本身即是对话界面，可作为卡片直接放入网格 / free_layout items，也可通过通用 `tap_action.action: popup_card` 作为弹窗弹出。
+
+**两种使用方式：**
+
+- **直接渲染**：作为 `type: xiaoai_conversation` 卡片放入 `items`，直接显示完整聊天界面
+- **作为弹窗**：在任意按钮上配置 `tap_action.action: popup_card`，`card` 内填写 `type: xiaoai_conversation`，点击按钮弹出聊天界面（复用通用弹窗系统，支持 `popup_position` / `width`）
+
+**配置项：**
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|---|---|---|---|---|
+| `type` | ✅ | `string` | — | 固定 `xiaoai_conversation` |
+| `entity` | ⚠️ | `string` | — | 对话记录实体 ID。**单对话模式必填**；多对话模式下填在 `multiple_conversations` 子项中 |
+| `command_entity` | ❌ | `string` | — | 命令下发实体 ID，单对话模式使用；多对话模式下填在子项中 |
+| `play_text_entity` | ❌ | `string` | — | 播报实体 ID，单对话模式使用；多对话模式下填在子项中 |
+| `quick_input` | ❌ | `string[]` | — | 快捷指令列表。**多对话模式下作为共用快捷输入**，与各子项的专属快捷输入合并显示（专属在前，共用在后） |
+| `multiple_conversations` | ❌ | `object[]` | — | **多对话模式**：配置多组对话的数组。启用后**顶层 `entity` / `command_entity` / `play_text_entity` 将被忽略**（设了会报 warning）。每个子项字段见下表 |
+| `conversation_page_days` | ❌ | `number` | `7` | 每次分页加载的天数。多对话模式下各子项可单独覆盖 |
+| `conversation_max_height` | ❌ | `string\|number` | — | 聊天内容区高度（如 `500px`），超出时列表内部滚动；不配置时由内容撑开 |
+| `conversation_width` | ❌ | `string\|number` | — | 卡片宽度（数字按 px，字符串原样使用如 `90%`/`400px`）；弹窗模式下建议 `100%` 自适应弹窗宽度 |
+| `name` | ❌ | `string` | `语音对话记录` | 标题栏显示的名称（多对话模式下自动显示为"与 {活跃名称} 聊天"） |
+| `icon` | ❌ | `string` | `mdi:account-voice` | 标题栏图标（仅元数据，卡片本身不显示图标） |
+
+**`multiple_conversations` 子项字段：**
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|---|---|---|---|---|
+| `name` | ✅ | `string` | — | 对话名称，显示在 tab 按钮上，标题栏显示"与 {name} 聊天" |
+| `entity` | ✅ | `string` | — | 对话记录实体 ID，作为 API 的 `entity_id` 参数 |
+| `icon` | ❌ | `string` | `mdi:account-voice` | 对话图标，显示在 tab 按钮和标题栏 |
+| `command_entity` | ❌ | `string` | — | 命令下发实体 ID，配置后该对话 tab 才显示发送按钮 |
+| `play_text_entity` | ❌ | `string` | — | 播报实体 ID，配置后该对话 tab 才显示播报按钮 |
+| `quick_input` | ❌ | `string[]` | — | 该对话的**专属快捷输入**。与顶层 `quick_input`（共用）合并显示，专属在前、共用在后 |
+| `conversation_page_days` | ❌ | `number` | 继承顶层值 | 该对话的分页加载天数，不配置则使用顶层 `conversation_page_days` |
+
+> 📌 **command_entity vs play_text_entity**：两者均为 text 实体，通过 `text.set_value` 写入。`command_entity` 让小爱执行指令（产生对话记录，发送后乐观插入消息并延迟刷新）；`play_text_entity` 让小爱 TTS 朗读（不产生对话记录，仅 Toast 提示"已播报"）。两者可同时配置，输入区会显示两个独立按钮，共享同一输入框。
+
+> 📌 **多对话模式行为**：输入区在任一子项配置了 `command_entity` 或 `play_text_entity` 时即显示。切换 tab 时输入区的按钮、placeholder 和快捷输入列表会自动切换到当前活跃对话的配置。数据按 tab 独立缓存和分页加载。
+
+**方式一：直接渲染（放入 free_layout items）**
+
+```yaml
+buttons:
+  - type: media
+    name: 播放器
+    entity: media_player.xxx
+    api_base_url: /api/ha_data_store/
+    key: your_api_key
+    tabs:
+      - name: 音响
+        icon: mdi:toggle-switch-variant
+        rows:
+          - row: 1
+            per_line: 1
+            title: 控制中心
+            items:
+              - type: xiaoai_conversation
+                name: 语音控制记录
+                entity: sensor.xxx_conversation
+                command_entity: text.xxx_execute_text_directive   # 可选，命令发送
+                play_text_entity: text.xxx_play_text               # 可选，TTS 播报
+                icon: mdi:account-voice
+                conversation_page_days: 7
+                conversation_max_height: 400px                     # 可选，列表高度，超出滚动
+                conversation_width: 400px                          # 可选，卡片宽度
+                quick_input:                                       # 可选，快捷指令（需配合 command_entity）
+                  - 关闭客厅大灯
+                  - 关闭餐厅吊灯和壁灯
+                  - 打开客厅大灯
+```
+
+**方式二：作为弹窗（tap_action.action: popup_card）**
+
+在任意按钮上配置 `tap_action`，点击后用通用弹窗弹出对话界面：
+
+```yaml
+buttons:
+  - name: 语音控制记录
+    icon: mdi:account-voice
+    tap_action:
+      action: popup_card
+      popup_position: top          # 可选，弹窗位置：top/bottom/center 等
+      width: 400px                 # 可选，弹窗宽度
+      card:                        # 单个对象（非数组）
+        type: xiaoai_conversation
+        name: 语音控制记录
+        entity: sensor.xxx_conversation
+        command_entity: text.xxx_execute_text_directive
+        play_text_entity: text.xxx_play_text
+        conversation_page_days: 7
+        conversation_max_height: 500px
+        conversation_width: 100%   # 弹窗模式下建议 100%，自适应弹窗宽度
+        quick_input:
+          - 关闭客厅大灯
+          - 关闭餐厅吊灯和壁灯
+          - 打开客厅大灯
+    api_base_url: /api/ha_data_store/   # 顶层配置 API 地址
+    key: your_api_key
+```
+
+> ⚠️ **popup_card 的 card 是单个对象**：`tap_action.card` 应为单个 cardConfig 对象（非数组），因为弹窗内部调用 `createCardElement(cardConfig)` 创建单张卡片。
+
+**方式三：多对话模式（multiple_conversations）**
+
+适用于家里有多台小爱音箱的场景，一个卡片同时管理多台设备的对话记录，标题栏显示 tab 按钮可切换：
+
+```yaml
+buttons:
+  - type: media
+    name: 智能管家
+    entity: media_player.xxx
+    api_base_url: /api/ha_data_store/
+    key: your_api_key
+    tabs:
+      - name: 语音控制
+        icon: mdi:account-voice
+        rows:
+          - row: 1
+            per_line: 1
+            title: 小爱对话记录
+            items:
+              - type: xiaoai_conversation
+                name: 小爱对话
+                conversation_page_days: 7
+                conversation_max_height: 500px
+                conversation_width: 100%
+                # 多对话配置——配置后忽略顶层的 entity / command_entity / play_text_entity
+                multiple_conversations:
+                  - name: 客厅小爱
+                    icon: mdi:account-voice
+                    entity: sensor.xiaomi_living_room_conversation
+                    command_entity: text.xiaomi_living_room_cmd
+                    play_text_entity: text.xiaomi_living_room_tts
+                    quick_input:                     # 专属快捷输入（显示在共用前面）
+                      - 关闭客厅大灯
+                      - 打开客厅大灯
+                  - name: 2楼小爱
+                    icon: mdi:account-voice
+                    entity: sensor.xiaomi_2f_conversation
+                    command_entity: text.xiaomi_2f_cmd
+                    play_text_entity: text.xiaomi_2f_tts
+                # 共用快捷输入（专属在前，共用在后合并）
+                quick_input:
+                  - 关闭所有灯
+                  - 离家模式
+```
+
+**功能说明：**
+
+- **直接渲染**：卡片本身即聊天界面，不设 `conversation_max_height` 时由内容撑开（无滚动）；设了则在指定高度内列表滚动
+- **弹窗模式**：由通用 `popup_card` 动作系统用 `showPopup` 包裹，`popup_position` 控制弹窗位置，`width` 控制弹窗宽度；建议卡片 `conversation_width: 100%` 自适应弹窗
+- **输入区**：配置了 `command_entity` 或 `play_text_entity` 任意一个即显示输入区
+  - 蓝色发送按钮（`mdi:send`）：发送命令到 `command_entity`，乐观插入本地消息 + 延迟 3 秒刷新列表
+  - 绿色播报按钮（`mdi:volume-high`）：发送文本到 `play_text_entity`，TTS 朗读，仅 Toast 提示"已播报"
+  - 回车键默认发送命令（未配 `command_entity` 时发送播报）
+  - 快捷输入（⚡）按钮：仅 `command_entity` 配置时显示，选定快捷项直接发送命令
+- **数据加载**：最新对话在底部，向上滚动自动加载更早 `conversation_page_days` 天的数据
+- **多对话模式**（`multiple_conversations`）：
+  - header 分为两行：标题行显示"与 {name} 聊天" + 图标，下方 tab 行显示所有对话按钮
+  - 点击 tab 按钮切换对话，数据独立缓存和分页，切换回已加载的 tab 即时恢复列表和滚动位置
+  - 输入区按钮和 placeholder 随当前活跃 tab 切换，只显示该对话支持的按钮
+  - 快捷输入合并规则：当前 tab 的 `quick_input`（专属）在前 + 顶层 `quick_input`（共用）在后
+  - 有命令下发后自动重置该 tab 的缓存，3 秒后重新加载获取最新回复
+- **与 show_conversation 气泡的关系**：`xiaoai_conversation` 是独立卡片类型（直接渲染/弹窗），`show_conversation` 是给其他类型卡片附加的点击气泡行为。两者复用同一套对话 UI 和数据加载逻辑
+
+---
 
 ### 5.7 用户卡片 (type: user)
 
@@ -1344,7 +2138,7 @@ weather:
 | `color` | ❌ | `string` | 顶层 `color` | 匹配时图标的颜色。支持 **Jinja2 模板语法**（如 `"{{ states('sensor.color') }}"`）和 **CSS 命名色**（如 `red`/`yellow`/`green`）。模板输出 hex（如 `#e60033`）或命名色均可 |
 | `animation` | ❌ | `string` | 无 | 匹配时的动画效果 |
 | `primary` | ❌ | `string` | 无 | 按钮下方文字，支持模板语法。**轮播模式必填**，每条规则独立显示。非轮播模式下也支持，由 `_updateDockTriangles` 统一管理 |
-| `icon_text` | ❌ | `string` | 无 | 图标右上角斜三角文字，支持 **Jinja2 模板**和 **`preset_xx` 预设**（如 `preset_state` 自动显示 开/关/家/离）。**所有按钮类型均支持**，不限于 dynamic_icon。不配置时不显示斜三角 |
+| `icon_text` | ❌ | `string` | 无 | 图标右上角斜三角文字，支持 **Jinja2 模板**和 **`preset_xx` 预设**（如 `preset_state`、`preset_ac`、`preset_fan`、`preset_humidifier`、`preset_qweather`、`preset_media`）。**所有按钮类型均支持**，不限于 dynamic_icon。不配置时不显示斜三角 |
 | `tap_action` | ❌ | `object` | 无 | 当前规则的点击动作（仅轮播模式生效，顶层未配置时使用）。支持 `card_config.from_config_id` 引用已注册的弹窗配置 |
 | `card_params` | ❌ | `object` | 无 | 运行时参数，合并到弹出卡片的配置中。key/value 由目标卡片定义，纯透传。`from_config_id` 解析时此字段会被保留 |
 | `initial_tab` | ❌ | `string` | 无 | 播放到该规则时，将值合并到弹出卡片的 `initial_tab` 字段（如 `"1"`）。目标卡片在 `setConfig` 中读取并跳转到对应视图。**无需 `from_config_id`，顶层 `tap_action.card` 直接配置卡片也可用** |
@@ -1419,7 +2213,7 @@ weather:
 >
 > 目标卡片在 `setConfig` 中读取 `config.initial_tab` 并导航到对应视图。
 >
-> **`icon_text` 通用支持**：所有按钮类型（含 `type: button`、独立按钮、设备分组等）均支持 `icon_text`，支持 `preset_state` 预设（自动显示 开/关/家/离）和 Jinja2 模板语法。当不配置 `icon_text` 时不显示右上角斜三角。详见 25.4 节。
+> **`icon_text` 通用支持**：所有按钮类型（含 `type: button`、独立按钮、设备分组等）均支持 `icon_text`，支持 `preset_state`/`preset_ac`/`preset_fan`/`preset_humidifier`/`preset_qweather`/`preset_media` 预设和 Jinja2 模板语法。当不配置 `icon_text` 时不显示右上角斜三角。详见 25.4 节。
 >
 > **显示属性的两种写法**：`icon`/`color`/`animation` 可以写在规则顶层（与 `condition` 同级），也可以写在 `condition` 内部（与 `entity`/`operator` 同级）。顶层优先级更高。这在复合条件中特别有用，可以避免属性重复：
 
@@ -1788,12 +2582,31 @@ display_time: 2
 
 等价于手写 16 条 `rules`（每条自动注入 `condition.entity`、`icon`、`icon_text`、`color`、`animation`）。
 
+> **`preset: qweather` 与 `preset: weather` 的区别**：
+> - `weather` / `metno`：匹配实体 `state` 的 HA 标准条件字符串（`sunny`、`cloudy`、`rainy` 等）
+> - `qweather`：匹配实体 `attributes.qweather_icon` 的 QWeather 数值代码（`"104"`=阴、`"306"`=中雨等），覆盖 60+ 种天气代码，自动生成全部规则
+>
+> **通用 attribute 覆盖**：部分预设（如 `qweather`）有默认匹配的 attribute 字段。可通过 `condition.attribute` 覆盖为其他属性，甚至用于其他非天气场景：
+> ```yaml
+>   - type: dynamic_icon
+>     entity: weather.hefeng_home
+>     preset: qweather
+>     condition:
+>       attribute: condition_cn        # 改为匹配中文说明字段
+> ```
+> 预设未定义默认 attribute 时（如 `weather`、`ac`），`condition.attribute` 也可手动添加，改变匹配字段为实体属性而非 state。
+
 ##### 预设列表
 
-| 预设名称 | 适用场景 | 条件键值 | 说明 |
-|---------|---------|---------|------|
-| `qweather` / `weather` / `metno` | 天气 | `clear-day` `sunny` `cloudy` `partlycloudy` `fog` `hail` `lightning` `lightning-rainy` `pouring` `rainy` `snowy` `snowy-rainy` `windy` `exceptional` `clear-night` `clear` | 覆盖 HA 标准天气 + qweather 扩展状态。`icon_text` 统一为单字（晴/夜/阴/云/雾…），适合右上角三角徽章 |
-| `ac` / `aircon` / `climate` / `hvac` | 空调 (HVAC) | `off` `idle` `cool` `heat` `dry` `fan_only` `auto` | 匹配 climate 实体的 hvac_mode 状态。关闭时图标为 `mdi:air-conditioner` |
+| 预设名称 | 适用场景 | 匹配字段 | 条件键值 | 说明 |
+|---------|---------|---------|---------|------|
+| `qweather` | 天气 | `attributes.qweather_icon` | 100 晴 / 104 阴 / 306 中雨 / 400 小雪 / 501 雾 / 999 未知 等 60+ 数值码 | 专为和风天气自定义集成设计，读取 `qweather_icon` 属性匹配，不受 HA 语言翻译影响。图标颜色按天气特征定制（雷→黄闪、暴雨→深蓝发抖、雪→白蓝旋转） |
+| `weather` / `metno` | 天气 | `state` | `clear-day` `sunny` `cloudy` `partlycloudy` `fog` `hail` `lightning` `lightning-rainy` `pouring` `rainy` `snowy` `snowy-rainy` `windy` `exceptional` `clear-night` `clear` | 覆盖 HA 标准天气状态。`icon_text` 统一为单字（晴/夜/阴/云/雾…），适合右上角三角徽章 |
+| `ac` / `aircon` / `climate` / `hvac` | 空调 (HVAC) | `state` | `off` `idle` `cool` `heat` `dry` `fan_only` `auto` | 匹配 climate 实体的 hvac_mode 状态。关闭时图标为 `mdi:air-conditioner` |
+| `fan` / `circulation_fan` / `circ_fan` | 循环扇 | `state` | `off` `直吹风` `自然风` `智能风` `睡眠风` | 匹配 fan 实体的状态或 `preset_mode` 属性。模式值通常在 `preset_mode` 属性中，需配合 `condition.attribute: preset_mode`。关闭时图标为 `mdi:fan` |
+| `humidifier` / `humid` | 加湿器 | `state` | `off` `恒湿` `睡眠` `强力` | 匹配 humidifier 实体的状态或 `mode` 属性。模式值可能在 `mode` 属性中，需配合 `condition.attribute: mode`。关闭时图标为 `mdi:fan` |
+| `media_player` / `media` / `mp` | 媒体播放器 | `state` | `playing` `paused` `idle` `standby` `on` `off` | 匹配 media_player 实体的 state 状态。播放→`mdi:speaker-play`(绿)、暂停→`mdi:speaker-pause`(青)、空闲→`mdi:speaker-stop`(浅蓝灰)、待机/开启→`mdi:speaker`(深灰/蓝)、关闭→`mdi:speaker-off`(灰) |
+| `kettle` / `yang_sheng_hu` | 养生壶 | `state` | `待机中` `烹饪中` `预约中` `保温中` `空闲中提壶` `烹饪中提壶` `预约中提壶` `保温中提壶` `错误` `升级中` `烹饪完成` | 匹配养生壶实体的中文 state 状态。烹饪→`mdi:kettle-steam`(红 shake)、保温→`mdi:thermometer-chevron-up`(橙 breathe)、提壶状态→图标 outline 版 + jump 动画、错误→`mdi:alert-circle`(红 blink)、升级→`mdi:cloud-download`(蓝 rotate)、完成→`mdi:check-circle`(绿 breathe) |
 
 ##### 用户自定义覆盖
 
@@ -1814,6 +2627,56 @@ display_time: 2
 ```
 
 > 预设文件存放在 `modules/presets/dynamic-icon-presets.js`。添加新预设只需在该文件定义映射表并在 `PRESET_REGISTRY` 注册即可。
+
+##### 循环扇 / 加湿器预设示例
+
+```yaml
+# 循环扇 — 模式在 preset_mode 属性中
+- type: dynamic_icon
+  entity: fan.xiaomi_smartfan
+  preset: fan
+  condition:
+    attribute: preset_mode          # 覆盖默认 state，改为匹配 preset_mode 属性
+  tap_action:
+    action: more-info
+
+# 加湿器 — 模式在 mode 属性中
+- type: dynamic_icon
+  entity: humidifier.bedroom
+  preset: humidifier
+  condition:
+    attribute: mode                 # 覆盖默认 state，改为匹配 mode 属性
+  tap_action:
+    action: more-info
+```
+
+##### 媒体播放器预设示例
+
+```yaml
+# 媒体播放器 — 动态图标联动（图标+颜色+文字随播放状态变化）
+- type: dynamic_icon
+  entity: media_player.ke_ting_yin_xiang
+  preset: media_player             # 自动展开 6 条规则：playing/paused/idle/standby/on/off
+  primary: 音响
+  tap_action:
+    action: more-info
+
+# 仅 icon_text 文字预设（适用于 media 按钮类型，图标/颜色由动态图标预设控制）
+# 注：type: media 未配 on_icon/off_icon 时会自动套用 media_player 预设，
+#     图标/颜色/动画/角标文字全部联动，无需显式写 preset
+- type: media
+  entity: media_player.wo_de_yin_xiang
+  name: 音响
+  # icon_text: preset_media          # 已自动启用，如需自定义可覆盖
+
+# 养生壶 icon_text 预设（配合 preset: kettle 使用）
+# 返回两个字的中文状态文字（待机/烹饪/预约/保温/提壶/错误/升级/完成）
+- type: dynamic_icon
+  entity: sensor.养生壶_工作状态
+  preset: kettle
+  # icon_text: preset_kettle         # 已自动启用
+  primary: "{{ state('sensor.养生壶_工作状态') }}"
+```
 
 #### Tab 高亮联动
 
@@ -2080,7 +2943,7 @@ display_time: 2
 | `off_icon` | ❌ | `string` | 关闭时图标，默认 `mdi:toggle-switch-off` |
 | `on_color` | ❌ | `string` | 开启时图标颜色，默认 `#3498db` |
 | `off_color` | ❌ | `string` | 关闭时图标颜色，默认 `#95a5a6` |
-| `icon_text` | ❌ | `string` | 右上角斜三角文字。支持 `preset_state` 预设（根据实体状态自动显示 开/关/家/离）和 Jinja2 模板语法。不配置时不显示 |
+| `icon_text` | ❌ | `string` | 右上角斜三角文字。支持 `preset_xx` 预设（`preset_state`/`preset_ac`/`preset_fan`/`preset_humidifier`/`preset_qweather`/`preset_media`）和 Jinja2 模板语法。不配置时不显示 |
 | `status_text` | ❌ | `string` | 自定义状态文本，配置后替代默认的"开启/关闭" |
 | `status_text_completion` | ❌ | `string` | 点击后按钮状态文本显示的完成文本，3秒后自动恢复为 `status_text`（或默认文本） |
 | `icon_click_color` | ❌ | `string` | 点击后图标变色的颜色，3秒后自动恢复为原来的颜色 |
@@ -2206,7 +3069,7 @@ badge_entity 示例：
         position: 0
       - name: 底部
         position: 100
-    button:                                      # 功能开关卡片（灯光开关已自动添加，此处只需配其他功能）
+    card:                                      # 功能开关卡片（灯光开关已自动添加，此处只需配其他功能）
       - type: switch
         entity: switch.dryer_heat
         name: 恒温烘干
@@ -2227,7 +3090,7 @@ badge_entity 示例：
 | `width` | ❌ | `string` | 弹窗宽度，默认 `440px` |
 | `locker` | ❌ | `boolean` | 锁定模式，默认 `true`。锁定时位置固定 75%，隐藏拖拽手柄和收藏位置按钮，仅通过上升/下降按钮控制电机方向；设为 `false` 时启用拖拽交互和收藏位置快捷按钮 |
 | `collect_position` | ❌ | `array` | 收藏位置快捷按钮，最多 3 个，每个含 `name` 和 `position` 字段（仅在 `locker: false` 时显示） |
-| `button` | ❌ | `array` | 功能开关卡片列表，使用统一卡片系统渲染，2 列网格布局 |
+| `card` | ❌ | `array` | 功能开关卡片列表，使用统一卡片系统渲染，2 列网格布局 |
 
 **交互功能说明：**
 
@@ -2238,7 +3101,7 @@ badge_entity 示例：
    - 壳体右上角的灯光按钮可直接切换 `light_entity` 开关
    - 灯光开启时，壳体下方出现暖黄色倒置梯形光晕照射效果（上窄下宽）
    - 光晕效果实时响应灯光状态变化
-5. **功能卡片**：底部 2 列网格展示功能开关卡片；配置了 `light_entity` 时，灯光开关会自动插入首位，无需在 `button` 中手动添加
+5. **功能卡片**：底部 2 列网格展示功能开关卡片；配置了 `light_entity` 时，灯光开关会自动插入首位，无需在 `card` 中手动添加
 6. **位置反转自动适配**：自动检测 cover 实体的 `position_reverse` 属性，适配不同品牌晾衣架的正反转逻辑
 
 **`collect_position` 子项字段：**
@@ -2269,7 +3132,7 @@ collect_position:
     position: 0
   - name: 底部
     position: 100
-button:                                                    # func grid 功能开关
+card:                                                    # func grid 功能开关
   - type: switch
     entity: switch.dryer_heat
     name: 恒温烘干
@@ -2505,6 +3368,9 @@ actions:
 | `delay` | ❌ | `number` | `0` | 延时执行秒数，0 = 立即执行 |
 | `service_data` | ❌ | `object` | 无 | 附加服务数据（传递给 HA 服务调用，如 `kelvin`、`brightness` 等） |
 | `select` | ❌ | `boolean` | `true` | 动作复选框是否默认选中。`false` 时该动作默认不勾选（执行时跳过），不配置时默认选中 |
+| `confirm_entity` | ❌ | `string` | 无 | 确认实体ID。用于设备本身无法通过自己的 state 确认执行结果的场景，卡片将轮询此实体的状态来判断执行是否成功 |
+| `confirm_value` | ❌ | `string` | 同 `value` | 确认实体的期望状态值，支持比较运算符前缀（`>`, `<`, `>=`, `<=`, `!=`），如 `">10"` 表示功率大于 10 即视为成功 |
+| `confirm_time` | ❌ | `number` | 无 | 执行后等待确认的秒数。服务调用成功后，等待指定秒数再开始验证 `confirm_entity` 的状态 |
 
 > *`entity` 和 `entities` 至少配置一个。对象格式 `entities` 的键名优先级高于 `name`，会作为每个实体在进度面板中的独立显示名称。
 
@@ -2536,6 +3402,52 @@ scenes:
 ```
 
 > `select` 仅控制复选框的**默认状态**，用户仍可在气泡展开面板中手动勾选/取消。如果情景配置了 `mode: direct`（直接执行，不弹出气泡），`select: false` 的动作将始终被跳过。
+
+#### 确认实体配置（confirm_entity / confirm_value / confirm_time）
+
+某些设备执行操作后无法通过自身的 state 来确认是否执行成功（例如使用 WOL 唤醒电脑的 `switch`，`switch` 本身变为 `on` 但电脑还在启动中），此时可以用另一个实体的状态作为判断依据。
+
+**配置示例 — WOL 唤醒电脑**：
+
+```yaml
+actions:
+  - entity: switch.chen_mo_fang_jian_dian_nao_wolkai_ji
+    value: "on"
+    name: WOL唤醒
+    confirm_entity: sensor.iot_power             # 用功率传感器确认电脑是否已启动
+    confirm_value: ">10"                         # 功率 > 10W 视为启动成功
+    confirm_time: 5                              # 执行后等待 5 秒再开始验证
+```
+
+**执行与验证流程**：
+
+1. 调用 `switch.turn_on` 发送唤醒包
+2. 显示 `已发送`
+3. 等待 `confirm_time: 5` 秒（进度面板显示 `等待5秒后确认`）
+4. 进入验证阶段，轮询 `sensor.iot_power` 的状态值
+5. 当功率 `> 10` 时验证通过（显示 `✅ 成功`）；超时未达到则标记失败
+
+**`confirm_value` 支持的比较运算符**：
+
+| 运算符 | 示例 | 说明 |
+|--------|------|------|
+| 无 | `"on"` | 精确字符串匹配（默认行为） |
+| `>` | `">10"` | 数值大于 |
+| `<` | `"<500"` | 数值小于 |
+| `>=` | `">=0.5"` | 数值大于等于 |
+| `<=` | `"<=100"` | 数值小于等于 |
+| `!=` | `"!=unknown"` | 不等于 |
+
+**`confirm_time` 不配置时**：依赖 scene 层 `verify_timeout` 进行验证。`confirm_time` 仅在需要"执行后等待设备启动/响应"时使用。
+
+**`confirm_value` 不配置时**：默认使用 action 的 `value` 值作为期望值。
+
+**进度面板显示效果**：当配置了 `confirm_entity` 时，状态转换文本改为显示确认实体信息：
+
+| 场景 | 进度面板显示 |
+|------|-------------|
+| 无 confirm_entity | `床头灯` `on→off` `成功` |
+| 有 confirm_entity | `WOL唤醒` `电功率: >10` `等待5秒后确认` → `WOL唤醒` `电功率: >10` `成功` |
 
 #### 支持的实体类型与服务自动推断
 
@@ -3896,6 +4808,293 @@ tap_action:
 
 ---
 
+### 5.33 设备用电统计卡片 (type: device_usage)
+
+设备用电统计卡片用于展示指定房间（或全屋）当日各设备的使用时长、用电量和事件分布。通过 `api_base_url` 对接 HA 数据统一存储系统（ha_data_store）的设备事件 API。
+
+**两种显示模式：**
+
+| 模式 | 说明 |
+|------|------|
+| `mini`（默认） | 紧凑卡片，显示摘要 + 设备列表，适合嵌入头部模式网格 |
+| `full` | 完整弹窗，含 24h 甘特图 + 完整设备表 + 多种可视化视图 + 日期切换 |
+
+**基础配置：**
+
+```yaml
+  - type: device_usage
+    layout: mini                 # mini（默认）/ full
+    top_count: 5                 # mini 模式下显示的设备数，0 或省略则自动填充全部
+    date: "2026-06-21"           # 指定日期，默认今天
+    show_timeline: true          # 是否显示 24h 甘特图，默认 true
+    api_base_url: http://192.168.1.100:8080   # （可选）单独指定数据源，默认使用顶层配置
+    key: your_api_key           # （可选）单独指定 API key
+    room_name: 客厅              # （可选）单独指定房间名，默认使用 card room_name
+```
+
+#### mini 模式
+
+mini 模式渲染一张紧凑统计卡片，显示当日总用电量/设备数/运行中设备数，以及 Top N 设备列表（每项含图标、名称、使用时长、用电量、运行状态指示灯）。
+
+```yaml
+buttons:
+  - type: device_usage
+    layout: mini
+    top_count: 5
+```
+
+渲染效果（示例）：
+
+```
+┌─────────────────────────────┐
+│ ⚡ 今日3.25度/8台设备(3运行)  │
+├─────────────────────────────┤
+│ 💡 客厅主灯          2.5h  0.8度 │
+│ 🔌 电视插座          3.2h  1.2度 │
+│ 🌀 循环扇           1.8h  0.3度 │
+│ 📺 机顶盒           5.0h  0.6度 │
+│ ❄️ 空调             1.0h  0.2度 │
+└─────────────────────────────┘
+```
+
+#### 弹窗详情模式
+
+mini 模式卡片点击后弹出完整详情弹窗，包含以下模块：
+
+**1. 顶部栏**：房间名/全屋切换、日期前后切换
+
+**2. 摘要统计**：
+- 开机次数
+- 总使用时长
+- 总用电量（度）
+
+**3. 24 小时事件分布甘特图**（ECharts）：
+- 横轴为 24 小时时间线
+- 每个设备一行，显示当日所有开机时段
+- 运行中的设备以高亮色标记
+- 鼠标悬停显示时段详情
+- 全屋模式下左侧显示房间名分组，房间间有分隔线
+
+**4. 设备明细表**：
+- 支持 4 种视图切换：
+
+| 视图 | 说明 |
+|------|------|
+| 表格 | 设备列表（房间/设备名/状态/时长/用电量/事件次数）+ 合计行 |
+| 时长图 | 南丁格尔玫瑰图，按使用时长占比展示，只标注 Top 6 |
+| 用电图 | 南丁格尔玫瑰图，按用电量占比展示，只标注 Top 6 |
+| 复合图 | 柱状图（用电量）+ 平滑曲线（时长），双 Y 轴 |
+| 房间利用率 | 全屋模式专属，各房间使用时长占比玫瑰图 |
+| 3D | 全屋模式专属，3D 房间能耗地图（Three.js），可拖拽旋转/缩放/点击房间弹出能耗气泡 |
+
+**房间/全屋切换**：
+
+配置中 `person` 配置了多个 `rooms` 时，弹窗顶部出现"全屋"切换按钮：
+- **单房间**：只加载该房间设备数据
+- **全屋**：并行请求所有房间数据，整合后统一按设备去重，全屋模式设备表前缀增加房间名列
+
+**日期切换**：
+
+弹窗可通过 `◀ ▶` 按钮切换到任意历史日期查看数据。
+
+**数据缓存**：
+
+数据以 `device_usage_{房间名}` 为缓存键、以日期为子键缓存，同房间切回已加载日期时直接使用缓存。
+
+**full 模式（较少使用）**：
+
+直接在卡片区域渲染完整弹窗内容（不弹出），适合嵌入自由布局弹窗：
+
+```yaml
+  - type: device_usage
+    layout: full
+```
+
+**完整配置示例：**
+
+```yaml
+buttons:
+  - type: device_usage
+    layout: mini
+    top_count: 5
+    room_name: 客厅
+    date: "2026-06-21"
+```
+
+**全屋模式 3D 视图相关配置（嵌入 buttons_2+ 时使用）：**
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `energy_center_hide_room` | `string` | `""` | 3D 视图中隐藏指定房间，逗号分隔，如 `"儿童房外,次卧外,楼道"` |
+| `energy_center_hide` | `string` | `""` | 隐藏 3D 视图中的指定元素，当前支持 `"3D"`（隐藏 3D 地图选项卡） |
+
+---
+
+### 5.34 使用量日历卡片 (type: usage_calendar)
+
+使用量日历卡片用于展示任意实体的用量/能耗/时长数据，支持日历视图和年/月/日 ECharts 图表视图。数据来源既可以是 [HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store/releases)（ha_data_store）API，也可以是实体属性。
+
+**四个选项卡视图：**
+
+| 选项卡 | 说明 |
+|------|------|
+| 日历 | 月历网格，每个单元格显示当日用量和时长，点击有数据的日期弹出详情 |
+| 年 | 年度柱状图（ECharts），显示所有可用年份的用量/能耗对比 |
+| 月 | 月度柱状图（ECharts），显示选定年份 12 个月的用量/能耗对比 |
+| 日 | 日度柱状图（ECharts），显示选定月份每日的用量/能耗对比 |
+
+**数据源配置：**
+
+支持两种数据源，优先使用 API，未配置 API 时使用实体属性。
+
+**方式一：API 数据源（推荐）**
+
+通过 `api` 配置块对接 ha_data_store，`api_base_url` 和 `key` 可省略（自动从顶层配置继承）：
+
+```yaml
+  - type: usage_calendar
+    api:
+      entity: input_boolean.bing_xiang    # 设备实体 ID（必需）
+      # api_base_url: /api/ha_data_store/ # 可选，省略时从顶层继承
+      # key: your_api_key                 # 可选，省略时从顶层继承
+```
+
+**方式二：实体属性数据源**
+
+通过 `entities` 配置块从实体属性读取数据：
+
+```yaml
+  - type: usage_calendar
+    entities:
+      data_entity: sensor.tianranqi        # 数据实体 ID
+      consumption_attr: gas_consumption    # 用量属性名，默认 gas_consumption
+      duration_attr: gas_duration_seconds  # 时长属性名（秒），默认 gas_duration_seconds
+      date_attr: date                      # 日期属性名，默认 date
+```
+
+**基础配置：**
+
+```yaml
+  - type: usage_calendar
+    title: 冰箱用电量日历                  # 卡片标题，默认"天然气使用量"
+    show_title: false                     # 是否显示标题，默认 true
+    width: 400px                          # 卡片宽度，默认 100%
+    show_popup: true                      # 点击日期是否弹出详情，默认 true
+    data_value_color: "#00a381"           # 用量数据颜色，默认 #F9D505
+    calc_value_color: "#c85179"           # 时长/费用颜色，默认 #804AFF
+    chart_line_color: "#FF6B6B"           # 图表曲线颜色，默认 #FF6B6B
+    date_font_size: 11px                  # 日期字号，默认 11px
+    value_font_size: 10px                 # 数值字号，默认 10px
+```
+
+**单位与精度配置：**
+
+```yaml
+    units: "°,h"        # 用量单位,时长/费用单位，默认 "m³,元"
+    decimals: "2,2"     # 用量小数位,时长/费用小数位，默认 "2,2"
+    series: "用量,时长"  # 柱状图系列名,曲线图系列名，默认 "用量,费用"
+```
+
+**calc_value_choose 计算值模式：**
+
+控制日历和图表中"第二行数值"的显示方式：
+
+| 值 | 说明 |
+|------|------|
+| `calculate` | 按计算系数换算费用（用量 × calculate 系数）|
+| `value` | 直接显示时长（来自 duration_attr 属性）|
+
+```yaml
+    calc_value_choose: value              # 显示时长
+    calculate: 1.0                        # calc_value_choose=calculate 时的换算系数，默认 1.0
+```
+
+> **智能默认**：使用实体数据源且配置了 `duration_attr` 时，`calc_value_choose` 默认为 `value`（显示时长）；否则默认 `calculate`（显示费用）。
+
+**完整配置示例：**
+
+```yaml
+buttons:
+  - type: usage_calendar
+    title: 客厅空调用电量日历
+    show_title: false
+    width: 400px
+    show_popup: true
+    api:
+      entity: climate.keting_ac_keting_ac
+    calc_value_choose: value
+    value_font_size: 10px
+    date_font_size: 10px
+    data_value_color: "#00a381"
+    calc_value_color: "#c85179"
+    units: "°,h"
+    decimals: "2,2"
+    series: "用量,时长"
+```
+
+**在 popup_card 中使用（vertical-stack 嵌套）：**
+
+```yaml
+  - name: 客厅空调
+    entity: climate.keting_ac_keting_ac
+    tap_action:
+      action: popup_card
+      popup_position: clone_button_down
+      card:
+        type: vertical-stack
+        cards:
+          - type: ac
+            entity: climate.keting_ac_keting_ac
+            name: 客厅空调
+            width: 400px
+          - type: usage_calendar
+            title: 客厅空调用电量日历
+            show_title: false
+            width: 400px
+            show_popup: true
+            api:
+              entity: climate.keting_ac_keting_ac
+            calc_value_choose: value
+            units: "°,h"
+            series: "用量,时长"
+```
+
+**选项卡导航说明：**
+
+- **日历选项卡**：底部显示 `◀ 年份 ▶` `◀ 月份 ▶ 本月` 导航条，支持快速切换年月；底部显示本月/本年用量和时长汇总
+- **年选项卡**：直接显示年度柱状图，无导航栏
+- **月选项卡**：显示年度按钮 + 月度柱状图，无导航栏
+- **日选项卡**：显示 `◀ 年份 ▶` `◀ 月份 ▶ 本月` 导航条，支持快速切换年月
+- **详情弹窗**：点击日历中有数据的日期，弹出该日的详细事件记录（设备开关机时段、时长、用量），弹窗宽度自动使用卡片配置的 `width`
+
+**配置项汇总：**
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `api.entity` | string | — | API 数据源的设备实体 ID |
+| `api.api_base_url` | string | 顶层继承 | ha_data_store API 地址 |
+| `api.key` | string | 顶层继承 | API 密钥 |
+| `entities.data_entity` | string | — | 实体属性数据源的实体 ID |
+| `entities.consumption_attr` | string | `gas_consumption` | 用量属性名 |
+| `entities.duration_attr` | string | `gas_duration_seconds` | 时长属性名（秒）|
+| `entities.date_attr` | string | `date` | 日期属性名 |
+| `title` | string | `天然气使用量` | 卡片标题 |
+| `show_title` | boolean | `true` | 是否显示标题 |
+| `width` | string | `100%` | 卡片宽度 |
+| `show_popup` | boolean | `true` | 点击日期是否弹出详情 |
+| `data_value_color` | color | `#F9D505` | 用量数据颜色 |
+| `calc_value_color` | color | `#804AFF` | 时长/费用颜色 |
+| `chart_line_color` | color | `#FF6B6B` | 图表曲线颜色 |
+| `date_font_size` | size | `11px` | 日期字号 |
+| `value_font_size` | size | `10px` | 数值字号 |
+| `units` | string | `m³,元` | 用量单位,时长/费用单位 |
+| `decimals` | string | `2,2` | 用量小数位,时长/费用小数位 |
+| `series` | string | `用量,费用` | 柱状图系列名,曲线图系列名 |
+| `calc_value_choose` | string | 智能推断 | `calculate`（费用）或 `value`（时长）|
+| `calculate` | number | `1.0` | 费用换算系数 |
+
+---
+
 ## 七、通用动作系统（tap_action）
 
 所有支持 `tap_action` 的位置（按钮、title_entities、entities 区域、传感器卡片等）共享同一套动作执行引擎。动作类型统一，配置方式一致，`set_value` 和 `toggle` 还支持 `entities` 多实体批量操作。
@@ -5253,6 +6452,101 @@ overview:
         cost_entity: sensor.gas_balance
 ```
 
+除了固定 entity+power 模式，每个 utility 也支持 **`content` 自由配置模式**——使用 [Jinja2 模板语法](#1011-公告栏notice-bar) 完全自定义显示内容，并支持 `tap_action` 动作系统：
+
+```yaml
+overview:
+  - type: energy
+    name: 能耗
+    utilities:
+      电力:                                   # ← 保持现有格式不变
+        entity: sensor.electricity_meter
+        power: sensor.electricity_power
+        power_onsumption: sensor.daily_consumption
+        cost_entity: sensor.balance
+        icon: mdi:transmission-tower
+      空调:                                   # ← 自由配置，无需 entity
+        icon: mdi:air-conditioner
+        content: |-                           # Jinja2 模板，渲染到右侧
+          {% set balance_raw = states('sensor.ele_6103231959710') %}
+          {% set balance = balance_raw | float(0) %}
+          {% set text_color = '#d9383a' if balance < 20 else '#006e54' %}
+          ❶电费余额：<span style="color: {{ text_color }}; font-weight: bold;">{{ balance_raw }} 元</span>，
+          可用{{ states('sensor.dian_fei_zhang_hu_6103231959710_yu_ji_ke_yong') }}天
+        tap_action:                           # 支持完整动作系统
+          card_config:
+            from_config_id: ele
+            get_type: all
+          card_params:
+            initial_tab: "1"
+```
+
+**`content` 模式字段说明：**
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `content` | ✅ | `string` | Jinja2 模板字符串，渲染后的 HTML 显示在行右侧；左侧固定显示 `icon` + `name` |
+| `icon` | ❌ | `string` | 左侧图标，如 `mdi:air-conditioner` |
+| `tap_action` | ❌ | `object` | 行点击动作，支持 `card_config.from_config_id` 引用等完整动作系统 |
+
+> **提示**：`content` 模式下无需配置 `entity`/`power`/`cost_entity` 等字段，所有动态数据通过 Jinja2 模板中的 `states()` / `state_attr()` 函数读取。模板引擎与公告栏共享同一套内置函数和过滤器。
+
+#### 10.7.1 层级树状结构（`level`）
+
+从 v5.1.11 起，`utilities` 中每个自定义类型支持 `level` 字段，用于建立层级归属关系。子项会自动锚定到"最近的上一个 level 比自己小的"作为父级，UI 中以树状连接线（`├─` / `└─` / `│`）直观展示。
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|------|:----:|------|--------|------|
+| `level` | ❌ | `number` | `1` | 层级深度，`1` 为顶层（加粗），`2` 为二级子集，`3` 为三级子集 |
+
+**层级规则：**
+- 不配置 `level` 时默认为顶层（level=1），**顶层名称自动加粗显示**
+- 配置顺序决定层级关系：子项必须紧跟父项，不可写在父项前面
+- 跳级自动容错（如 1→3 直接跳到三级，锚定到最近的有效父级并 console.warn）
+- 首个 item `level > 1` 自动降级为 1
+
+**配置示例：**
+
+```yaml
+overview:
+  - type: energy
+    utilities:
+      电力:
+        entity: sensor.ele_xxx
+        # 不写 level = 顶层（默认1），名称加粗
+      空调:
+        level: 2                              # 电力下的二级子集
+        icon: mdi:air-conditioner
+        content: >-
+          今日：{{ states('sensor.ac_daily') | float(0) | round(1) }}kWh
+          | 总功率：{{ (states('sensor.ac_power') | float(0) / 1000) | round(1) }}kw
+      新风:
+        level: 2                              # 也是电力下的二级子集
+        icon: mdi:air-filter
+        content: >-
+          今日：{{ states('sensor.fan_daily') | float(0) | round(1) }}kWh
+      热水器:
+        level: 3                              # 新风下的三级子集
+        icon: mdi:water-boiler
+        content: >-
+          今日：{{ states('sensor.heater_daily') | float(0) | round(1) }}kWh
+      自来水:
+        entity: sensor.water
+        # 不写 level，回到顶层
+```
+
+**UI 效果：**
+
+```
+⚡ 电力          用电量：15.2kWh | 功率：2.1kW    ← 顶层加粗
+│  ├─ 🌀 空调     今日：5.1kWh | 总功率：1.8kw    ← 二级，连续竖线连接
+│  │  └─ 🔥 热水器 今日：2.1kWh | 总功率：1.5kw   ← 三级，多级竖线连接
+│  └─ 🍃 新风     今日：0.8kWh | 总功率：0.3kw    ← 二级最后子项，└─ 拐角收尾
+💧 自来水         12.5 m³                         ← 顶层加粗
+```
+
+> **提示**：`level` 适用于 `entity` 模式和 `content` 自由配置模式，两种模式均可建立层级关系。实体模式和自由配置模式可以混合在同一层级树中。
+
 ### 10.8 天气概览（需配置）
 
 在概览弹窗的微气候卡片中显示天气预报项，点击可展开完整的天气气泡（含今日详情、7日预报等）。
@@ -6247,6 +7541,7 @@ tap_action:
 | `user` | 用户信息卡片 | `persons` |
 | `button_group` | 按钮组（选项卡样式聚合小按钮） | `buttons`、`direction`、`on_color`、`off_color`、`show_name` |
 | `action` | 快捷操作（点击弹出情景模式气泡） | `name`、`icon`、`scenes`、`scene_mode` |
+| `water_temp` | 水温可视化卡片 | `entity`、`min_temp`、`max_temp`、`width`、`height` |
 
 #### radio 卡片（单选按钮组）
 
@@ -6277,6 +7572,7 @@ items:
 | `entity` | ✅ | `string` | - | 实体 ID（`input_select` / `select` 等） |
 | `name` | ❌ | `string` | 实体 friendly_name | 卡片标题 |
 | `compact` | ❌ | `boolean` | `false` | 紧凑模式：隐藏标题栏和当前值显示，缩小选项间距和字号 |
+| `per_row` | ❌ | `number` | - | 每行显示的选项数（1~6），设置后使用 CSS Grid 严格分行排列；不设置则保持自动换行 |
 | `map_table` | ✅ | `object` | - | 选项映射表，定义每个选项的图标/文本/颜色（支持 `on`/`off` 分组格式） |
 | `update_interval` | ❌ | `number` | `0` | 单独刷新间隔（秒），覆盖弹窗级别的刷新间隔 |
 | `confirm` | ❌ | `boolean` | `false` | 切换前是否需要确认弹窗 |
@@ -7789,6 +9085,9 @@ buttons:
 | `ac` | `power_display_entity` | 无 | 当前功率实体 |
 | `ac` | `humidity_entity` | 无 | 湿度传感器实体 |
 | `ac` | `current_temperature` | 无 | 室温传感器实体 |
+| `ac` | `page_1` | 无 | 第二页类型：`power_page` / `duration_page` / `both_page`，配置后启用双页滑动模式 |
+| `ac` | `api_base_url` | 继承顶层 | API 接口地址（日历图表数据源） |
+| `ac` | `key` | 继承顶层 | API 密钥 |
 | `clothes_dryer` | `width` | `440px` | 弹窗宽度 |
 | `clothes_dryer` | `locker` | `true` | 锁定模式（禁用拖拽） |
 | `scene_mode` | `width` | `400px` | 气泡/进度面板宽度 |
@@ -8662,7 +9961,7 @@ dock 条目会自动在按钮右上角显示一个斜三角状态指示器，支
 
 **模式一：`preset_xx` 预设映射（推荐）**
 
-通过 `icon_text: preset_state` 快速根据实体状态显示对应文字：
+通过 `icon_text: preset_xx` 快速根据实体状态显示对应文字。除 `preset_state` 外，还支持 `preset_ac`（空调）、`preset_fan`（风扇）、`preset_humidifier`（加湿器）、`preset_qweather`（和风天气）、`preset_media`（媒体播放器）：
 
 ```yaml
 dock:
@@ -8675,11 +9974,36 @@ dock:
 
 当前支持的 `icon_text` 预设：
 
-| 预设名称 | 状态映射 |
-|---------|---------|
-| `preset_state` | `on` → 开，`off` → 关，`open` → 开，`closed` → 关，`home` → 家，`not_home` → 离 |
+| 预设名称 | 适用实体 | 数据源 | 状态映射 |
+|---------|----------|--------|---------|
+| `preset_state` | 任意 | `state` | `on` → 开，`off` → 关，`open` → 开，`closed` → 关，`home` → 家，`not_home` → 离 |
+| `preset_ac` | `climate.*` | `state`（hvac_mode） | `cool` → 冷，`heat` → 热，`dry` → 湿，`fan_only` → 风，`auto` → 自，`off` → 关 |
+| `preset_qweather` | `weather.*` | `attributes.qweather_icon` | `100` → 晴，`104` → 阴，`308` → 暴雨，`400` → 雪，`502` → 霾 … |
+| `preset_fan` | `fan.*` | `attributes.preset_mode` | `直吹风` → 直，`自然风` → 自，`智能风` → 智，`睡眠风` → 睡，`off` → 关 |
+| `preset_humidifier` | `humidifier.*` | `attributes.mode` | `恒湿` → 恒，`睡眠` → 睡，`强力` → 强，`off` → 关 |
+| `preset_media` | `media_player.*` | `state` | `playing` → 放，`paused` → 停，`idle` → 闲，`standby` → 候，`on` → 开，`off` → 关 |
 
 > 预设文件在 `modules/presets/dynamic-icon-presets.js` 的 `ICON_TEXT_PRESETS` 中注册，可自由扩展。
+
+**`preset_ac` 示例**（空调，匹配 `climate.state`）：
+
+```yaml
+- type: ac
+  entity: climate.ceshi
+  icon_text: preset_ac          # 制冷显示"冷"(蓝)，制热显示"热"(橙)，关闭显示"关"
+```
+
+**`preset_fan` / `preset_humidifier` 示例**（读 attribute；设备关闭时显示"关"）：
+
+```yaml
+- entity: fan.xxx
+  icon_text: preset_fan          # 自然风→自，睡眠风→睡，关闭→关
+
+- entity: humidifier.xxx
+  icon_text: preset_humidifier   # 恒湿→恒，强力→强，关闭→关
+```
+
+> **说明**：`preset_fan` / `preset_humidifier` 的模式名在 attribute（`preset_mode` / `mode`）中，`state` 只有 on/off。设备关闭时（`state == 'off'`）优先显示"关"，避免残留 attribute 导致错误显示。斜三角背景色跟随图标颜色实时变化。
 
 **模式二：Jinja2 模板/自定义文字**
 
@@ -8741,7 +10065,171 @@ dock:
 
 ---
 
+## 二十七、能耗中心卡片（energy_center）
+
+能耗中心卡片是一个三区合一的弹出式卡片，用于展示全屋能耗数据的全景视图：
+
+- **上部分**：今日/本月/今年用电量 + 运行设备数
+- **中部分**：3D 房间能耗地图（Three.js，支持拖拽旋转、点击房间联动）
+- **下部分**：设备用电排行榜（支持日/月/年切换，点击房间过滤）
+
+### 27.1 基础配置
+
+通过按钮的 `tap_action` → `action: popup_card` 弹出：
+
+```yaml
+buttons:
+  - name: 全屋用电量
+    icon: mdi:flash
+    tap_action:
+      action: popup_card
+      popup_position: center
+      width: 400px
+      card:
+        type: energy_center
+```
+
+`api_base_url` 和 `key` 继承自卡片顶层配置，无需在 `card` 中重复填写。
+
+### 27.2 隐藏指定房间
+
+```yaml
+card:
+  type: energy_center
+  hide_room: 儿童房外,次卧外,楼道,客厅外
+```
+
+多个房间名用逗号分隔。隐藏的房间不会出现在 3D 地图、排行榜和统计中。
+
+### 27.3 自定义标题
+
+```yaml
+card:
+  type: energy_center
+  name: 全屋用电量
+```
+
+不配置时默认显示"能耗中心"。
+
+### 27.4 概览弹窗快捷入口
+
+在概览弹窗（overview-control-popup）中，配置 `type: energy` + `utilities.电力.hide_room` 后，点击"用电量"行会自动弹出能耗中心卡片：
+
+```yaml
+overview:
+  - type: energy
+    name: 能耗
+    icon: mdi:transmission-tower
+    utilities:
+      电力:
+        entity: sensor.ele_xxx
+        power: sensor.quanwu_zongglv
+        power_onsumption: sensor.quan_wu_ri_yong_dian_liang
+        hide_room: 儿童房外,次卧外,楼道,客厅外
+        tap_action:
+          card:
+            type: energy_center
+```
+
+### 27.5 交互行为
+
+- **点击房间**：在 3D 地图上点击任意房间，会在点击位置附近弹出气泡，显示该房间的能耗概况（总用电量、运行/设备数、设备能耗排行 Top 8）。
+- **点击空白**：关闭气泡，排行榜恢复为全屋排行。
+- **拖拽/缩放**：单指拖动旋转视角，双指捏合缩放（移动端），滚轮缩放（桌面端）。
+
+### 27.6 数据来源
+
+| 周期 | 数据接口 | 说明 |
+|------|----------|------|
+| 日 | `_loadDeviceUsageDataAllRooms()` | 含运行中设备实时数据，走全局缓存 |
+| 月 | `_loadRankingData('monthly', 'YYYY-MM')` | 月度排行榜聚合数据 |
+| 年 | `_loadRankingData('yearly', 'YYYY')` | 年度排行榜聚合数据 |
+
+日/月/年通过底部选项卡切换，切换时自动重新加载对应周期数据。
+
+### 27.6 交互说明
+
+- **3D 地图拖拽**：鼠标拖拽旋转视角，滚轮缩放
+- **点击房间**：3D 柱体高亮呼吸 + 外发光，底部排行榜过滤为该房间设备
+- **点击空白**：恢复自动旋转，排行榜回到全屋
+- **日/月/年切换**：顶部标签和排行榜数据同步更新
+
+### 27.7 主题适配
+
+- 3D 场景背景色、标签文字颜色、灯光强度自动适配暗色/亮色主题
+
+---
+
+## 二十八、水温卡片（water_temp）
+
+水温卡片是一个可视化温度传感器数据的卡片，以水填充动画的形式直观展示水温：
+
+- 水填充高度 = 当前温度在 `[min_temp, max_temp]` 范围内的百分比
+- 填充颜色从底部蓝色渐变到顶部当前温度对应色（蓝→青→绿→橙→红）
+- 气泡数量随温度升高而增多，在 fill 区域内随机上升
+- 水面有摇晃晃动 + 波面涟漪动画
+
+### 28.1 基础配置
+
+在自由布局弹窗的 `items` 中配置：
+
+```yaml
+items:
+  - type: water_temp
+    entity: sensor.water_temperature
+    name: 热水器水温
+    min_temp: 0
+    max_temp: 80
+    width: 80%
+    height: 90%
+    tap_action:
+      action: more-info
+```
+
+### 28.2 配置项说明
+
+| 配置项 | 必填 | 类型 | 默认值 | 说明 |
+|--------|:----:|------|--------|------|
+| `type` | ✅ | `string` | - | 必须为 `water_temp` |
+| `entity` | ✅ | `string` | - | 水温传感器实体 ID |
+| `name` | ❌ | `string` | 实体 `friendly_name` | 显示名称（当前版本不显示） |
+| `min_temp` | ❌ | `number` | `0` | 温度下限 |
+| `max_temp` | ❌ | `number` | `100` | 温度上限 |
+| `unit` | ❌ | `string` | 实体 `unit_of_measurement` 或 `℃` | 温度单位 |
+| `width` | ❌ | `string` | `100%` | 卡片宽度（支持 px / %） |
+| `height` | ❌ | `string` | `180px` | 卡片高度（支持 px / %） |
+| `tap_action` | ❌ | `object` | - | 点击动作（支持所有标准 tap_action 类型） |
+
+### 28.3 动画说明
+
+| 动画 | 作用 | 参数 |
+|------|------|------|
+| **wt-waterShake** | fill 整体左右摇晃模拟水晃动 | rotate ±0.5°~±0.8°，transform-origin: center bottom |
+| **wt-waveRipple** | 水面波面涟漪效果 | translateY ±2px + scaleX 0.95~1.1 + opacity 变化 |
+| **wt-gas-bubble** | 气泡从底部随机上升到顶部消失 | translateY 0→-120px，opacity 0→1→0，scale 0.8→1.1→0.8 |
+
+### 28.4 完整示例
+
+```yaml
+items:
+  - type: picture
+    row_column: 1,1-2
+    show_button_background: false
+    bg_image: /local/device.png
+    halo_entity: input_boolean.device
+  - type: water_temp
+    entity: sensor.water_temperature
+    min_temp: 0
+    max_temp: 80
+    width: 80%
+    height: 90%
+    tap_action:
+      action: more-info
+```
+- 卡片背景使用 CSS 变量 `--room-popup-bg`，跟随卡片主题
+
+---
+
 ## 二十六、后记
 
 Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 7 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
-
