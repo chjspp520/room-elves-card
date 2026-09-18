@@ -4,7 +4,10 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v5.1.13)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v5.9.0)
+
+
+# Room Elves Card - 房间精灵卡片 完整使用说明
 
 
 
@@ -23,7 +26,7 @@
 - **两种显示模式**：
   - **普通模式**：左侧显示房间名称和传感器数据，右侧显示设备操作按钮，适合单房间展示
   - **头部模式（head）**：所有按钮铺满卡片，顶部可显示概览栏（灯光/空调/插座/耗材/环境/人员/能耗统计），适合放在页面顶部作为全屋控制中心
-- **通用动作系统（tap_action）**：统一的动作引擎覆盖所有可点击位置，支持 `toggle`（自动推断服务切换开关）、`set_value`（智能推断服务设置目标值）、`quick-action`（快捷操作/情景模式）、`more-info`、`navigate`、`call-service`、`popup_card`、`card`（弹出设备内置控制弹窗）等 10 种动作类型，`toggle` 和 `set_value` 还支持多实体批量操作
+- **通用动作系统（tap_action）**：统一的动作引擎覆盖所有可点击位置，支持 `toggle`（自动推断服务切换开关）、`set_value`（智能推断服务设置目标值）、`loop_assign`（循环赋值：每次点击把实体推进到值序列下一个值）、`process_execute`（流程执行：按步骤序列依次执行多实体操作，支持每步独立延时）、`quick-action`（快捷操作/情景模式）、`more-info`、`navigate`、`call-service`、`popup_card`、`card`（弹出设备内置控制弹窗）等 12 种动作类型，`toggle` 和 `set_value` 还支持多实体批量操作
 - **选项卡系统**：弹窗内支持选项卡分组，具备图标、高亮、自动跳转、条件过滤（display_only）、禁用、角标、分组归属（belong）等高级功能，支持按楼层/区域分组展示
 - **程序扩展坞（Dock）**：从屏幕右侧滑入的快捷启动栏，支持头部模式全部按钮类型和动作系统，点击触发按钮展开/收起
 - **独立卡片模式（Standalone）**：将单个设备控制面板直接作为一张卡片使用，支持空调、窗帘、媒体、晾衣架、图表等 20+ 种独立卡片类型
@@ -477,6 +480,19 @@ overview:                           # 概览栏（⚠️ 仅 head 模式可用�
           今日：{{ states('sensor.ac_daily') | float(0) | round(1) }}kWh
   - type: weather                        # 天气概览：显示天气预报
     entity: sensor.he_feng_tian_qi
+  - type: right-col                      # 自定义右列（右侧窄列）：一行一个 content，支持模板 + HTML
+    items:
+      - icon: mdi:thermometer
+        name: 客厅
+        content: >-
+          {{ states('sensor.living_temp') }}℃/{{ states('sensor.living_hum') }}%
+      - icon: mdi:flash
+        name: 今日
+        content: >-
+          {{ states('sensor.today_energy') | float(0) | round(1) }}kWh
+    tap_action:
+      action: navigate
+      navigation_path: /lovelace/energy
 ```
 
 ### 顶层配置项说明
@@ -498,7 +514,7 @@ overview:                           # 概览栏（⚠️ 仅 head 模式可用�
 | `buttons` | ❌ | `array` | `[]` | 按钮配置列表，卡片核心功能区域。支持 20+ 种按钮类型（灯光、空调、插座、耗材、窗帘、晾衣架、情景模式等），每种类型有专属弹窗控制面板（详见第六节） |
 | `person` | ❌ | `array` | `[]` | 人员在传感器配置，卡片左下角显示人体感应小按钮，点击弹出活动弹窗（含实时状态、时间轴、活动统计、平面户型图）（详见第九节） |
 | `automation` | ❌ | `array` | `[]` | 自动化开关列表，卡片底部右侧显示小图标，点击弹出控制面板统一管理所有自动化的启用/禁用（详见第十节） |
-| `overview` | ❌ | `array` | `[]` | ⚠️ **仅 head 模式可用**，非 head 模式下配置无效。全屋设备态势概览栏，显示在卡片顶部，支持环境（温湿度）、人员（在家状态）、能耗（用电/功率/余额）、天气（多城市预报）等类型。灯光/空调/插座/耗材概览在 head 模式下自动统计，无需手动配置（详见第十一节） |
+| `overview` | ❌ | `array` | `[]` | ⚠️ **仅 head 模式可用**，非 head 模式下配置无效。全屋设备态势概览栏，显示在卡片顶部，支持环境（温湿度）、人员（在家状态）、能耗（用电/功率/余额）、天气（多城市预报）、自定义右列（`right-col`）等类型。灯光/空调/插座/耗材概览在 head 模式下自动统计，无需手动配置（详见第十一节） |
 | `notice` | ❌ | `object` | 无 | ⚠️ **仅 head 模式可用**，公告栏配置。显示在概览栏上方，支持模板文本和实体状态两种内容类型，多条内容时支持自动滚动（详见第十一节之公告栏） |
 
 ### 配置组织逻辑
@@ -579,6 +595,7 @@ name: 客厅空调                    # 显示名称（可选）
 | `printer` | 打印机用量统计卡片（墨量/日/月/年用量/累计统计） | `sensor` |
 | `fnnas` | 飞牛 NAS 管理卡片（系统信息/电源/Docker/虚拟机管理） | fn_nas 集成实体 |
 | `entities_health` | 实体健康状态卡片（按房间/按状态展示全屋实体在线离线情况） | `sensor` |
+| `daily_report` | 今日家庭日报卡片（summary 日报/状态横幅/关键指标） | `sensor` |
 | `sensor` | 传感器卡片（数值显示） | `sensor` |
 | `switch` | 开关卡片 | `switch` / `input_boolean` |
 | `select` | 选择下拉卡片 | `select` / `input_select` |
@@ -983,6 +1000,79 @@ buttons:
 ```
 
 > **角标说明：** 单台空调（使用 `entity` 字段）不显示角标；多台空调（使用 `card` 数组）时按钮上显示已开启的数量。
+
+**多空调组顶部信息栏 + 用电合计日历（v5.3.3）：**
+
+多台空调（`card` 数组）的弹出窗口**顶部**会显示一条**一句话信息栏**（整行可点击），形如：
+
+```
+2台运行中 · 总功率 850w · 今日 3.2kWh · 5.1h
+```
+
+- **运行台数**：当前开启的空调数量；**0 台时显示「没有正在运行的」**
+- **总功率**：Σ 各台 `power_display_entity` 当前值 —— **< 1000W 显示 `xxw`（取整），≥ 1kW 显示 `x.xkW`**
+- **今日**：当日各台用电量合计（`x.xkWh`）· 当日运行时长合计（`x.xh`，含正在运行空调的实时时长）
+
+> **显示值为 0 的项一律不显示**：`今日 0.0kWh` / `0.0h` 这类没有信息量的片段会整段消失，例如全天没开机时信息栏就是 `没有正在运行的 · 总功率 15w`。
+
+信息栏**背景色随第一台开启空调的模式**变化（全部关闭时用默认浅色背景）。未配置 `power_display_entity` 时隐藏「总功率」；未配置 `power_entity` 时「今日」段里只显示时长。
+
+点击信息栏弹出的**合计日历**有两种形态，**默认就是「使用量日历卡片（多实体）」**，不需要配置：
+
+| 形态 | 何时使用 | 说明 |
+|------|----------|------|
+| **使用量日历卡片（多实体）**（默认） | 不配置 | 直接内嵌 [6.35 使用量日历卡片](#635-使用量日历卡片-type-usage_calendar) 的**多实体聚合**形态：日历 / 历史 / 年 / 月 / 日 / 洞察**六个选项卡**、时段全景图与下钻、日历格子「N 台」角标、分设备甘特图等全部复用 |
+| 原内置合计日历 | `ac_calendar_card: old` | 本卡片自己实现的单页合计日历（月网格 + 年/月/历史），见下方小节 |
+
+**默认形态的内部自动配置**（不用手写 `api` / `entities`）：
+
+| 项 | 来源 |
+|------|------|
+| `api.entities` | 空调组内每台空调的 `entity`（后端记录的就是这批实体），名字沿用各台的 `name` |
+| `api_base_url` / `api.key` | 空调组节点 → 组内空调 → 卡片顶层配置，逐级回退 |
+| `title` | 「组名 + 用电量日历」，如「全屋空调用电量日历」 |
+| 展示项 | `width: 100%`、`show_popup: true`、`calc_value_choose: value`（第二个数值显示**时长**）、`data_value_color: #00a381`、`calc_value_color: #c85179`、`units: °,h`、`series: 用量,时长`、`decimals: 1,2` |
+
+```yaml
+buttons:
+  - type: ac
+    name: 全屋空调
+    # ac_calendar_card: old          # ← 只有想用回原内置合计日历才加这一行
+    card:
+      - entity: climate.keting_ac_keting_ac
+        name: 客厅空调
+      - entity: climate.zhuwo_xxx
+        name: 主卧空调
+```
+
+**`ac_calendar_card` 取值：**
+
+| 取值 | 形态 |
+|------|------|
+| 不配（默认）/ `usage` / `usage_calendar` | 使用量日历卡片（多实体） |
+| `old` / `builtin` / `legacy` | 原内置合计日历 |
+
+也可以写**对象形式**微调使用量日历卡片（不写 `type` 即为该形态），除 `type` 外的键会透传给卡片配置：
+
+```yaml
+    # 宽度 620px 的弹窗 + 200 度月度预算 + 单位换成 kWh
+    ac_calendar_card: { width: 620px, monthly_budget: 200, units: "kWh,元" }
+    # 对象形式要用原内置合计日历
+    ac_calendar_card: { type: old }
+```
+
+> 位置优先级：空调组节点 → 组内第一台空调 → 卡片顶层配置（与 `api_base_url` 同口径）。
+> 对象形式的 `width` 决定**弹窗宽度**；不写时默认**沿用空调组的 `width`**（未配置时退回 `min(560px, 92vw)`）。
+
+**原内置合计日历（`ac_calendar_card: old`）：**
+
+- **宽度**遵循空调组 `width` 配置，高度 420px
+- 含**月视图网格 + 年 / 月 / 历史**图表 tab，数据为多台空调**按天/按年累加合计**
+- 日历网格固定同时显示**用电量 + 时长**；未配置 `power_entity` 时只显示时长
+- **当日**正在运行的空调会通过 `device_history` 补充实时运行时长/用电量并累加
+- 点击日历单元格弹出气泡：**左栏信息**（开机次数/运行台数/总用电/总时长/用电最多）+ **右栏饼图**（轮换显示用电量/时长，自动轮换 + 点击切换）+ **下方分设备明细**（仅当天有数据的空调，带色点标注）
+
+> 💡 未配置 `power_entity`（用电量实体）时，原内置合计日历的信息栏、日历、饼图、年/月/历史图表中所有涉及用电量的部分都会自动隐藏，仅保留时长维度。
 
 **配置字段说明：**
 
@@ -5017,24 +5107,79 @@ buttons:
 | `energy_center_hide_room` | `string` | `""` | 3D 视图中隐藏指定房间，逗号分隔，如 `"儿童房外,次卧外,楼道"` |
 | `energy_center_hide` | `string` | `""` | 隐藏 3D 视图中的指定元素，当前支持 `"3D"`（隐藏 3D 地图选项卡） |
 
+#### 设备回放入口（show_device_replay）
+
+设备用电详情弹窗支持在顶部「房间/全屋」切换胶囊内新增一个**「回放」按钮**，点击后弹出 `device-replay-card` 设备回放卡片。通过复用 Store 配置共享机制（`config_id` / `from_config_id`），**无需在弹窗内重复配置回放卡片**，只需指定一个已注册的回放配置 `config_id` 即可。
+
+**配置方式：**
+
+在 `device_usage` 卡片的 `card_config` 中配置 `show_device_replay`，值为**已注册到 Store 的回放配置 config_id**：
+
+```yaml
+buttons_2:
+  - type: card
+    row_column: 1,1-1
+    card_config:
+      type: device_usage
+      show_device_replay: huifang     # 值为 Store 中已注册的回放配置 config_id
+      layout: mini
+      top_count: 4
+```
+
+**前提**：`huifang` 这个 `config_id` 必须在主卡配置中通过 `tap_action` 注册了完整的 `custom:device-replay-card` 配置节点：
+
+```yaml
+buttons:
+  - name: 回放
+    icon: mdi:video
+    tap_action:
+      action: popup_card
+      config_id: huifang              # 注册到 Store
+      card:
+        type: custom:device-replay-card
+        api_base_url: /api/ha_data_store/
+        key: 你的密钥
+        check_entity: light.keting_dadeng
+        background_image: /local/house/3d_ui2/关灯.png
+        entities:
+          - entity: light.cuco_cn_696791082_v3_s_13
+            name: 客厅-投影仪
+            room: 客厅
+            image_url: /local/house/3d_ui2/投影仪on.png
+            x: 130
+            y: 210
+            on_state: 'on'
+        # ... 其他回放配置
+```
+
+**说明：**
+
+- `show_device_replay` 为**字符串**类型，值即为要引用的 Store `config_id`（不兼容 `true`/`false` 布尔值）
+- 配置后，device-usage 弹窗标题栏的「房间/全屋」切换胶囊内会显示**「回放」文字按钮**（样式与 `du-scope-btn` 一致）
+- 点击「回放」→ `RoomElvesStore.get(config_id)` 从 Store 取回放配置 → 弹出 `device-replay-card`
+- 若指定的 `config_id` 未在 Store 中注册，控制台输出警告且不弹窗
+- 回放配置复用 Store 机制，**改一处（注册节点）多处生效**，`device-replay-card.js` 无需改动
+
 ---
 
 ### 6.35 使用量日历卡片 (type: usage_calendar)
 
 使用量日历卡片用于展示任意实体的用量/能耗/时长数据，支持日历视图和年/月/日 ECharts 图表视图。数据来源既可以是 [HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store/releases)（ha_data_store）API，也可以是实体属性。
 
-**四个选项卡视图：**
+**六个选项卡视图：**
 
 | 选项卡 | 说明 |
 |------|------|
 | 日历 | 月历网格，每个单元格显示当日用量和时长，点击有数据的日期弹出详情 |
+| 历史 | 两张对比图：「历史本月」与「历史今日」 |
 | 年 | 年度柱状图（ECharts），显示所有可用年份的用量/能耗对比 |
 | 月 | 月度柱状图（ECharts），显示选定年份 12 个月的用量/能耗对比 |
 | 日 | 日度柱状图（ECharts），显示选定月份每日的用量/能耗对比 |
+| 洞察 | 跨年 / 全局视角（v5.7.3 新增），顶部筛选按钮切换四个子视图：**总计 / 热力图 / 动态排名 / 时段全景图**；其中时段全景图（v5.7.1 新增）支持点击柱体下钻到「该小时有使用的日期」 |
 
 **数据源配置：**
 
-支持两种数据源，优先使用 API，未配置 API 时使用实体属性。
+支持三种数据源：API 单实体、API **多实体聚合**、实体属性。优先使用 API，未配置 API 时使用实体属性。
 
 **方式一：API 数据源（推荐）**
 
@@ -5060,6 +5205,34 @@ buttons:
       duration_attr: gas_duration_seconds  # 时长属性名（秒），默认 gas_duration_seconds
       date_attr: date                      # 日期属性名，默认 date
 ```
+
+**方式三：多实体聚合（多个实体合计）**
+
+配置 `api.entities`（实体数组）即进入**多实体聚合**模式：由后端把这一组实体合并成合计返回，卡片按**合计**展示全部选项卡。
+
+```yaml
+  - type: usage_calendar
+    title: 全屋空调用电量日历
+    api:
+      entities:
+        - climate.keting_ac_keting_ac          # 简写：只给实体 ID
+        - entity: climate.zhuwo_xxx
+          name: 主卧空调                        # 可选：图表/图例/日历角标显示的名字
+          color: "#4C9AFF"                      # 可选：柱状图堆叠颜色（不写自动分配）
+        - { entity: climate.ertongfang_xxx, name: 儿童房空调 }
+```
+
+多实体模式下的差异：
+
+| 能力 | 说明 |
+|------|------|
+| 数据 | 走 `device_usage_multi` / `device_usage_detail` / `entities_hours_agg` 等**多实体接口**，各选项卡展示的都是这一组实体的**合计** |
+| 标题 | 自动追加「（N 个设备合计）」后缀 |
+| 柱状图 | **按设备堆叠**：每台设备一段，颜色取配置的 `color`（未配置时按 8 色调色板自动分配） |
+| 日历角标 | 单元格左上角标注**当天有几台设备有数据**（形如 `2台`）。它与用量数值**互相独立** —— 某设备当天只瞬间开关过、用量四舍五入为 0 时数值不显示，但「当天有几台设备动过」仍然显示 |
+| 时段全景图下钻 | 点击柱子所在的**那一段**即下钻到**该设备**：右侧列出「该设备在这一个小时有使用的日期」（标题带设备名），点日期看明细 |
+| 每日明细 | 单日明细为**分设备甘特图**，逐台展开每段开关记录 |
+| 图表图例 | 洞察/年/月/日等图表自动带**设备图例**，可点选隐藏某台设备 |
 
 **基础配置：**
 
@@ -5151,7 +5324,16 @@ buttons:
 **选项卡导航说明：**
 
 - **日历选项卡**：底部显示 `◀ 年份 ▶` `◀ 月份 ▶ 本月` 导航条，支持快速切换年月；底部显示本月/本年用量和时长汇总
-- **年选项卡**：直接显示年度柱状图，无导航栏
+- **年选项卡**（v5.7.0 起为跨年对比分析）：顶部筛选按钮切换子视图，无年份导航栏
+  - **总计**：全部年份合计指标卡（累计总用量 / 总时长 / 累计操作次数，三卡单行）+ 逐年对比表（年份 | 用电量 | 总时长，用电量带占比进度条，最新年份带「最新」徽标）
+  - **年度**：年度柱状图，显示所有可用年份的用量对比（默认子视图）
+  - **热力图**：日用电热力图，横向 12 个月、纵向日期，颜色深浅表示单日用量；标题右侧可切**用量 / 时长**两种口径（切时长后标题变「日时长热力图」，tooltip 单位变 h，零额外请求）
+  - **动态排名**：各年累计**用量 / 时长**（按钮可切）bar-racing 动画，支持按日/按月累积、播放/暂停与调速、时间轴拖拽回放（切换主选项卡时自动停止播放）
+  - **时段全景图**（v5.7.1 新增）：24 小时用电时段极坐标柱状图（ECharts），偶数小时显示刻度、柱高表示数值、透明度随数值渐变
+    - 顶部可切换 **用电量 / 时长 / 次数** 指标，并实时显示峰值时段；hover 柱体查看该小时用电量/时长/次数
+    - **点击柱体**：图表缩窄左移，右侧展开该小时「使用日期」面板（按月分组胶囊，点击日期胶囊可查看明细）
+    - **点击日期胶囊**：弹出该日使用明细气泡（径向模糊遮罩、三角箭头指向点击处）——顶部显示该日总时长/总用电/时段数，逐条列出开始→结束、时长与用电量；正在运行段（`on_time` 非空且 `off_time` 为空）按「当前时间 − on_time」实时计算时长、按「now_kwh − on_power」计算用电，并以「● 运行中」高亮
+    - 再次点击同一日期胶囊收起气泡；切换指标/小时/收起详情时气泡自动关闭
 - **月选项卡**：显示年度按钮 + 月度柱状图，无导航栏
 - **日选项卡**：显示 `◀ 年份 ▶` `◀ 月份 ▶ 本月` 导航条，支持快速切换年月
 - **详情弹窗**：点击日历中有数据的日期，弹出该日的详细事件记录（设备开关机时段、时长、用量），弹窗宽度自动使用卡片配置的 `width`
@@ -5180,7 +5362,21 @@ buttons:
 | `decimals` | string | `2,2` | 用量小数位,时长/费用小数位 |
 | `series` | string | `用量,费用` | 柱状图系列名,曲线图系列名 |
 | `calc_value_choose` | string | 智能推断 | `calculate`（费用）或 `value`（时长）|
-| `calculate` | number | `1.0` | 费用换算系数 |
+| `calculate` | number | `1.0` | 换算系数（`calc_value_choose: calculate` 时生效；也可填实体 ID 实时取价）|
+
+**多实体与其它可选配置项：**
+
+| 参数 | 类型 | 默认值 | 说明 |
+|------|------|--------|------|
+| `api.entities` | array | — | **多实体聚合**：实体 ID 列表，元素可为字符串或 `{ entity, name, color }`（见「方式三」）|
+| `card_width` | string | `100%` | 卡片宽度（与 `width` 同义，两者取先生效的一个）|
+| `card_background_color` | color | 主题卡片底色 | 卡片背景色 |
+| `calendarbox` | css | `1px solid var(--uc-grid-line, rgba(128,128,128,0.32))` | 日历格子边框（默认跟随 `--uc-grid-line` 变量，覆盖它即可统一改线色） |
+| `daybackground` | color | `rgba(104,202,150,0.05)` | 日历格子底色 |
+| `running_animation` | boolean | `true` | 「运行中」格子的流光动画；`false` 关闭以降低 CPU 占用 |
+| `monthly_budget` | number | — | 月度预算（单位同 `units` 第一项），配置后在日历下方显示预算进度条 |
+
+> **从空调组弹窗自动配置**：多空调组的合计日历**默认就是本卡片的多实体形态**，`api.entities` / `api_base_url` / `key` / 标题与展示项全部由卡片内部生成，无需手写 —— 见 [6.3 空调](#63-空调-type-ac) 的「合计日历」小节。
 
 ---
 
@@ -5601,6 +5797,95 @@ buttons:
 
 > **依赖说明**：实体健康卡片数据来源于实体健康监控实体（`sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health`），需由统一存储系统生成该实体（`attributes.total/online/offline/entities[]`）。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
 
+### 6.40 今日家庭日报卡片 (type: daily_report)
+
+今日家庭日报卡片用于展示后端统一存储系统聚合的「今日家庭状态日报」。数据来源为 `sensor` 实体（默认 `sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card`），读取 `state`/`summary`/`overall`/`alerts`/`sections`/`lights`/`offline`/`generated_at` 等属性。
+
+点击按钮弹出日报弹窗，支持通过 `popup_card` 或 `card` 动作打开。
+
+```yaml
+  - entity: input_boolean.jin_ri_jia_ting
+    type: sensor
+    name: 今日日报
+    icon_text: preset_state
+    on_icon: mdi:clipboard-text-clock-outline
+    off_icon: mdi:clipboard-text-clock-outline
+    tap_action:
+      action: popup_card                 # 或 action: card（走独立弹窗）
+      popup_position: center
+      card:
+        type: daily_report
+        entity: sensor.hashu_ju_tong_yi_cun_chu_xi_tong_today_family_status  # 可选，默认日报实体
+        refresh: button.hashu_ju_tong_yi_cun_chu_xi_tong_generate_today_family_status  # 可选，刷新按钮实体
+        hide_room: 次卧外,儿童房外,楼道,客厅外   # 可选，今日用电弹出的能耗中心使用
+        env_from_config_id: env          # 可选，温度/湿度点击弹出的温湿度卡 config_id
+        width: 400px
+        name: 今日家庭日报
+```
+
+#### 配置字段
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `entity` | 否 | `string` | 日报数据实体 ID，默认 `sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card` |
+| `refresh` | 否 | `string` | 刷新按钮实体 ID（`button.*`）。配置后头部显示「刷新」按钮，点击按压该按钮触发后端重新生成，等待 5 秒后刷新弹窗数据；未配置时回退调用 `ha_data_store.generate_daily_summary` 服务 |
+| `hide_room` | 否 | `string` | 逗号分隔的房间名，点击「今日用电」弹出的能耗中心（energy_center）使用 |
+| `env_from_config_id` | 否 | `string` | 点击「温度/湿度」时，从全局配置存储器 `RoomElvesStore` 读取该 `config_id` 的温湿度卡片并弹出；宽度取被引用卡自身的 `card_width`/`width` |
+| `width` | 否 | `string` | 日报弹窗宽度，默认 `400px` |
+| `name` | 否 | `string` | 弹窗标题（默认 `今日家庭日报`） |
+| `show_refresh` | 否 | `boolean` | 是否显示刷新按钮，默认 `true`；`false` 时 warning 状态仍显示原「提醒」徽章 |
+
+#### 卡片布局
+
+```
+┌────────────────────────────────────┐
+│ 图标  今日家庭日报  更新于16:00 [刷新]│  ← 头部（徽章，warning 时为刷新按钮）
+├────────────────────────────────────┤
+│ ⚪ 家中有人（大卫生间）、开着1盏灯…    │  ← 状态横幅（按 overall 着色）
+├────────────────────────────────────┤
+│ 今日概览                            │  ← summary 长文本（按语义分组换行）
+│ 今日家庭状态：气温…湿度73.2%；       │
+│ 家中有人…开着1盏灯…；               │
+│ 今日共16台设备启用…；               │
+│ 用电最多…；开关最频繁…；            │
+│ 今日用电…；小爱对话…离线设备8台；    │
+├────────────────────────────────────┤
+│ 提醒                               │  ← 警告列表（有 alerts 才显示）
+│ ⚠ 今日最高温 39.7°C 偏高           │
+├────────────────────────────────────┤
+│ 关键指标                            │  ← 6格指标网格
+│ [◎温度] [◎湿度] [◎今日用电]       │
+│ [◎设备] [◎灯光] [◎离线设备]       │
+└────────────────────────────────────┘
+```
+
+#### 指标项点击行为
+
+| 指标项 | 点击行为 |
+|--------|----------|
+| 温度 / 湿度 | 读取 `env_from_config_id` 对应的温湿度卡配置（`RoomElvesStore.get(id).card`）弹出；宽度取被引用卡自身的 `card_width`/`width` |
+| 今日用电 | 弹出 `energy_center`（写死 `name: 全屋用电量`），`hide_room` 取日报顶层 `hide_room`，宽度复用日报 `width` |
+| 灯光 | 弹出与概览条灯光段一致的 `light-control-popup theme-light`（聚合已打开灯光） |
+| 离线设备 | 复用 notice 中已配置的 `entities_health` 卡片配置弹出（含 `entity`/`hide_room`/`unique_priority`） |
+
+#### summary 语义分组
+
+summary 长文本按全角分号 `；` 切成项，依据每项开头的语义锚点归入对应行（行内保留分号）：
+
+| 行 | 锚点 |
+|----|------|
+| 0 | `今日家庭状态`（温度/湿度） |
+| 1 | `家中有人`/`全屋无人`、`入户门`、`开着`/`关着` |
+| 2 | `今日共`、`总运行`、`其中` |
+| 3 | `用电最多` |
+| 4 | `开关最频繁` |
+| 5 | `今日用电` |
+| 6 | `小爱对话`、`离线设备` |
+
+锚点缺失时该项自动合并到前一行，保证 summary 顺序/措辞微调时不错行。
+
+> **依赖说明**：日报卡片数据来源于后端统一存储系统生成的「今日家庭状态」实体（`state`/`attributes.summary` 等）。若配置了 `refresh` 按钮实体，后端需注册该 `button.*` 实体用于触发重新生成。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
+
 ---
 
 ## 七、通用动作系统（tap_action）
@@ -5613,6 +5898,8 @@ buttons:
 |--------|------|:----------:|----------|
 | `toggle` | 切换开关状态（on↔off），自动推断服务 | ✅ | `entity` 或 `entities` |
 | `set_value` | 设置实体目标值，自动推断服务（最灵活） | ✅ | `entity` 或 `entities` + `value` |
+| `loop_assign` | 循环赋值：每次点击把实体推进到 `values` 序列下一个值，到末尾回绕 | ✅ | `entity`/`loop` + `values` |
+| `process_execute` | 流程执行：按 `steps` 序列依次执行多实体操作，每步独立延时，复用情景推断引擎 | ❌ | `steps` |
 | `quick-action` | 快捷操作，弹出情景模式气泡执行多步骤操作 | — | `scenes` 或 `actions` |
 | `more-info` | 弹出 HA 标准详细信息弹窗 | ❌ | `entity` |
 | `navigate` | 页面导航 | ❌ | `navigation_path` |
@@ -5857,6 +6144,87 @@ tap_action:
 | 其他域 | 其他 | `homeassistant.turn_on` | 通用回退 |
 
 > 此对照表与 6.17 节情景模式的推断逻辑完全一致，因为底层共享同一个 `_inferSceneService` 引擎。
+
+### loop_assign — 循环赋值（每次点击轮换到下一个值）
+
+每次点击把实体推进到 `values` 序列中的**下一个值**，到达末尾后回绕到第一个。典型场景是下拉型实体（`input_select` / `select`）逐级循环切换，一个按钮即可按预设顺序轮换选项。
+
+**定位方式**：读取实体当前状态，在 `values` 中找索引并赋下一个值；若当前值不在序列中，则从序列第一个开始。赋值底层复用情景模式的服务推断引擎（支持 `select_option` / `set_value` 等，详见上方 `set_value` 对照表）。
+
+**防抖**：卡片会过滤连续点击，两次点击间隔小于 `interval`（默认 `500` ms）的点击被忽略，确保每次点击都能读到 HA 更新后的最新状态，避免快速连点跳值/漏值。
+
+```yaml
+# 单实体：每次点击依次切换 input_select.模式 为 自动 → 睡眠 → 强风 → 自动…
+tap_action:
+  action: loop_assign
+  entity: input_select.模式
+  values: ['自动', '睡眠', '强风']
+  interval: 800            # 可选，连续点击最小间隔(ms)，默认 500
+
+# 多实体：各自独立轮换（loop 数组）
+tap_action:
+  action: loop_assign
+  loop:
+    - entity: input_select.模式
+      values: ['自动', '睡眠', '强风']
+    - entity: input_select.风速
+      values: ['低', '中', '高']
+      interval: 1000
+```
+
+| 参数 | 必填 | 类型 | 说明 |
+|------|------|------|------|
+| `entity` | 单实体时必填 | `string` | 要轮换的实体 ID（与 `loop` 二选一） |
+| `values` | ✅ | `string[]` | 轮换的目标值序列，按点击顺序依次赋值，末尾回绕 |
+| `loop` | 多实体时必填 | `array` | 多实体数组，每项含 `entity` / `values` / 可选 `interval` / `service_data`（与 `entity`+`values` 二选一） |
+| `interval` | ❌ | `number` | 连续点击最小间隔（ms），默认 `500` |
+| `service_data` | ❌ | `object` | 透传给服务调用的附加参数（如 `_service` 强制指定服务） |
+
+> `loop_assign` 的 `entity` / `values` 可直接改用 `service_data` 透传 `_service` 强制指定赋值服务；单实体简写 `entity`+`values` 与多实体 `loop` 数组均可。
+
+### process_execute — 流程执行（按步骤序列依次执行）
+
+按 `steps` 配置的步骤序列**依次**执行多个实体操作，每个步骤可独立设置 `delay` 延时。多实体类型通过情景模式的**推断引擎**（`_inferSceneService`）自动识别服务（`light`/`switch`/`climate`/`cover`/`fan`/`media_player`/`button`/`input_select`/`select`/`input_number`/`automation`/`vacuum`/`script`/`lock` 等 15+ 类型），适合"离家模式""回家模式"等按顺序开关多设备的场景。
+
+**执行反馈**：执行时弹出进度气泡面板，逐步骤显示 等待 → 延时倒计时 → 执行中 → 已发送 → 状态验证成功/失败，复用情景模式的进度面板机制。
+
+```yaml
+tap_action:
+  action: process_execute
+  name: 离家模式
+  width: 400px                  # 可选，进度气泡宽度
+  verify_timeout: 10            # 可选，状态验证超时（秒），默认 10
+  steps:
+    - entity: light.kegting
+      value: off
+    - entity: switch.suoyou
+      value: on
+      delay: 3                  # 可选，本步骤执行前延时 N 秒
+    - entity: cover.chuanglian
+      value: closed
+```
+
+| 参数 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `steps` | ✅ | `array` | 步骤数组，每项为一步操作，结构与情景 action 一致 |
+| `name` | ❌ | `string` | 流程名称，默认「流程执行」，显示在进度面板标题 |
+| `width` | ❌ | `string` | 进度气泡宽度，默认 `400` |
+| `verify_timeout` | ❌ | `number` | 状态验证超时（秒），默认 `10` |
+
+**每个 step 支持的字段**（与情景模式 `actions[]` 一致）：
+
+| 参数 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `entity` | 单实体时必填 | `string` | 目标实体 ID |
+| `entities` | 批量时可选 | `object/array` | 多实体对象（`{ 别名: entity_id }`）或数组，自动展开为多步 |
+| `value` | ❌ | `string` | 目标值，由推断引擎按实体域映射到对应服务（`off`→`turn_off`、`closed`→`close_cover`、数值→温度/位置等） |
+| `delay` | ❌ | `number` | 本步骤执行前的延时（秒），进度面板显示「延时 Ns」 |
+| `service_data` | ❌ | `object` | 透传给服务调用的附加参数（如空调温度/风扇挡位）；含 `_service` 时强制指定服务 |
+| `confirm_entity` | ❌ | `string` | 确认实体 ID，执行后轮询此实体验证 |
+| `confirm_value` | ❌ | `string` | 确认实体期望值，支持比较运算符前缀 |
+| `confirm_time` | ❌ | `number` | 执行后等待 N 秒再开始验证 |
+
+> `process_execute` 复用情景模式的 `_expandSceneActions` / `_buildSceneProgressPanel` / `_executeSceneActions` 执行链，与 `scene_mode` 的 `actions` 在实体类型、推断服务、状态验证、延时上行为完全一致；区别是 `process_execute` 为**独立入口**（跳过按钮旋转动画、不写入执行历史）。
 
 ### more-info — 详细信息弹窗
 
@@ -6805,6 +7173,62 @@ tap_action:
 
 ---
 
+### 8.14 标题栏「使用量」入口（calendar_card）
+
+自由布局弹窗（`show_free_layout_popup`）在**选项卡模式**下，标题栏右侧会多一个「使用量」按钮 —— 点它直接用**本布局各选项卡的 `entity`** 打开一张「使用量日历」（多实体形态）：
+
+```
+┌───────────────────────────────────────────┐
+│ 厨具                          [使用量]     │  ← 点这个按钮
+├───────────────────────────────────────────┤
+│ [电饭锅] [空气炸锅] [微波炉] …             │
+```
+
+- **实体从哪来**：`tabs[].entity` 自动汇总（同一实体在多个选项卡里重复时只取第一个，名称取该选项卡的 `name`）；没有 `entity` 的选项卡不参与；
+- **什么时候出现**：选项卡模式 + 至少一个 tab 配了 `entity` + 未显式关闭入口（未配置 `api_base_url` / `key` 时按钮仍在，点开会在弹窗里说明原因）；
+- **点开得到什么**：完整的使用量日历卡片（日历 / 历史 / 年 / 月 / 日 / 洞察 六个选项卡），与手动配一张 `api.entities` 多实体卡片等价 —— 内部自动带上 `api.entities` / `api_base_url` / `key`（后者取卡片顶层配置），无需手写；
+- **内置口径**：用电量单位 **`°`**，第二个系列取**时长（`h`）**（即 `units: '°,h'`、`series: '用量,时长'`、`calc_value_choose: value`，与空调组合计日历一致），配色 `#00a381` / `#c85179`、小数 `1,2`；
+- **弹窗宽度**：`calendar_card.width` > **外层弹窗的 `width`（即 `tap_action.service_data.width`）** > `min(560px, 92vw)`；
+- **生命周期**：点开时创建一个「孪生实例」（不影响页面上已有的使用量日历卡片），**关闭弹窗即销毁**（停轮询、断观察器、释放图表）。
+
+想微调卡片参数（配色 / 单位 / 标题 / 弹窗宽度等），在 `service_data` 里加 `calendar_card`：
+
+```yaml
+tap_action:
+  action: call-service
+  service: modern_room_card.show_free_layout_popup
+  service_data:
+    title: 厨具
+    width: 430px
+    display_only: ['on', 'Delay', 'Keep Warm', 'Busy', 'off', 'Idle']
+    auto_redirect: true
+    calendar_card:                       # ← 不写就用内置默认（单位 ° + 时长 h）
+      title: 厨房设备用电量日历
+      width: 620px                       # 弹窗宽度；不写则沿用上面的 width: 430px
+      # 想换成"用电量 + 费用"口径（需要电价）：
+      calc_value_choose: calculate
+      calculate: 0.55                    # 元 / kWh
+      units: '°,元'
+      series: '用量,费用'
+    tabs:
+      - name: 电饭锅
+        entity: sensor.chunmi_cn_404489380_eh1_status_p_2_1
+        rows: [...]
+      - name: 空气炸锅
+        entity: switch.kongqizhaguo
+        rows: [...]
+```
+
+| `calendar_card` 取值 | 效果 |
+|---|---|
+| 不配置 | 显示入口；卡片用内置默认（标题 = `${title}用电量日历`，单位与配色跟随 `usage_calendar` 默认） |
+| 对象 `{…}` | 显示入口；对象里的字段**最后合并**进卡片配置（优先级最高，可覆盖任意 `usage_calendar` 配置项；其中 `width` 只用于弹窗宽度，不会传给卡片） |
+| `false` | **不显示**该入口 |
+
+> 与空调组合计日历（`ac_calendar_card: usage`）是同一套机制：实体列表由调用方自动汇总、卡片内部自动补 `api` 配置 —— 区别只是这里的实体来自 `tabs[].entity`。
+
+---
+
 ## 九、人员/人在传感器（Person）
 
 在卡片左下角显示一个人体感应小按钮，点击弹出完整的人员活动弹窗，包含：
@@ -7055,6 +7479,40 @@ overview:
 
 > **提示**：`level` 适用于 `entity` 模式和 `content` 自由配置模式，两种模式均可建立层级关系。实体模式和自由配置模式可以混合在同一层级树中。
 
+#### 11.7.2 能耗折叠（`fold`）
+
+从 **v5.3.1** 起，概览弹窗「全屋能耗」卡片标题栏右端新增**折叠/展开按钮**，通过 `energy` 配置项的 `fold` 字段控制是否显示。用于收起能耗明细（燃气灶、热水器、空调、服务器等二级子项），仅保留顶层大标题。
+
+```yaml
+overview:
+  - type: energy
+    name: 能耗
+    fold: true                      # true=显示折叠按钮并初始折叠 level>1 子项；false/不配置=全部展开
+    icon: mdi:gas-burner
+    utilities:
+      天然气:
+        entity: sensor.gas_xxx
+      燃气灶:
+        icon: mdi:water-boiler
+        level: 2
+        content: >-
+          今日：{{ states('sensor.xxx') | float(0) | round(2) }}m³
+      电力:
+        entity: sensor.ele_xxx
+      # ... 其他子项
+```
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `fold` | ❌ | `boolean` | `true` 显示折叠按钮并初始折叠所有 `level > 1` 的子项（仅显示顶层大标题）；`false`/不配置 全部展开 |
+
+**规则说明：**
+- 配置了 `fold`（无论 `true`/`false`）→ 显示折叠按钮；未配置 → 不显示按钮（现行模式）
+- 折叠规则按**层级**：`fold: true` 折叠所有 `level > 1` 的行，保留 level 1 顶层（天然气、电力等）
+- **交互**：点击标题栏**任意位置**（标题文字/图标）或右侧折叠按钮均可折叠/展开；图标在 `mdi:chevron-down`（折叠）与 `mdi:chevron-up`（展开）间切换
+- 初始状态按配置：`fold: true` 打开弹窗即默认折叠；关闭弹窗后重置，重开时按配置重新初始化
+- 余额行（`balance-row`）不参与折叠，始终显示
+
 ### 11.8 天气概览（需配置）
 
 在概览弹窗的微气候卡片中显示天气预报项，点击可展开完整的天气气泡（含今日详情、7日预报等）。
@@ -7197,6 +7655,62 @@ overview:
 
 条件支持数值比较（如 `'<10'`、`'>=20'`），也支持字符串匹配（如 `'on'`、`'home'`）。多个条件为"或"关系。
 
+### 11.9.1 实体健康概览（可选配置）
+
+从 **v5.3.1** 起，概览弹窗（`overview-control-popup`）的**设备概览**区域新增一张**实体健康状态**小卡片，展示全屋实体在线/离线/未知概况，点击弹出 `entities_health` 实体健康状态弹窗（按房间 / 按状态两个选项卡）。
+
+**数据来源**：后端 `ha_data_store` 实体上报传感器（默认 `sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health`），读取 `total`/`online`/`unknown`/`offline` 属性。
+
+**小卡片展示**：主值显示离线数、`/总数`，详情 `在线 x · 未知 y · 离线 z`，图标 `mdi:heart-pulse`，存在离线时高亮。
+
+可选配置（在 `overview` 数组中增加 `type: entities_health` 配置项，用于自定义数据源、外观、过滤房间及显示开关）：
+
+```yaml
+overview:
+  - type: entities_health
+    entity: sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health  # 数据源（可选，默认上述实体）
+    hide_room: 次卧外,儿童房外,楼道,客厅外    # 弹窗户型图过滤的房间（逗号分隔）
+    name: 实体健康                           # 小卡片标题（默认「实体健康」）
+    icon: mdi:heart-pulse                    # 小卡片图标
+    width: 600px                             # 弹窗宽度
+    show_card: true                          # false 时隐藏该小卡片
+```
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `type` | ✅ | `string` | 固定为 `entities_health` |
+| `entity` | ❌ | `string` | 数据源传感器，覆盖默认实体 |
+| `hide_room` | ❌ | `string` | 逗号分隔房间名，弹窗户型图过滤掉这些房间（传给 `showEntitiesHealthPopup`） |
+| `name` | ❌ | `string` | 小卡片标题，默认「实体健康」 |
+| `icon` | ❌ | `string` | 小卡片图标，默认 `mdi:heart-pulse` |
+| `width` | ❌ | `string` | 弹窗宽度 |
+| `show_card` | ❌ | `boolean` | `false` 时隐藏该小卡片 |
+
+**行为**：
+- 配置了 `type: entities_health` → 用配置的 `entity` 读取数据渲染小卡片，可用 `name`/`icon` 自定义外观，`show_card: false` 隐藏；点击弹窗时把完整配置（含 `entity`/`hide_room`/`width`）传给 `showEntitiesHealthPopup`
+- 未配置 → 保持默认（用默认 sensor，`total > 0` 时显示）
+
+### 11.9.2 概览顶部信息条（overview_info）
+
+从 **v5.3.1** 起，概览弹窗（`overview-control-popup`）**顶部**（"全屋态势"标题行横线 `.section-title::after` 下方）可显示一条**信息条**，居中展示指定实体的状态值；点击弹出气泡显示该实体的 `summary` 属性（如家庭日报全文）。
+
+```yaml
+overview:
+  - overview_info: sensor.hashu_ju_tong_yi_cun_chu_xi_tong_today_family_status   # 实体 ID
+    name: 今日家庭状态          # 可选，气泡标题（默认「今日家庭状态」）
+```
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `overview_info` | ✅ | `string` | 实体 ID，读取其 `state` 显示在信息条，`attributes.summary` 显示在气泡 |
+| `name` | ❌ | `string` | 气泡标题，默认「今日家庭状态」 |
+
+**行为**：
+- 信息条显示实体 `state`（如 `家中有人（客厅），开着 1 盏灯，入户门关闭`），居中、单行省略
+- 点击弹出气泡，展示气泡标题 + 状态值 + `summary` 长文本（`white-space: pre-wrap`，可滚动）
+- 仅配置 `overview_info` 时也会显示"全屋态势"标题行（作为信息条定位基准）
+- 未配置 `overview_info` 或无实体数据 → 不显示信息条
+
 ### 11.10 其他概览配置项
 
 ```yaml
@@ -7213,11 +7727,205 @@ overview:
     show_card: true
     room_point_from: /local/point.json   # 平面图文件
     automatic_folding_ha_info: true      # HA系统信息卡片默认折叠
+  - recently-used: sensor.hashu_ju_tong_yi_cun_chu_xi_tong_jin_qi_shi_yong_she_bei  # 最近使用设备（见 11.10.1）
 ```
+
+#### 11.10.1 最近使用设备（recently-used）
+
+在概览栏**最左侧的固定入口列**（`.ov-entry-col`，约 70px，与"自动化管理"横向并排两格，独立成列、带右分隔线）显示"常用"入口，点击弹出**最近使用设备气泡卡片**（复用统一气泡弹窗 `_showBubble`）。
+
+**依赖**：需配合 **HA 统一数据存储系统 2.13.0 及以上版本**（提供"近期使用设备"实体及 `config_id` / `device_type` 字段）。
+
+```yaml
+overview:
+  - recently-used: sensor.hashu_ju_tong_yi_cun_chu_xi_tong_jin_qi_shi_yong_she_bei  # 近期使用设备实体ID（必需）
+    width: 430px        # 可选，气泡宽度，默认 440px（为"时空"表盘留空间；空数据时 300px）
+    maxItems: 20        # 可选，气泡中最多显示的设备数，默认 50
+```
+
+> 兼容写法：`- type: recently-used` + `entity: sensor.xxx` + `width: 430px` + `maxItems: 20`
+
+**功能**：
+
+- **入口**：概览栏**最左侧固定入口列**（`.ov-entry-col`，约 70px）中与"自动化管理"横向并排一格，显示"常用"文本 + 去重后的设备个数；固定入口列自带右分隔线，与中间动态指标列（`.ov-left-col`）隔开，点击入口列间隙/边距不会误开"全量概览"弹窗。
+- **气泡宽度**：可通过 `width` 参数自定义（如 `430px`），未配置时默认 440px。
+- **气泡列表**：按 `entity_id` 去重、按最近使用时间倒序；设备项之间显示分割线；`header` 固定不滚动、列表独立滚动；图标按实体/名称推断（实体域 `climate` → `mdi:air-conditioner`，名称含"灯"或"照片" → `mdi:lightbulb`，名称含"插座/插排" → `mdi:power-socket-au`）。
+- **用户筛选**：`header` 右端按 `user_name` 筛选（"全部" + 各用户选项卡，复用 `eh-tabs` 样式），默认选中当前登录用户。
+- **"时空"表盘选项卡**：用户筛选选项卡栏**最右侧**新增固定选项卡 **"时空"**，点击切换到 **24 小时同心环表盘**视图（表盘**自适应气泡宽度**保持正方形，气泡默认宽 440px）：
+  - **空间 = 圈层**：每个房间一圈同心环（`room_name`，空房间归为 **"头部"**），环半径**基于表盘半径自动均匀分配**，最外圈半径**随房间个数动态求解**且**贴近刻度内侧**（最外房间区域延伸到表盘外环、外部不留大段空白），从中央保留区到外圈等距铺满，环内即该房间区域；按房间操作总次数降序由内到外。房间名**沿环带中心半径按弧度错落分布**在 **02:00→06:00 方向**弧段（不同房间不同半径+角度），不再固定于左右两端。图标**落在环带内部中心**（非边界线上），避免与环线/标签重叠。
+  - **时间 = 角度**：设备最后使用时间（`last_used`）映射角度，0 点在正上方、顺时针，精确到分钟。
+  - **设备 = 图标**：每个设备一个图标点（复用列表图标推断逻辑），**用户色圆形背景圆圈 + 白色图标**，尺寸随使用频率变化。
+  - **用户 = 图标背景色**：背景圆圈按用户名分配用户色（当前登录用户蓝色 `#0072ff`，其他用户 hash 取色），图标白色。
+  - **频率 = 图标大小**：先求出所有设备 `count` 的**最小值/最大值**，线性插值把图标尺寸映射到 **9–28px**（最小 count → 最小图标，最大 count → 最大图标），次数越多图标越大、差异更明显、图标更紧凑减少重叠。
+  - **外圈刻度**：0/6/12/18 粗刻度并标注数字（0 显示为 24）；中央显示"时空"标题 + 当前时间（已去掉当前时刻指针）。
+  - **点击图标点** → 弹出该设备**本次操作详情**（谁 / 何时 / 何房间 / 何设备 / 何操作，含状态与参数摘要），详情弹窗**底部右端显示可操作控件**（切换开关 / 按下按钮，与 recently-used 列表一致）。
+  - **点击房间环带（任意位置）** → 弹出该房间**数据汇总**：房间名、总操作次数、各用户操作统计（用户色标签）、设备列表（图标 + 名称 + 次数 + 最近时间 + **用户名称标签**（涉及多个用户时在 meta 左侧显示，样式同 recently-used-user-tag）+ 右端**操作控件**，与 recently-used 列表一致：打开按钮 / 切换开关 / 按下按钮）。
+  - **逐层关闭**：点击内部详情弹窗并关闭它时，不会连带关闭气泡本身；需先关内层弹窗，再点击遮罩关闭气泡。
+- **点击设备项弹窗**（`recently-used-info`，按优先级依次尝试，命中即返回）：
+
+  | 优先级 | 条件 | 行为 |
+  |---|---|---|
+  | 0 | `cover` 域且窗帘**三级定位**命中（`_resolveCurtainGroup`：all_curtain 总表 / 配置树 curtain 分组 / 自动构建） | 直接弹出该窗帘的帘布控制窗（忽略记录 `config_id`） |
+  | 1 | 设备有 `config_id`，且 `RoomElvesStore.get(config_id)` 取到**弹窗内容**（`service_data.cards/tabs` 或 `tabs/rows/card`） | 打开该 `config_id` 引用弹窗（free-layout / 选项卡） |
+  | 2 | 分组配置匹配且设备 `type === 'ac'`（空调） | 通过分组级 `config_id`（如 `all_ac`）按主实体 `entity` 筛选，直接渲染单个空调卡片 |
+  | 3 | 反查配置树设备节点有 `entities` | `showEntityDetailsPopup` 打开设备详情弹窗 |
+  | 4 | 设备节点 `tap_action` 是弹窗类（`card`/`popup_card`/`popup` 或 `call-service` + 弹窗） | 执行该 `tap_action` |
+  | 5 | 以上全部未命中 | 打开 more-info 弹窗 |
+
+- **右侧控件**（按实体类型）：
+  - **可开关设备**（名称含"插座"，或 `switch` / `light` / `input_boolean` 域）→ 右侧同时显示 **"打开"按钮（左）+ 切换开关（右）**：点击"打开"弹出 config_id 弹窗，点击开关直接开/关并记录操作日志；点击设备项主体则打开 config_id 弹窗；
+  - **按钮实体**（`input_button` / `button`）→ 右侧显示橙色"按下"按钮，点击执行 `press` 并记录操作日志；
+  - **点击会打开弹窗的不可切换设备**（空调分组 / 窗帘总表命中 / 设备弹窗 / tap_action 弹窗类）→ 右侧显示**淡蓝色"打开"按钮**，点击打开对应弹窗。
+- **点击左侧图标弹出历史记录**：列表项**左侧图标**点击后弹出该实体的**历史操作记录**（复用 `showEntityHistoryTimeline` / `timeline-history-bubble`，访问 HA 历史数据 API，含时间轴图表 + 时间段记录 + 日期切换）。
+
+**空调分组级 config_id（可选）**：若想点击最近使用空调时直接渲染单个空调卡片，需给 `buttons` 分组的空调分组配置 `config_id`（如 `all_ac`），程序会按实体 `entity` 匹配并直接渲染对应空调。
+
+```yaml
+buttons:
+  - type: ac
+    name: 全屋空调
+    config_id: all_ac          # ← 分组级 config_id
+    card:
+      - type: ac
+        entity: climate.xxx
+        ...
+```
+
+**窗帘实体（cover 域）自动弹出（增强）**：点击最近使用中的**窗帘**会直接弹出该窗帘的**帘布控制窗**（`showCurtainControlPopup`），不再落入 more-info。窗帘无论从哪个入口（头部全屋 / 房间 / 引用弹窗）操作过，记录里的 `config_id` 可能不同或为空，程序**忽略记录 config_id**，统一按以下**三级定位**找到窗帘并弹出：
+
+| 级 | 定位来源 | 说明 |
+|---|---|---|
+| 1 | 全屋窗帘总表 `all_curtain` | 头部"全屋窗帘"按钮带 `config_id: all_curtain`（`buttons` 分组，`card[]` 收录所有房间窗帘）。按 `fabric_entity` / `sheer_entity` / `entity` 匹配；命中时窗帘窗**强制使用本地窗景背景** `/local/window_bg_1.png` |
+| 2 | 当前配置树 `type: curtain` 分组 | 遍历 `buttons` / `buttons_N`，即使分组**未带 `config_id`**（未注册 Store）也能按实体命中，继承分组/子卡的开合模式与背景 |
+| 3 | 自动构建（无任何配置锚点） | 仅当可确认是窗帘：`cover` 实体 `attributes.device_class === 'curtain'` 或名称含"窗帘"→ 自动组装**单层布帘**（`layer_mode: single`）窗帘窗；其他 cover（车库门/卷帘门等）不受影响 |
+
+```yaml
+# 三级定位第 1 级依赖的分组（可选配置——未配置该组时自动退到第 2/3 级）
+buttons:
+  - type: curtain
+    name: 全屋窗帘
+    config_id: all_curtain
+    card:
+      - name: 客厅窗帘
+        fabric_entity: cover.xxx
+```
+
+- **弹窗名称**：与最近使用列表项名称一致（点击时透传列表显示名，非 HA `friendly_name`）。
+- **只布帘**：无纱帘实体（`sheer_entity`）时 `layer_mode` 自动降为 `single`，只渲染布帘层，不出现空纱帘/同步开关；有纱帘实体才保留 `double` 双层。
+- **列表入口**：命中窗帘后列表项**右端出现"打开"按钮**；图标名称含"窗帘" → `mdi:curtains`。
+- **防克隆按钮残留**：该窗帘窗不向 `showPopup` 传触发元素，避免触发元素被克隆成高亮按钮残留在原位置。
+- **操作记录 icon 兜底**：常用气泡内操作实体上报 `icon` 不再为空——名称含"窗帘/灯/插座"或按实体域名推断默认图标（`action-log.js _inferActionLogIcon`）。
+
+**未配置** `recently-used` 时，概览栏保持原有模式，不显示"常用"入口。
+
+#### 11.10.2 自动化管理卡片（automations）
+
+在概览栏**最左侧固定入口列**（`.ov-entry-col`，约 70px，与"最近使用设备"横向并排两格、独立成列、带右分隔线）增加"自动化管理"入口（`ov-seg ov-automations`），点击弹出**自动化管理弹窗卡片**，含两个选项卡：
+
+- **信息**：自动化整体统计 + 明细列表
+  - 数据源 `sensor.ha_data_store_automation` 实体：`state` = 启用自动化个数
+  - `attributes`：`total/enabled/disabled` = 总数/启用/停用；`success/failed/skipped/never` = 最近一次执行结果统计（成功/失败/条件跳过/从未执行）；`total_runs/updated_at` = 总执行次数/数据更新时间；`automations[]` = 明细项 `{ id, name, enabled, trigger_type, trigger_desc, stop_on_error, next_run, last_run, last_result, last_duration_ms, run_count, success_count, failed_count, skipped_count }`
+- **编辑**：自动化完整管理（后端 REST API，`api_base_url` + `key` 鉴权）
+  - `GET /api/ha_data_store/automations` 列表
+  - `POST /api/ha_data_store/automations` 新建
+  - `PUT /api/ha_data_store/automations/{id}` 更新（启停/编辑）
+  - `DELETE /api/ha_data_store/automations/{id}` 删除
+  - `POST /api/ha_data_store/automations/{id}/run` 手动运行（`?force=1` 跳过条件）
+
+```yaml
+# 写法1：overview 键名 automations（值为实体 ID 字符串，或 { entity } 对象）
+overview:
+  - automations: sensor.ha_data_store_automation
+    width: 400px        # 可选，弹窗宽度，默认 640px
+    name: 自动化管理      # 可选，分段标题，默认「自动化管理」
+
+# 写法2：overview type 字段 + entity
+overview:
+  - type: automations
+    entity: sensor.ha.data.store.automation   # 兼容点号写法，自动归一化为下划线
+    width: 400px
+    name: 自动化管理
+```
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `automations` | ✅ | `string`/`object` | 数据源实体 ID 字符串，或 `{ entity }` 对象（写法1） |
+| `type` | ✅ | `string` | 固定为 `automations`（写法2） |
+| `entity` | ❌ | `string` | 数据源传感器，覆盖默认实体 `sensor.ha_data_store_automation`；兼容点号写法自动归一化为下划线 |
+| `name` | ❌ | `string` | 分段/弹窗标题，默认「自动化管理」 |
+| `width` | ❌ | `string` | 弹窗宽度，默认 `640px` |
+
+**独立弹出窗口（按钮 + popup_card）**：也可用 `buttons` 按钮配置 `tap_action.action: popup_card` + `card.type: automation`，点击按钮直接弹出自动化管理卡片（通用弹窗包裹，`createAutomationCard`），不依赖概览分段：
+
+```yaml
+buttons:
+  - name: 自动化管理
+    icon: mdi:robot
+    tap_action:
+      action: popup_card
+      card:
+        type: automation
+        entity: sensor.ha.data.store.automation
+        name: 自动化管理
+        width: 400px
+```
+
+**行为**：
+- 写法1/2 配置后概览栏出现"自动化管理"分段（`ov-seg ov-automations`），点击弹出自动化管理卡片
+- 独立弹窗写法不依赖概览分段，任意 `tap_action` 位置（按钮/设备）均可配置 `popup_card` + `card.type: automation` 触发
+- `entity` 未配置时默认 `sensor.ha_data_store_automation`（兼容点号写法，自动归一化为下划线）
 
 ---
 
-### 11.11 公告栏（Notice Bar）
+### 11.11 自定义右列（type: right-col）
+
+概览栏**右列**（`.ov-right-col`，带左侧分隔线的窄列）默认显示「户外温湿度 + 用电量」两行。配置 `type: right-col` 后改为**自定义来源**：**一行一个 `content`**，支持 **Jinja2 模板**与 **HTML**（解析规则与公告栏一致）。
+
+```yaml
+overview:
+  - type: right-col
+    items:
+      - icon: mdi:thermometer          # 可选：行首图标
+        name: 客厅                      # 可选：行首标签（浅色）
+        content: >-                     # 一行一个 content
+          {{ states('sensor.keting_wendu') }}℃/{{ states('sensor.keting_shidu') }}%
+      - icon: mdi:flash
+        name: 今日
+        content: >-
+          {{ states('sensor.today_energy') | float(0) | round(1) }}<span style="color:#e67e22">kWh</span>
+    tap_action:                         # 整列共用一个点击动作
+      action: navigate
+      navigation_path: /lovelace/energy
+```
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `type` | ✅ | `string` | 固定为 `right-col` |
+| `items` | ✅ | `array` | 行列表，**一行一个 content**；为空数组时视为未配置 |
+| `items[].icon` | ❌ | `string` | 行首图标（如 `mdi:thermometer`） |
+| `items[].name` | ❌ | `string` | 行首标签，浅色显示；支持模板 |
+| `items[].content` | ❌ | `string` | 行内容，支持 Jinja2 模板 + HTML |
+| `tap_action` | ❌ | `object` | 整列点击动作，**不分行** —— 配置几个 item 都只有一个动作 |
+
+**行为**
+
+| 事项 | 说明 |
+|------|------|
+| 兼容性 | **未配置 `type: right-col`（或 `items` 为空数组）时，右列完全走原有逻辑**，本配置是纯增量 |
+| 模板 | `content` / `name` 走与公告栏相同的前端 Jinja2 引擎（`_TemplateEngine`），可用 `states()` / `state_attr()` / `is_state()` / `iif()` / `now()` 等 |
+| HTML | 与公告栏同口径：**仅保留 `<span style="...">`**，其他标签剥离、文本转义，`onclick` 等事件属性与 `url()` / `expression()` 被过滤 |
+| 实时刷新 | 模板中引用的实体会被**自动加入订阅集**（支持 `states('x.y')` / `is_state(...)` / `state_attr(...)` / `has_value(...)` / `expand(...)` 以及旧式 `states.sensor.x`），实体一变即刷新 |
+| 首屏 | hass 就绪前，纯静态文本立即显示、模板部分先显示 `--`，随后无缝替换为真实值 |
+| 点击 | 整列共用一个 `tap_action`，支持 `toggle` / `more-info` / `navigate` / `call-service` / `popup_card` / `none`；**未配置 `tap_action` 时**仍弹出原来的「室外温湿度 + 用电趋势」气泡 |
+| 宽度 | 自定义列不再固定 85px，按内容自适应（最窄 72px、最宽 55%），超出显示省略号；概览栏固定 38px 高，**建议 2 行**，3 行会偏挤 |
+
+> 与 `type: environment` / `type: energy` 同时配置时，**右列以 `right-col` 为准**；后两者仍照常写入概览弹窗（`overview-control-popup`），只是不再占用右列位置。
+
+---
+
+### 11.12 公告栏（Notice Bar）
+
+### 11.12 公告栏（Notice Bar）
 
 公告栏显示在概览栏上方，用于展示通知、状态提示等信息。支持两种内容类型：
 - **content**：使用 Jinja2 模板语法（内置 `_TemplateEngine`），支持 `states()`、`state_attr()`、`is_state()`、`iif()`、`now()` 等函数
@@ -7970,6 +8678,8 @@ cards:
 | `unit` | ❌ | `string` | 自定义单位（仅 `way` 存在时有效，覆盖实体自带单位） |
 | `tap_action` | ❌ | `object` | 点击动作（见下方说明） |
 
+> **统计明细气泡**：传感器模式（`entity` + `way`）下，点击标题右侧的**值文本**会自动弹出"统计明细"气泡（统一气泡 + 径向模糊遮罩）。气泡顶部按该实体配置的每个 `way` 显示统计块；下方明细按配置自动展示：「今日使用记录」（含 `today_*`、`on_duration` 等）、「昨日使用记录」（含 `yesterday_*`）为逐段文本（起止时间 + 时长，进行中标注"运行中"）；「近期使用记录·近30天」（含 `last_usage_time`）为 **ECharts 柱状图**——柱高 = 每日累计使用时长（小时），工具提示显示当日次数与时长，图上方汇总 30 天总次数与总时长。柱状图数据来自**卡片顶层** `api_base_url`/`key` 配置（接口 `query?type=device_history&start=..&end=..`）；未配置 API 或请求失败时该区块仅显示空态提示，不回退文本列表。无需额外开关配置。
+
 > *`entity` 和 `entities` 至少配置一个。控制按钮模式（`entities` + `set_value`）下，`name` 或 `icon` 至少配置一个，否则按钮无法显示。
 
 #### title_entities 的 tap_action
@@ -8053,6 +8763,7 @@ tap_action:
 | `water_temp` | 水温可视化卡片 | `entity`、`min_temp`、`max_temp`、`width`、`height` |
 | `printer` | 打印机用量统计卡片 | `entity`、`name` |
 | `fnnas` | 飞牛 NAS 管理卡片 | `name`、`system_status`、`power_switch`、`docker_containers`、`vms` |
+| `daily_report` | 今日家庭日报卡片 | `entity`、`refresh`、`hide_room`、`env_from_config_id`、`width` |
 
 #### radio 卡片（单选按钮组）
 
@@ -8209,6 +8920,13 @@ format 模板中使用 `{键名}` 来引用计算结果，具体规则取决于�
 | `yesterday_on_count` | 昨日开启次数 |
 | `yesterday_off_count` | 昨日关闭次数 |
 
+#### 开关型 - 最近一次使用
+| way 名称 | 说明 | 示例结果 |
+|---------|------|---------|
+| `last_usage_time` | 最后一次使用时长（最近一次完整 on 会话的持续时长，回溯 30 天） | `35分` |
+
+> **说明**：`last_usage_time` 在实体**当前正开启**时返回本次已运行时长并附加 `(运行中)`（如 `35分(运行中)`）；当前已关闭时统计最近一次"开启→关闭"的持续时长。若回溯 30 天内从未开启、或该段起点早于 30 天窗口（无法确定真实时长），返回 `--`。因运行中数值持续增长，该 way 属于时间依赖型（引擎自动 5 秒刷新）。
+
 #### 数值型 - 今日统计
 | way 名称 | 说明 | 示例结果 |
 |---------|------|---------|
@@ -8308,6 +9026,27 @@ buttons:
 ```
 
 > 注意：单实体 + 单 way 时 `{_default}` 和 `{way名}` 都可以用；单实体 + 多 way 时只能用 `{way名}`；多实体时用 `{别名.way名}`。
+
+### 单实体 + 多 way（含最近一次使用）+ 统计明细气泡
+
+将次数、今日累计、最近一次使用合并到一行展示：
+
+```yaml
+buttons:
+  - type: sensor
+    entity: switch.kongqizhaguo
+    icon: mdi:pot
+    name: 今日使用
+    show_name: false
+    way:
+      - today_usage_count
+      - today_usage_time
+      - last_usage_time
+    format: '今天{today_usage_count}次 · 共{today_usage_time} · 上次{last_usage_time}'
+```
+
+> - `last_usage_time`：最后一次使用时长，详见上文「所有可用的 way」。
+> - 当该行作为 **title_entities（标题实体值）** 展示时，点击右侧值文本会自动弹出**统计明细气泡**（径向模糊遮罩）：顶部按每个配置的 way 显示统计块；`today_*` 时下方展示今日逐段使用记录；配置了 `last_usage_time` 时展示「近30天使用柱状图」（数据来自卡片顶层 `api_base_url`/`key` 的外部 API）。
 
 ---
 
@@ -9121,6 +9860,63 @@ key: xxxxxxxxxxxx               # API 密钥
 
 卡片会自动从外部 API 拉取历史状态数据，用于时间轴和趋势显示。
 
+### 实体配置上报（report）
+
+本卡片支持将自身配置中提取的全部实体（`entity_id` / `name` / `icon` / `room_name`）上报到 [HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store/releases) 后端，供后端生成实体健康等报表数据。多个卡片共用同一个上报按钮，点击一次即聚合所有卡片实例的实体统一上报。
+
+```yaml
+type: custom:room-elves-card
+api_base_url: /api/ha_data_store/    # 数据统一存储系统 API 地址
+key: xxxxxxxxxxxx                     # API 密钥
+report: input_button.report          # 触发上报的按钮实体
+report_unique_priority: room         # 上报去重策略（可选）
+report_name_priority: name,alias,entity_id   # 上报名称取值优先级（可选，任意一张卡片配置即可全局生效）
+```
+
+**上报机制：**
+- 所有 `room-elves-card` 卡片共用同一 `report` 按钮实体，点击一次只聚合上报一次（前端全局协调，避免重复请求）。
+- 按钮类（`input_button` / `button`）通过 `state` 或 `last_triggered` 变化触发；开关类（`switch` / `input_boolean`）通过 `off → on` 触发。
+- 上报内容由各卡片递归扫描自身配置提取实体（自动跳过 `_REPORT_SKIP_KEYS` 黑名单与非法域），实体名/图标缺失时从 HA 状态回退，`room_name` 在头部卡片固定为 `头部`，其余取卡片顶层 `room_name`。
+
+**去重策略（`report_unique_priority`）：**
+
+| 取值 | 说明 |
+|------|------|
+| `room` | 按 `entity_id` 去重，同一实体多处出现时**优先保留属于真实房间**的一份（`room_name` 非空且非 `头部`） |
+| `head` | 按 `entity_id` 去重，同一实体多处出现时**优先保留位于头部**的一份（`room_name` 为 `头部`） |
+| `none` | 不去重，原样全量上报（默认值，不配置时为此模式） |
+
+> 后端不会干预前端上传的数据，因此重复实体需由前端按 `report_unique_priority` 自行去重。配置为 `room` 或 `head` 时，若两份出现均非对应优先类型，则保留先出现的一份。
+
+**名称优先级（`report_name_priority`）：**
+
+控制上报到后端时实体的 `name` 字段从哪个来源取值，为逗号分隔的取值顺序，从左至右取第一个非空值：
+
+| 取值 | 说明 |
+|------|------|
+| `name` | 卡片内部配置的 `name`（config 中该实体节点的 `name` 字段） |
+| `alias` | 用户在 HA 中定义的实体名称（`friendly_name`） |
+| `entity_id` | 实体 ID |
+
+```yaml
+report_name_priority: name,alias,entity_id   # 优先取卡片 name，其次 HA 别名，最后实体 ID
+```
+
+> 不配置时默认 `name,alias,entity_id`（即旧的"卡片 name > HA 别名 > 实体 ID"取值逻辑）。想优先用 HA 中定义的实体名，可配置为 `alias,name,entity_id`。
+
+**全局生效说明：**
+
+由于所有 `room-elves-card` 卡片共用同一 `report` 按钮、点击一次聚合上报全部卡片，`report_name_priority` 支持**配置一次、全局生效**：
+
+- **只需在任意一张卡片**（建议在主卡片/头部卡片）配置 `report_name_priority`，其它未单独配置的卡片在聚合上报时**自动沿用**该优先级。
+- 若某张卡片**单独配置**了自己的 `report_name_priority`，则该卡片优先用自己独立的优先级（覆盖全局）。
+- 即使只在**一个房间**卡片配置了 `report_name_priority`，所有房间的实体上报都会遵循该优先级。
+
+```yaml
+# 主卡片/头部卡片配置一次即可全局生效
+report_name_priority: alias,name,entity_id
+```
+
 ## 二十、ECharts 图表与外部 API
 
 卡片内置了 ECharts 图表功能，用于渲染曲线图、环形图、饼图、南丁格尔玫瑰图、热力图、日历图、混合图表和桑基图等。
@@ -9703,6 +10499,7 @@ tabs:
 | `nas` | NAS 服务器状态卡片 | `power_switch`, `storage_summary`, `array_01`, `array_02` |
 | `printer` | 打印机用量统计卡片 | `entity`, `name` |
 | `fnnas` | 飞牛 NAS 管理卡片 | `name`, `system_status`, `power_switch`, `docker_containers`, `vms` |
+| `daily_report` | 今日家庭日报卡片 | `entity`, `refresh`, `hide_room`, `env_from_config_id`, `width` |
 | `card` | 自定义卡片 | 标准 HA 卡片配置 |
 | `conditional_tabs` | 条件选项卡 | 条件控制 Tab 显示 |
 
@@ -10744,7 +11541,485 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 ---
 
-## 二十七、后记
+## 二十七、调试信息管理系统
+
+卡片内置了一套统一的**调试信息管理系统**（`DebugManager`），实现了"**一个公共方法，三处同步**"的调试信息查看机制，方便排查卡片/模块问题。
+
+### 27.1 三处同步
+
+模块调用调试方法后，调试信息会**同时**同步到以下三个地方：
+
+| 同步位置 | 说明 |
+|---------|------|
+| **调试卡片** | 卡片内置 `debug_card` 弹窗，顶部模块开关列表，下方直接显示该模块发来的完整调试文本 |
+| **浏览器控制台** | 模块调用 `send()` 后，控制台实时输出 `[room-elves][模块名] ...` |
+| **控制台命令** | `roomElvesDebug()` 命令入口，随时切换模块开关、查看已发送调试信息 |
+
+三者开关状态与信息**完全一致、双向同步**：控制台命令开启某模块后，调试卡片对应开关自动高亮；卡片点开关，控制台命令状态同步。
+
+### 27.2 调试卡片（debug_card）
+
+在按钮配置中使用 按钮 `tap_action` 弹窗内 `card.type: debug_card`：
+
+```yaml
+
+buttons:
+  - name: 调试
+    tap_action:
+      action: popup_card
+      card:
+        type: debug_card
+        name: 调试信息
+        width: 560px
+```
+
+调试卡片布局：
+- **顶部**：一排模块开关（点击开启 / 再次点击关闭）
+- **下方**：固定信息展示区，点击开关直接显示该模块的调试文本
+- 关闭弹窗再打开，自动恢复上次激活的模块
+
+> **debug_card 头部选项卡**：弹窗头部含「调试 / 性能 / 版本 / 数据库」四个选项卡。
+> - **调试**：模块开关 + 调试文本直显（本节前述功能）
+> - **性能**：运行态性能指标（更新耗时 / 帧率 / 索引 / 定时器 / 后端请求等 13 项 + 控制台命令），**详见第 28 章**
+> - **版本**：卡片/后端版本信息 + HA 服务器信息概览 + 系统资源 24h 趋势图 + 已注册调试模块
+> - **数据库**：内置数据库浏览器（表选择 + 字段选择 + 多条件筛选 + 浏览/修改模式原地编辑 + 前端 SQL 执行 + 分页/表头排序），详见 27.2.2
+
+### 27.2.1 版本选项卡（v5.6.2 起）
+
+「版本」选项卡用于查看卡片/后端版本与服务器运行状态。其中 **HA 服务器信息** 与 **系统资源** 数据来自后端 `ha_data_store`（需 **v3.1.0+**）：
+
+- **卡片/后端版本信息**：Room Elves Card 与 HA 数据统一存储系统的当前版本号（后端版本统一带 `v` 前缀）；行内名称可点击查看详情（带 `more` 提示），版本号可点击查看版本历史，右上角为"新版本"角标与刷新按钮。
+  - **Room Elves Card 详情气泡**（点击名称）：顶部为当前版本号 + GitHub 地址（可点击跳转），下方为 **卡片结构模块树**——"卡片结构"标题（右端合计模块总数）+ 各目录分组（core / infra / render / popup / cards / events / utils / presets）。每个目录为一级分组，**默认折叠、点击展开**，展开后逐条显示该目录模块名称与功能简介（内容硬编码自 `room-elves-code-tree.md`）。
+  - **HA数据统一存储系统详情气泡**（点击名称）：本地访问地址 / 数据库地址 / **数据库大小（右侧带「压缩」按钮**，点击调用后端 `db_maintain` 执行 VACUUM，完成后 toast 提示压缩前后大小/节省/压缩率）/**数据表（显示 `x 张 / xxx 条` 含合计记录数）** 及各表行数。
+  - **版本历史气泡**（点击版本号）：带标题栏（`版本历史 · xxx`）+ 版本列表；**最新版本整行绿色高亮并标注 `Latest` 徽标**。
+- **HA服务器信息**：数据源为后端实体 `sensor.ha_data_store_db_viewer_url` 的 `attributes.system`（每 10 分钟刷新）。精简概览卡展示 **HA版本 / 内存 / 硬盘 / 运行时长** 四项，各项独立交互：
+  - **HA版本**：`mdi:home-assistant` 图标 + "HA版本"文字 + 版本号；点击弹**版本信息气泡**（HA核心版本、前端版本、安装方式、服务器名称、更新于）。
+  - **内存 / 硬盘**：**圆环占用图**（58px 圆环，名称与占用百分比居中于环内，下方显示"已用 / 总量"）；实时百分比与已用/总量读取自 `sensor.ha_data_store_memory_usage` / `disk_usage`（30 秒刷新），缺失时回退仅显示总容量。
+  - **运行时长**：文字按规则本地化——≥ 24h 显示 `x.x 天`、1~24h 显示 `x.x 小时`、< 1h 显示 `x 分钟`；点击弹**安装时间 + 运行时长**气泡。
+- **系统资源**：内嵌一张 ECharts 折线图，近 24 小时 **CPU / 内存 / 硬盘** 三条占用曲线同图显示；首次切换到「版本」选项卡时自动懒加载。数据来自三个资源传感器：
+  - `sensor.ha_data_store_cpu_usage`（CPU 占用率）
+  - `sensor.ha_data_store_memory_usage`（内存占用）
+  - `sensor.ha_data_store_disk_usage`（硬盘已用）
+  - 后端每 30 秒刷新；传感器需运行一段时间积累历史后，24h 曲线才完整。
+- **已注册调试模块**：列出所有接入 `DebugManager` 的模块及其说明。
+
+> ⚠️ **依赖**：以上服务器/系统资源数据需后端 **HA 数据统一存储系统 v3.1.0+** 提供；后端未升级时，HA服务器信息区显示占位提示，不影响卡片其它功能。
+>
+> 📌 **提示**：Room Elves Card 详情中的模块树为静态硬编码（与 `room-elves-code-tree.md` 结构文档同步维护），仅用于结构浏览。
+
+### 27.2.2 数据库选项卡（v5.6.4 起）
+
+「数据库」选项卡内置**数据库浏览器**，与后端 `ha_data_store` 的 `db_viewer` 数据/提交接口一致，面向移动端做了紧凑化改造。顶部工具栏为一行**文字按钮**：
+
+```
+选择表 ▾   [字段] [筛选] [浏览/修改] [SQL]
+```
+
+- 带 `.fcount` 的红色角标在按钮右上角，显示当前生效数量（已选字段数 / 生效筛选数）。
+- 字段 / 筛选 / SQL 三个面板**互斥展开**（同时只开一个）；按钮展开时紫色实底高亮。
+- 分页区（`dbg-db-pager`）固定在面板下方、表格上方，并按当前内容切换显示。
+
+**字段选择**：
+- 点「字段」展开字段勾选面板（复选框 chips，内部限高滚动）；面板右下角紫色「隐藏」按钮收起。
+- **选中数据表后字段面板自动展开**，方便直接勾选要显示的列；勾选即时刷新表格。
+- 「字段」角标 = 当前已勾选的列数。
+
+**多条件筛选**：
+- 点「筛选」展开筛选区：每行 = 字段 + 操作符 + 值（可多条）。操作符同 `db_viewer`：等于 / 不等于 / 包含 / 大于 / 小于 / 大于等于 / 小于等于 / 为空 / 不为空（后两者无需值）。
+- 「应用筛选」→ 以 `filter=<JSON>` 参数提交（`[{col,op,val}]`）回到第 1 页并自动收起；「清除」取消全部筛选。
+- 筛选可与字段勾选、表头排序、分页叠加使用。
+
+**浏览 / 修改模式（原地编辑）**：
+- 默认「浏览」；切到「修改」后**点击单元格**即进入编辑（移动端无 `dblclick`，故用单击，桌面双击第一击同样开启）。
+- 编辑时输入框**铺满覆盖原单元格**（视觉上在原位置修改），单元格紫色描边高亮；单元格正下方出现操作条：「表名.列名 · 行ID」+「确定」（紫色）/「取消」，支持 `Enter`=确定、`Esc`=取消。
+- 「确定」提交 `POST /api/ha_data_store/db_viewer/update`，body：`{ table, row_id, column, value }`（空输入 → `NULL`），成功后原地回显新值。
+
+**SQL 执行**：
+- 点「SQL」展开面板：等宽输入框（`Ctrl/Cmd+Enter` 快捷执行）+「执行」/「清空」+ 状态行。
+- SELECT 结果表格**直接显示在主数据表格区域**（可上下/左右滚动）；底部 pager 变为 `SQL · 共 N 条` 翻页。
+- UPDATE/INSERT/DELETE 等写语句 → 主区显示"受影响行数：N"，pager 仅显示受影响提示。
+- 提交 `POST /api/ha_data_store/db_viewer/sql`，body：`{ sql, page, page_size: 100 }`。
+
+> ⚠️ **提示**：
+> - 单元格编辑/SQL 的读、改、执行接口均复用卡片配置的 `key`（与 `db_viewer` 一致，后端需允许修改）；
+> - 浏览表、SQL 结果的表格均在 `dbg-db-data` 内部滚动，列宽可依赖表头排序时的自动适配；
+> - SQL 写入类语句请谨慎执行，涉及真实数据修改。
+
+### 27.3 浏览器控制台命令
+
+在浏览器控制台（F12）输入：
+
+```js
+roomElvesDebug()                        // 帮助 + 所有模块开关状态
+roomElvesDebug('list')                  // 列出已注册模块
+roomElvesDebug('<模块名>')               // 切换开关（如 entity-report）
+roomElvesDebug('<模块名>', true/false)   // 显式开/关
+roomElvesDebug('all')                   // 全部开启
+roomElvesDebug('none')                  // 全部关闭
+roomElvesDebug('view', '<模块名>')       // 查看该模块已发送的调试信息
+roomElvesDebug('dump', '<模块名>')       // 输出该模块 dump() 缓冲数据
+roomElvesDebug('clear', '<模块名>')      // 清空该模块缓冲
+```
+
+示例：
+
+```js
+roomElvesDebug('entity-report')            // 开启上报模块调试
+roomElvesDebug('entity-report', false)     // 关闭上报模块调试
+roomElvesDebug('view', 'entity-report')    // 查看上报模块已发送的调试信息
+```
+
+### 27.4 已接入的调试模块
+
+| 模块 | 说明 | 接入方式 |
+|------|------|---------|
+| `action-log` | 用户操作记录埋点 | `register` + `dump`（完整操作记录字段） |
+| `entity-report` | 实体提取上报 | `register` + `send`（完整实体字段） |
+
+### 27.5 给新模块加调试信息
+
+任何模块只需两步即可接入调试信息（遵循 `DebugManager` 公共接口）：
+
+```js
+import { DebugManager } from '../core/debug.js';
+
+// 1. 注册模块名（让它在调试卡片顶部出现开关按钮）
+DebugManager.register('my-module', { describe: '我的模块说明' });
+
+// 2. 发送调试文本（自动同步到调试卡片 + 控制台）
+DebugManager.send('my-module', '这是一条调试信息');
+```
+
+如需查看模块的完整缓冲数据，可额外实现 `dump` 返回 `{ title, text }`：
+
+```js
+DebugManager.register('my-module', {
+  describe: '说明',
+  dump: () => ({ title: '标题', text: '多行文本' }),
+});
+```
+
+---
+
+## 二十八、性能面板（性能测试与排查）
+
+「性能面板」是 `debug_card` 弹窗里的一个**独立选项卡**（懒加载：不点开就没有任何开销），把卡片历次性能优化（实体精准更新、订阅过滤、定时器合并、首屏加载等）变成**常驻可见的量化指标**。
+
+在它之前，每次验证"到底快了没有"都要临时往代码里插 `performance.now()`，测完再删 —— 既没法对比，也没有性能回归预警。
+
+**两个入口：界面**（适合边操作边看）与**控制台命令**（适合复现卡顿时取证，不用开着弹窗）。
+
+### 28.1 界面入口
+
+调试卡片弹窗头部有「调试 / 性能 / 版本 / 数据库」四个选项卡，点「性能」即可。
+
+```yaml
+buttons:
+  - name: 调试
+    tap_action:
+      action: popup_card
+      card:
+        type: debug_card
+        name: 调试信息
+```
+
+面板布局为 **4 行长文本 + 3×3 指标网格 + 口径说明**，每 2 秒刷新一次。**所有格子都可以点击**，点开后弹出该指标的完整明细气泡。
+
+| 位置 | 指标 | 一句话说明 |
+|------|------|-----------|
+| 长文本 1 | **hass 更新耗时** | 最近 10 帧的耗时，**并单独给出"有效帧"** |
+| 长文本 2 | **最慢步骤** | 更新链里当前最耗时的那一步 |
+| 长文本 3 | **资源占用** | JS 堆用量 / 上限 |
+| 长文本 4 | **主线程** | 定时器实际漂移 + 近 30 秒长任务 |
+| 网格 | **帧率** | rAF 采样（仅面板可见时计数） |
+| 网格 | **更新频率** | hass 更新次数 / 秒 |
+| 网格 | **订阅遗漏** | 索引里有、订阅集里没有的实体数（>0 标红） |
+| 网格 | **订阅实体** | 全页所有卡的订阅实体数（点开有按域分组） |
+| 网格 | **定时器数** | 活跃定时器数量（点开有间隔/存活/来源） |
+| 网格 | **DOM 索引** | 实体 DOM 索引规模（点开有覆盖率与命中率） |
+| 网格 | **DOM 节点** | 节点总数 + 最重的子树 |
+| 网格 | **缓存条目** | AC 图标 / 状态映射 / AC 日历缓存 |
+| 网格 | **卡片规模** | 卡片实例数 + 各卡片耗时排行 |
+
+> 📌 「一键复制」按钮会导出**完整快照文本**（含原始样本序列、环境信息、UA 等），内容比面板上看到的多，适合贴给别人排查。
+
+### 28.2 各指标的读法
+
+#### 有效帧：为什么"平均 0.1ms"不能直接看
+
+hass 每次状态推送都会触发更新链，但绝大多数帧会被**订阅过滤**直接早退（0.0ms）。实测中 `_updateEntitySubscriptions` 出现 47 次时，真正执行实体更新的 `updateEntityStates` 可能只有 5 次 —— 42 个空帧会把真实重活平均掉。
+
+所以面板把耗时分成两段：
+
+```
+全帧 平均                 0.1ms      ← 含大量早退帧，横向对比用
+有效帧 次数               5/10（执行了实体更新的帧）
+有效帧 平均               0.7ms      ← 真实更新链耗时看这个
+```
+
+**判断标准**：看「有效帧 平均」。它代表"真的干了活的那一帧花了多久"。
+
+#### 帧率 / 主线程 / 长任务
+
+浏览器**不提供 CPU 占用率 API**（安全边界），所以用三个代理指标：
+
+| 指标 | 判断 |
+|------|------|
+| **帧率** | 应稳定在 60fps（高刷屏 120）。持续偏低先排查是否被环境限制（浏览器缩放、非整数 DPR、远程桌面），再看卡片 |
+| **延迟（定时器漂移）** | 正常 < 5ms。持续偏高说明主线程被占用 |
+| **长任务（>50ms）** | 有次数就点开看明细（时间点 + 时长）。**长任务才是卡顿的直接证据**，比百分比直观 |
+
+#### 订阅遗漏：唯一能自动发现"漏订阅"的指标
+
+```
+遗漏数    0
+结论      索引中的实体全部已在订阅集内
+索引实体数 88
+订阅实体数 271
+统计范围   全页 9 张卡片
+```
+
+口径：**索引 = 已渲染且被 DOM 标记依赖的实体**；**订阅集 = 配置扫描出来的实体**。
+
+- **索引有、订阅没有 → 真 Bug**：该实体变化时更新链会被订阅过滤拦掉，界面不刷新。这是 `>0` 会标红的原因。
+- **订阅有、索引没有 → 正常**：配置声明了但当前没渲染出对应 DOM（比如弹窗没打开）。
+
+**理想值恒为 0。** 一旦为正，点开明细会列出具体是哪些实体。
+
+#### DOM 索引：覆盖率 18% 不等于故障
+
+点开「DOM 索引」会看到四段，其中两段最容易被误读：
+
+```
+── 覆盖率对账 ──      （全页 9 张卡片）
+全页使用的实体            483 个
+索引实体数                88
+索引覆盖率                18%
+配置有·索引无             395 个（未渲染出 DOM，当前无需更新）
+　其中无订阅              218 个（渲染出 DOM 后会漏刷新）
+健康判据                  索引 ⊆ 订阅（「订阅遗漏」为 0）；18% 这类覆盖率低不代表故障
+```
+
+- **覆盖率低是正常的**：索引只登记"当前渲染出 DOM 的实体"。未展开的弹窗、未激活的 tab、其他卡片没渲染的部分都不该在里面 —— 483 里的大部分属于此类。
+- **真正的健康判据是 `索引 ⊆ 订阅`**（即「订阅遗漏」= 0）。索引里的实体变化会走精准更新，只要它同时在订阅集里，更新链就不会被拦掉。
+- **「其中无订阅」才是嫌疑**：这些实体一旦渲染出 DOM 就会漏刷新。现在无害（没 DOM 就没有要更新的东西）。
+
+```
+── 精准更新命中 ──    （本卡片 · 采样窗口内）
+精准路径调用              40 次
+回退全量                  0 次（0%）
+平均命中元素              0.0 个/次
+```
+
+- **回退全量**是这一段的重点：它表示"索引不可用 → 该次更新退化成全量 `querySelectorAll`"。**理想值 0%**。曾经有个 Bug 让索引全量重建恒为空，表现就是 **100% 回退**，而当时没有任何指标能看出来。
+- **命中 0 个/次不是故障**：本卡片索引里只有它自己渲染出的实体，而变更的实体很可能在别的卡片上（多卡片页面极常见）。
+
+#### 定时器明细：间隔 + 存活 + 来源
+
+```
+── 定时器明细 ──      （间隔 / 已存活 / 注册来源）
+interval #59              2000 ms · 存活 16.2 秒
+　↳ 来源                 ()=>{if(!this._isPageVisible)return;this._unifiedTim
+interval #134             2000 ms · 存活 11.5 秒
+　↳ 来源                 ()=>this._perfTick()
+```
+
+- **来源**是回调函数体的源码片段。之所以不用调用栈：打包压缩后 `stack` 只剩 `at e (room-elves-card.js:1:1234567)`，列号能对比但完全不可读；而函数体源码仍保留 `this._unifiedTimerInterval` 这类可辨认特征。
+- **判据**：同间隔的定时器看"来源"是否相同 —— **不同 = 各自独立（正常）**，**相同 = 可能重复注册**（这才是泄漏）。
+- **存活时间远超预期的定时器**要警惕，例如某个 5 秒定时器已经跑了 3 小时且不再需要。
+- 面板自身的「刷新定时器」和「帧率采样 rAF」也会计入，属预期。
+
+#### 后端请求：谁在频繁打后端
+
+```
+── 后端请求 ──        （按次数降序）
+请求总数                  44
+接口数                    13
+ha_data_store/query       19 次 · 平均 84.6ms · 最大 109ms
+room-elves-card/releases  1 次 · 平均 1161ms · 最大 1161ms
+```
+
+用 `PerformanceObserver` 旁路采集**所有** fetch / xhr（零侵入，不改任何一处 `fetch()` 调用），归类键取 URL 末两段路径（去掉 query，使不同参数归为一类）。
+
+- **次数高**的接口，说明有轮询在打它（ikuai 10s / fnnas 3s / 使用量日历 10s 都是自管轮询）
+- **耗时长**的接口（如 800ms+ 的版本检查）会拖慢启动
+- **失败请求**（HTTP ≥ 400）会单独标出
+- 这里也会包含 HA 自身的请求（如语言包、`ha_data_store`），属预期 —— 它是"整个页面的网络活动"
+
+#### 各卡片耗时：定位"哪张卡在拖累"
+
+```
+── 各卡片耗时 ──      （本采样窗口 · 按平均降序）
+客厅                      平均 0.1ms · 最大 0.6ms · 10 帧
+注意                      仅 1/9 张有样本 —— 打点只对本卡片开启
+取全量                    控制台执行 roomElvesPerf.start() 可对所有卡片开打点
+```
+
+> ⚠️ **打点是逐卡开关的**：打开面板只会给"面板所在的那张卡"开打点，所以界面入口通常只列出 1 张。**要比较全部卡片，必须用下面的控制台命令**（`roomElvesPerf.start()` 会给所有卡片开打点）。
+
+### 28.3 浏览器控制台命令（roomElvesPerf）
+
+在浏览器控制台（F12）输入 `roomElvesPerf`，或在代码里用 `window.roomElvesPerf`。
+
+**为什么需要它**：性能数据原本只有"打开弹窗 → 切到性能选项卡"才可见，而真实排查场景往往是"页面卡了，但我不能一边开着弹窗一边复现"。控制台 API 让同一套指标可以**不打开界面**就采集与导出。
+
+> ⚠️ **重要前提**：打点默认只在**面板可见**时开启（否则会白白消耗 CPU）。所以直接 `snap()` 通常拿不到数据 —— 必须先用 `start()` 或 `run()` **显式打开采样**。`run()` 会自动处理这个流程。
+
+#### 命令一览
+
+```js
+roomElvesPerf.help()        // 帮助 + 用法
+roomElvesPerf.run(10)       // ★ 采样 10 秒 → 打印完整快照 → 自动停止
+roomElvesPerf.start()       // 开始采样（不打印，后续用 snap() 取）
+roomElvesPerf.stop()        // 停止采样
+roomElvesPerf.snap()        // 立即打印完整快照（内容 = 面板「一键复制」），并返回文本
+roomElvesPerf.index()       // 实体 DOM 索引详情（覆盖率 / 精准更新命中 / 漏订阅排查）
+roomElvesPerf.steps()       // 更新链各步骤耗时
+roomElvesPerf.subs()        // 订阅实体（全页，按域分组）
+roomElvesPerf.cards()       // 各卡片一览（索引 / 订阅 / 节点数 / 耗时）
+roomElvesPerf.perf()        // 各卡片耗时排行（哪张卡最慢）
+roomElvesPerf.net()         // 后端请求统计（次数 / 平均 / 最大 / 失败）
+```
+
+#### 最常用：一条命令完成"取证"
+
+```js
+roomElvesPerf.run(10)
+```
+
+等价于 `start()` → 等待 10 秒 → `snap()` → `stop()`。**适合"复现卡顿后立刻取证"**：
+
+1. 控制台执行 `roomElvesPerf.run(10)`
+2. 立刻去操作页面（点开弹窗、切标签、触发那些你觉得卡的动作）
+3. 10 秒后自动输出完整快照，采样同时停止
+
+`snap()` 返回的是**文本**，所以也可以接后续处理：
+
+```js
+const text = roomElvesPerf.snap();
+copy(text);            // 部分浏览器支持
+// 或
+console.log(text.length, '字符');
+```
+
+#### 与 roomElvesDebug 的区别
+
+| 命令 | 面向 | 用途 |
+|------|------|------|
+| `roomElvesDebug()` | **调试信息模块系统** | 开关各模块的调试输出、查看模块发送的文本（见第 27 节） |
+| `roomElvesPerf` | **性能指标** | 采集/导出运行时的耗时、内存、索引、定时器、网络数据 |
+
+两者互不依赖，可同时使用。
+
+#### 命令输出示例
+
+```js
+roomElvesPerf.net()
+```
+
+```
+[room-elves] 后端请求
+请求总数  44
+接口数  13
+ha_data_store/query  19 次 · 平均 84.6ms · 最大 109ms
+room-elves-card/releases  1 次 · 平均 1161ms · 最大 1161ms
+```
+
+```js
+roomElvesPerf.perf()
+```
+
+```
+[room-elves] 各卡片耗时排行
+卡片实例  9 张
+有耗时样本  9 张
+客厅  平均 1.24ms · 最大 3.80ms · 42 帧
+主卧  平均 0.62ms · 最大 1.10ms · 42 帧
+```
+
+### 28.4 四个典型排查场景
+
+#### 场景一：页面整体卡顿
+
+```js
+roomElvesPerf.run(10)          // 采集期间复现卡顿
+```
+
+看快照里的三处：
+
+1. **`[主线程]` 的长任务** —— 有次数和明细（时间点 + 时长），这是卡顿的直接证据
+2. **`[更新链步骤耗时]`** —— 哪一步最慢。如果 `updateEntityStates` 占大头，看「精准更新命中」的回退率
+3. **`[各卡片耗时]`** —— 哪张卡均值最高
+
+#### 场景二：某个控件不刷新
+
+```js
+roomElvesPerf.index()
+```
+
+看「订阅遗漏」：
+
+- **> 0** → 该实体在索引里但不在订阅集中 → 实体变化时更新链被拦掉了，附带的实体名就是嫌疑人
+- **= 0 但界面确实没刷新** → 看「精准更新命中」的**回退全量**是否为 0%。如果索引覆盖不全，某个控件可能没被纳入更新集
+
+#### 场景三：怀疑定时器泄漏
+
+```js
+roomElvesPerf.snap()     // 看 [活跃定时器]
+```
+
+关注两点：
+
+- **同间隔的定时器来源是否相同** —— 相同 = 可能重复注册
+- **存活时间**是否远超预期（例如弹窗已关，但某个 2 秒定时器还在跑）
+
+#### 场景四：后端接口被频繁调用
+
+```js
+roomElvesPerf.net()
+```
+
+次数高的接口说明有轮询在打它。对照「活跃定时器」的间隔一起看 —— 通常两者能对上（如 10 秒的定时器 → 10 秒一次的 API 调用）。
+
+### 28.5 为什么它自己不耗性能
+
+性能工具最怕"测量本身成为负担"。本面板有三层约束：
+
+| 约束 | 做法 |
+|------|------|
+| **零常驻成本** | 所有打点（hass 耗时 / 步骤耗时 / 更新计数）与定时器、观测器、rAF 采样都只在**面板已构建且可见**时生效。面板没打开时，`_perfRecordHassStart()` / `_perfStepBegin()` 直接返回 0，调用方连 `performance.now()` 都不调 |
+| **不可见即停** | 切到「调试」「版本」等其他选项卡时，**打点与 rAF 采样全部停止**（不只是不刷新显示）。原先只跳过了刷新，打点照跑，已修正 |
+| **零行为改动** | 唯一插入点是 hass 更新链的计时包装，不改变任何内部逻辑 |
+
+**保留项**（成本可忽略且有用）：
+
+- **2 秒刷新定时器**：它是"检测面板是否可见"的唯一手段（卡片拿不到选项卡切换钩子），一次 `getClientRects()` 的开销可忽略
+- **长任务观测器**：回调只在真的发生 >50ms 阻塞时触发，本身接近零成本；切走期间的长任务对"那一刻为什么卡"仍有诊断价值
+
+> 📌 控制台命令 `start()` 会**显式打开所有卡片的打点**；`stop()` 后若面板不存在，会把定时器 / rAF / 观测器全部释放，不留残留。
+
+### 28.6 口径备忘（这些数容易被误读）
+
+| 现象 | 是不是故障 | 说明 |
+|------|-----------|------|
+| **索引覆盖率只有 18%** | ❌ 不是 | 索引只登记"当前渲染出 DOM 的实体"，未展开的弹窗不该在里面。判据是「订阅遗漏」= 0 |
+| **平均命中元素 0.0 个/次** | ❌ 不是 | 变更的实体不在本卡片索引里（多卡片页面常见），同时也说明精准更新对本卡片暂无收益 |
+| **各卡片耗时只列出 1 张** | ❌ 不是 | 打点是逐卡开关的，用 `roomElvesPerf.start()` 才能采集全部 |
+| **活跃定时器里有个 2000ms** | ❌ 不是 | 那是统一定时器（低频刷新调度器），看「来源」可确认；面板自身的刷新定时器也计入 |
+| **后端请求里出现 HA 自身接口** | ❌ 不是 | 采集范围是"整个页面的网络活动"，不只卡片自己的 API |
+| **「订阅遗漏」> 0** | ✅ **是** | 真 Bug：该实体变化时界面不会刷新。明细里会列出具体实体 |
+| **「回退全量」占比高** | ✅ **是** | 精准更新没在生效（退化成全量遍历），通常是索引覆盖问题 |
+| **长任务次数持续 > 0** | ✅ **是** | 主线程被阻塞，点开看时间点与时长 |
+
+### 28.7 三点补充说明
+
+1. **为什么没有"CPU 占用率"**：浏览器不提供读取进程/线程 CPU 占用的 API（安全边界）。用主线程延迟 / 长任务 / 帧率三个标准代理指标代替 —— 它们比一个 `7% → 18%` 的百分比更能定位真问题。
+2. **版本信息**：面板首个快照行显示卡片版本号，便于确认运行的是哪一版。
+3. **数据窗口**：耗时类指标的统计窗口为**近 30 秒**（每 15 个刷新周期重置一次），避免"平均"一直反映很久以前的帧而看不出当下退化。耗时样本保留最近 10 帧。
+
+---
+
+## 二十九、后记
 
 Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
 
