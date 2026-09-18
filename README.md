@@ -11417,129 +11417,11 @@ items:
 
 ---
 
-## 二十五、常见问题
-
-### Q: 卡片显示"加载中"或空白
-A: 检查 JS 和 CSS 文件是否已放到 HA 的 `www` 文件夹，并在仪表板资源中正确添加。
-
-### Q: 按钮点了没反应
-A: 确认实体的 Entity ID 是否正确。可以在 HA 的"开发者工具 → 状态"中复制正确的 ID。
-
-### Q: 图标显示不出来
-A: 检查图标名称是否正确，以 `mdi:` 开头，如 `mdi:lightbulb`。完整的图标列表可以在 https://pictogrammers.com/library/mdi/ 查询。
-
-### Q: 卡片样式不对（比如透明背景变成白色）
-A: 检查 `theme` 配置。如果使用 `transparent` 主题，需要在卡片的 `style` 中设置合适的 `background`。
-
-### Q: 图片/图标闪烁
-A: 这是正常的，HA 状态刷新时图标会重新渲染。如果频繁闪烁，检查是否有多个实体状态在快速变化。
-
-### Q: 弹窗打不开或打开了盖不住
-A: 可能是 Z-Index 栈出现问题。试试刷新页面。
-
-### Q: 多个 Room Elves Card 在一页上，点击弹窗互相干扰
-A: 使用 `prohibit_homepage_scroll` 配置，或者刷新页面重新加载。
-
-### Q: way 计算显示 -- 或没有数据
-A: way 计算需要历史数据。确认 HA 已经记录了足够的历史记录（至少包含当天数据）。刚重启 HA 后历史数据可能需要几分钟才能查询到。
-
-### Q: 如何在卡片内调整弹窗宽度
-A: 在按钮上设置 `width: 500`（数字，单位为像素）。
-
----
-
-## 二十六、配置速查表
-
-| 顶层配置 | 说明 | 必须 |
-|---------|------|:----:|
-| `type: custom:room-elves-card` | 卡片类型标识 | ✅ |
-| `room_name` | 房间名称 | 建议 |
-| `head` | 是否头部模式 | 否 |
-| `mode` | 显示模式 | 否 |
-| `entities` | 传感器列表 | 否 |
-| `buttons` | 按钮配置 | 否 |
-| `automation` | 自动化列表 | 否 |
-| `person` | 人员配置 | 否 |
-| `overview` | 概览栏配置 | 否 |
-| `notice` | 公告栏配置 | 否 |
-| `theme` | 主题 | 否 |
-| `dark_light_theme` | 暗/亮主题对 | 否 |
-| `show_animation` | 动画开关 | 否 |
-| `style` | 自定义样式 | 否 |
-| `heartbeat_packet` | 心跳包 | 否 |
-| `entities_tap_action` | 全局 entities 点击动作配置 | 否 |
-| `prohibit_homepage_scroll` | 禁止滚动 | 否 |
-| `performance_mode` | 性能模式（auto/desktop/mobile） | 否 |
-| `head_columns` | head模式列数，默认6 | 否 |
-| `head_rows` | head模式行数，默认auto | 否 |
-
-| 按钮配置 | 说明 | 必须 |
-|---------|------|:----:|
-| `type` | 按钮类型 | 否 |
-| `entity` | 实体ID | 视类型 |
-| `name` | 显示名称 | 否 |
-| `icon` | 图标 | 否 |
-| `on_icon` | 开启图标 | 否 |
-| `off_icon` | 关闭图标 | 否 |
-| `on_color` | 开启颜色 | 否 |
-| `off_color` | 关闭颜色 | 否 |
-| `card` | 设备列表 | 视类型 |
-| `tap_action` | 点击动作 | 否 |
-| `primary` | 主文本 | 否 |
-| `show_badge` | 角标 | 否 |
-| `badge_entity` | 角标实体 | 否 |
-| `badge` | 条件角标数组（独立按钮） | 否 |
-| `confirm` | 需要确认 | 否 |
-| `close_time` | 弹窗自动关闭秒数 | 否 |
-| `show_duration` | 显示持续时长 | 否 |
-| `width` | 弹窗宽度 | 否 |
-| `per_line` | 每行几个 | 否 |
-| `row_column` | 网格位置（head按钮/弹窗item） | 否 |
-| `tabs_by` | 聚合弹窗按字段分组 | 否 |
-| `group_lights_by_room` | 灯光弹窗按房间分组 | 否 |
-| `way` | 计算方式 | 否 |
-| `format` | 显示格式 | 否 |
-| `rules` | 动态图标规则 | dynamic_icon专用 |
-| `global_exception` | 批量操作时跳过此实体 | 否 |
-| `light_entity` | 灯光实体 | clothes_dryer专用 |
-| `locker` | 锁定模式（默认true） | clothes_dryer专用 |
-| `collect_position` | 收藏位置 | clothes_dryer专用 |
-
-| 图表卡片类型 | 渲染方式 | 数据源 | 说明 |
-|-------------|----------|--------|------|
-| `chart_gauge` | SVG | 单实体 | 仪表图，支持 severity 颜色分段 |
-| `chart_progress` | CSS | 多实体(cards) | 多进度条，自动颜色分级 |
-| `chart_bar` | CSS | 单实体历史 | 柱状图，支持聚合计算 |
-| `chart_line` / `chart` | ECharts | 单实体历史 | 平滑曲线趋势图 |
-| `chart_pie` | ECharts | 多实体(cards) | 环形图，中心显示总计 |
-| `chart_pie_full` | ECharts | 多实体(chart) | 完整饼图，带图例和标签 |
-| `chart_nightingale` | ECharts | 多实体(chart) | 南丁格尔玫瑰图 |
-| `chart_heatmap` | ECharts | 实体属性/API | 年度日历热力图 |
-| `chart_calendar` | ECharts | 实体属性/API | 月历+年/月/日柱状图，双系列 |
-| `chart_mixed` | ECharts | 多实体属性/API | 柱+线+面积组合图，三级下钻 |
-
-| 配置共享 | 说明 | 必须 |
-|---------|------|:----:|
-| `config_id` | 配置注册 ID（写在 `tap_action` 或 `tabs` 元素内） | 注册时必填 |
-| `card_config.from_config_id` | 引用已注册的配置 ID | 引用时必填 |
-| `card_config.get_type` | 提取类型：`all` / `entity` / `action` | 否，默认 `all` |
-| `card_config.replace_config` | 替换解析结果中的指定键 | 否 |
-| `tabs_config.from_config_id` | 组合引用多个配置为选项卡 | tabs_config必填 |
-| `tabs_config.from_config_id[].config_id` | 引用的配置 ID | ✅ |
-| `tabs_config.from_config_id[].name` | 覆盖选项卡名称 | 否 |
-| `tabs_config.from_config_id[].icon` | 覆盖选项卡图标 | 否 |
-| `tabs_config.from_config_id[].entity` | 覆盖选项卡实体 | 否 |
-| `tabs_config.from_config_id[].entity_value` | 覆盖选项卡实体匹配值 | 否 |
-| `tabs_config.from_config_id[].replace_config` | 替换展开后选项卡的指定键 | 否 |
-| `tabs_config.config_id` | 为组合后的配置注册 ID（可选） | 否 |
-
----
-
-## 二十七、调试信息管理系统
+## 二十五、调试信息管理系统
 
 卡片内置了一套统一的**调试信息管理系统**（`DebugManager`），实现了"**一个公共方法，三处同步**"的调试信息查看机制，方便排查卡片/模块问题。
 
-### 27.1 三处同步
+### 25.1 三处同步
 
 模块调用调试方法后，调试信息会**同时**同步到以下三个地方：
 
@@ -11551,7 +11433,7 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 三者开关状态与信息**完全一致、双向同步**：控制台命令开启某模块后，调试卡片对应开关自动高亮；卡片点开关，控制台命令状态同步。
 
-### 27.2 调试卡片（debug_card）
+### 25.2 调试卡片（debug_card）
 
 在按钮配置中使用 按钮 `tap_action` 弹窗内 `card.type: debug_card`：
 
@@ -11574,11 +11456,11 @@ buttons:
 
 > **debug_card 头部选项卡**：弹窗头部含「调试 / 性能 / 版本 / 数据库」四个选项卡。
 > - **调试**：模块开关 + 调试文本直显（本节前述功能）
-> - **性能**：运行态性能指标（更新耗时 / 帧率 / 索引 / 定时器 / 后端请求等 13 项 + 控制台命令），**详见第 28 章**
+> - **性能**：运行态性能指标（更新耗时 / 帧率 / 索引 / 定时器 / 后端请求等 13 项 + 控制台命令），**详见 25.6**
 > - **版本**：卡片/后端版本信息 + HA 服务器信息概览 + 系统资源 24h 趋势图 + 已注册调试模块
-> - **数据库**：内置数据库浏览器（表选择 + 字段选择 + 多条件筛选 + 浏览/修改模式原地编辑 + 前端 SQL 执行 + 分页/表头排序），详见 27.2.2
+> - **数据库**：内置数据库浏览器（表选择 + 字段选择 + 多条件筛选 + 浏览/修改模式原地编辑 + 前端 SQL 执行 + 分页/表头排序），详见 25.2.2
 
-### 27.2.1 版本选项卡（v5.6.2 起）
+### 25.2.1 版本选项卡（v5.6.2 起）
 
 「版本」选项卡用于查看卡片/后端版本与服务器运行状态。其中 **HA 服务器信息** 与 **系统资源** 数据来自后端 `ha_data_store`（需 **v3.1.0+**）：
 
@@ -11601,7 +11483,7 @@ buttons:
 >
 > 📌 **提示**：Room Elves Card 详情中的模块树为静态硬编码（与 `room-elves-code-tree.md` 结构文档同步维护），仅用于结构浏览。
 
-### 27.2.2 数据库选项卡（v5.6.4 起）
+### 25.2.2 数据库选项卡（v5.6.4 起）
 
 「数据库」选项卡内置**数据库浏览器**，与后端 `ha_data_store` 的 `db_viewer` 数据/提交接口一致，面向移动端做了紧凑化改造。顶部工具栏为一行**文字按钮**：
 
@@ -11639,7 +11521,7 @@ buttons:
 > - 浏览表、SQL 结果的表格均在 `dbg-db-data` 内部滚动，列宽可依赖表头排序时的自动适配；
 > - SQL 写入类语句请谨慎执行，涉及真实数据修改。
 
-### 27.3 浏览器控制台命令
+### 25.3 浏览器控制台命令
 
 在浏览器控制台（F12）输入：
 
@@ -11663,14 +11545,14 @@ roomElvesDebug('entity-report', false)     // 关闭上报模块调试
 roomElvesDebug('view', 'entity-report')    // 查看上报模块已发送的调试信息
 ```
 
-### 27.4 已接入的调试模块
+### 25.4 已接入的调试模块
 
 | 模块 | 说明 | 接入方式 |
 |------|------|---------|
 | `action-log` | 用户操作记录埋点 | `register` + `dump`（完整操作记录字段） |
 | `entity-report` | 实体提取上报 | `register` + `send`（完整实体字段） |
 
-### 27.5 给新模块加调试信息
+### 25.5 给新模块加调试信息
 
 任何模块只需两步即可接入调试信息（遵循 `DebugManager` 公共接口）：
 
@@ -11693,9 +11575,9 @@ DebugManager.register('my-module', {
 });
 ```
 
----
+### 25.6 性能选项卡（v5.9.0 起）
 
-## 二十八、性能面板（性能测试与排查）
+> 本节对应 25.2 节里提到的「性能」选项卡 —— 它一直是 `debug_card` 的四个选项卡之一，此前误置为独立章节，现已并入本章。
 
 「性能面板」是 `debug_card` 弹窗里的一个**独立选项卡**（懒加载：不点开就没有任何开销），把卡片历次性能优化（实体精准更新、订阅过滤、定时器合并、首屏加载等）变成**常驻可见的量化指标**。
 
@@ -11703,7 +11585,7 @@ DebugManager.register('my-module', {
 
 **两个入口：界面**（适合边操作边看）与**控制台命令**（适合复现卡顿时取证，不用开着弹窗）。
 
-### 28.1 界面入口
+#### 25.6.1 界面入口
 
 调试卡片弹窗头部有「调试 / 性能 / 版本 / 数据库」四个选项卡，点「性能」即可。
 
@@ -11737,7 +11619,7 @@ buttons:
 
 > 📌 「一键复制」按钮会导出**完整快照文本**（含原始样本序列、环境信息、UA 等），内容比面板上看到的多，适合贴给别人排查。
 
-### 28.2 各指标的读法
+#### 25.6.2 各指标的读法
 
 #### 有效帧：为什么"平均 0.1ms"不能直接看
 
@@ -11851,7 +11733,7 @@ room-elves-card/releases  1 次 · 平均 1161ms · 最大 1161ms
 
 > ⚠️ **打点是逐卡开关的**：打开面板只会给"面板所在的那张卡"开打点，所以界面入口通常只列出 1 张。**要比较全部卡片，必须用下面的控制台命令**（`roomElvesPerf.start()` 会给所有卡片开打点）。
 
-### 28.3 浏览器控制台命令（roomElvesPerf）
+#### 25.6.3 浏览器控制台命令（roomElvesPerf）
 
 在浏览器控制台（F12）输入 `roomElvesPerf`，或在代码里用 `window.roomElvesPerf`。
 
@@ -11900,7 +11782,7 @@ console.log(text.length, '字符');
 
 | 命令 | 面向 | 用途 |
 |------|------|------|
-| `roomElvesDebug()` | **调试信息模块系统** | 开关各模块的调试输出、查看模块发送的文本（见第 27 节） |
+| `roomElvesDebug()` | **调试信息模块系统** | 开关各模块的调试输出、查看模块发送的文本（见 25 节） |
 | `roomElvesPerf` | **性能指标** | 采集/导出运行时的耗时、内存、索引、定时器、网络数据 |
 
 两者互不依赖，可同时使用。
@@ -11931,7 +11813,7 @@ roomElvesPerf.perf()
 主卧  平均 0.62ms · 最大 1.10ms · 42 帧
 ```
 
-### 28.4 四个典型排查场景
+#### 25.6.4 四个典型排查场景
 
 #### 场景一：页面整体卡顿
 
@@ -11975,7 +11857,7 @@ roomElvesPerf.net()
 
 次数高的接口说明有轮询在打它。对照「活跃定时器」的间隔一起看 —— 通常两者能对上（如 10 秒的定时器 → 10 秒一次的 API 调用）。
 
-### 28.5 为什么它自己不耗性能
+#### 25.6.5 为什么它自己不耗性能
 
 性能工具最怕"测量本身成为负担"。本面板有三层约束：
 
@@ -11992,7 +11874,7 @@ roomElvesPerf.net()
 
 > 📌 控制台命令 `start()` 会**显式打开所有卡片的打点**；`stop()` 后若面板不存在，会把定时器 / rAF / 观测器全部释放，不留残留。
 
-### 28.6 口径备忘（这些数容易被误读）
+#### 25.6.6 口径备忘（这些数容易被误读）
 
 | 现象 | 是不是故障 | 说明 |
 |------|-----------|------|
@@ -12005,7 +11887,7 @@ roomElvesPerf.net()
 | **「回退全量」占比高** | ✅ **是** | 精准更新没在生效（退化成全量遍历），通常是索引覆盖问题 |
 | **长任务次数持续 > 0** | ✅ **是** | 主线程被阻塞，点开看时间点与时长 |
 
-### 28.7 三点补充说明
+#### 25.6.7 三点补充说明
 
 1. **为什么没有"CPU 占用率"**：浏览器不提供读取进程/线程 CPU 占用的 API（安全边界）。用主线程延迟 / 长任务 / 帧率三个标准代理指标代替 —— 它们比一个 `7% → 18%` 的百分比更能定位真问题。
 2. **版本信息**：面板首个快照行显示卡片版本号，便于确认运行的是哪一版。
@@ -12013,6 +11895,125 @@ roomElvesPerf.net()
 
 ---
 
-## 二十九、后记
+## 二十六、常见问题
+
+### Q: 卡片显示"加载中"或空白
+A: 检查 JS 和 CSS 文件是否已放到 HA 的 `www` 文件夹，并在仪表板资源中正确添加。
+
+### Q: 按钮点了没反应
+A: 确认实体的 Entity ID 是否正确。可以在 HA 的"开发者工具 → 状态"中复制正确的 ID。
+
+### Q: 图标显示不出来
+A: 检查图标名称是否正确，以 `mdi:` 开头，如 `mdi:lightbulb`。完整的图标列表可以在 https://pictogrammers.com/library/mdi/ 查询。
+
+### Q: 卡片样式不对（比如透明背景变成白色）
+A: 检查 `theme` 配置。如果使用 `transparent` 主题，需要在卡片的 `style` 中设置合适的 `background`。
+
+### Q: 图片/图标闪烁
+A: 这是正常的，HA 状态刷新时图标会重新渲染。如果频繁闪烁，检查是否有多个实体状态在快速变化。
+
+### Q: 弹窗打不开或打开了盖不住
+A: 可能是 Z-Index 栈出现问题。试试刷新页面。
+
+### Q: 多个 Room Elves Card 在一页上，点击弹窗互相干扰
+A: 使用 `prohibit_homepage_scroll` 配置，或者刷新页面重新加载。
+
+### Q: way 计算显示 -- 或没有数据
+A: way 计算需要历史数据。确认 HA 已经记录了足够的历史记录（至少包含当天数据）。刚重启 HA 后历史数据可能需要几分钟才能查询到。
+
+### Q: 如何在卡片内调整弹窗宽度
+A: 在按钮上设置 `width: 500`（数字，单位为像素）。
+
+---
+
+## 二十七、配置速查表
+
+| 顶层配置 | 说明 | 必须 |
+|---------|------|:----:|
+| `type: custom:room-elves-card` | 卡片类型标识 | ✅ |
+| `room_name` | 房间名称 | 建议 |
+| `head` | 是否头部模式 | 否 |
+| `mode` | 显示模式 | 否 |
+| `entities` | 传感器列表 | 否 |
+| `buttons` | 按钮配置 | 否 |
+| `automation` | 自动化列表 | 否 |
+| `person` | 人员配置 | 否 |
+| `overview` | 概览栏配置 | 否 |
+| `notice` | 公告栏配置 | 否 |
+| `theme` | 主题 | 否 |
+| `dark_light_theme` | 暗/亮主题对 | 否 |
+| `show_animation` | 动画开关 | 否 |
+| `style` | 自定义样式 | 否 |
+| `heartbeat_packet` | 心跳包 | 否 |
+| `entities_tap_action` | 全局 entities 点击动作配置 | 否 |
+| `prohibit_homepage_scroll` | 禁止滚动 | 否 |
+| `performance_mode` | 性能模式（auto/desktop/mobile） | 否 |
+| `head_columns` | head模式列数，默认6 | 否 |
+| `head_rows` | head模式行数，默认auto | 否 |
+
+| 按钮配置 | 说明 | 必须 |
+|---------|------|:----:|
+| `type` | 按钮类型 | 否 |
+| `entity` | 实体ID | 视类型 |
+| `name` | 显示名称 | 否 |
+| `icon` | 图标 | 否 |
+| `on_icon` | 开启图标 | 否 |
+| `off_icon` | 关闭图标 | 否 |
+| `on_color` | 开启颜色 | 否 |
+| `off_color` | 关闭颜色 | 否 |
+| `card` | 设备列表 | 视类型 |
+| `tap_action` | 点击动作 | 否 |
+| `primary` | 主文本 | 否 |
+| `show_badge` | 角标 | 否 |
+| `badge_entity` | 角标实体 | 否 |
+| `badge` | 条件角标数组（独立按钮） | 否 |
+| `confirm` | 需要确认 | 否 |
+| `close_time` | 弹窗自动关闭秒数 | 否 |
+| `show_duration` | 显示持续时长 | 否 |
+| `width` | 弹窗宽度 | 否 |
+| `per_line` | 每行几个 | 否 |
+| `row_column` | 网格位置（head按钮/弹窗item） | 否 |
+| `tabs_by` | 聚合弹窗按字段分组 | 否 |
+| `group_lights_by_room` | 灯光弹窗按房间分组 | 否 |
+| `way` | 计算方式 | 否 |
+| `format` | 显示格式 | 否 |
+| `rules` | 动态图标规则 | dynamic_icon专用 |
+| `global_exception` | 批量操作时跳过此实体 | 否 |
+| `light_entity` | 灯光实体 | clothes_dryer专用 |
+| `locker` | 锁定模式（默认true） | clothes_dryer专用 |
+| `collect_position` | 收藏位置 | clothes_dryer专用 |
+
+| 图表卡片类型 | 渲染方式 | 数据源 | 说明 |
+|-------------|----------|--------|------|
+| `chart_gauge` | SVG | 单实体 | 仪表图，支持 severity 颜色分段 |
+| `chart_progress` | CSS | 多实体(cards) | 多进度条，自动颜色分级 |
+| `chart_bar` | CSS | 单实体历史 | 柱状图，支持聚合计算 |
+| `chart_line` / `chart` | ECharts | 单实体历史 | 平滑曲线趋势图 |
+| `chart_pie` | ECharts | 多实体(cards) | 环形图，中心显示总计 |
+| `chart_pie_full` | ECharts | 多实体(chart) | 完整饼图，带图例和标签 |
+| `chart_nightingale` | ECharts | 多实体(chart) | 南丁格尔玫瑰图 |
+| `chart_heatmap` | ECharts | 实体属性/API | 年度日历热力图 |
+| `chart_calendar` | ECharts | 实体属性/API | 月历+年/月/日柱状图，双系列 |
+| `chart_mixed` | ECharts | 多实体属性/API | 柱+线+面积组合图，三级下钻 |
+
+| 配置共享 | 说明 | 必须 |
+|---------|------|:----:|
+| `config_id` | 配置注册 ID（写在 `tap_action` 或 `tabs` 元素内） | 注册时必填 |
+| `card_config.from_config_id` | 引用已注册的配置 ID | 引用时必填 |
+| `card_config.get_type` | 提取类型：`all` / `entity` / `action` | 否，默认 `all` |
+| `card_config.replace_config` | 替换解析结果中的指定键 | 否 |
+| `tabs_config.from_config_id` | 组合引用多个配置为选项卡 | tabs_config必填 |
+| `tabs_config.from_config_id[].config_id` | 引用的配置 ID | ✅ |
+| `tabs_config.from_config_id[].name` | 覆盖选项卡名称 | 否 |
+| `tabs_config.from_config_id[].icon` | 覆盖选项卡图标 | 否 |
+| `tabs_config.from_config_id[].entity` | 覆盖选项卡实体 | 否 |
+| `tabs_config.from_config_id[].entity_value` | 覆盖选项卡实体匹配值 | 否 |
+| `tabs_config.from_config_id[].replace_config` | 替换展开后选项卡的指定键 | 否 |
+| `tabs_config.config_id` | 为组合后的配置注册 ID（可选） | 否 |
+
+---
+
+## 二十八、后记
 
 Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+
