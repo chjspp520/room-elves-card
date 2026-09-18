@@ -1,15 +1,9 @@
 
-# Room Elves Card - 房间精灵卡片 完整使用说明
 
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
 # Room Elves Card - 房间精灵卡片 完整使用说明(适用于v5.9.0)
-
-
-# Room Elves Card - 房间精灵卡片 完整使用说明
-
-
 
 ## 一、卡片简介
 
