@@ -3,29 +3,38 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v5.9.0)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.4.2及其以前的版本)
+
+# Room Elves Card - 房间精灵卡片 完整使用说明
+
+
 
 ## 一、卡片简介
 
 **Room Elves Card**（房间精灵卡片）是一款功能极为强大的 Home Assistant 自定义卡片，旨在将一个房间（或全屋）的所有设备状态与控制能力集中到一张卡片中，实现"一卡掌控全家"的智能家居体验。
 
-> **作者声明**：本卡片及推荐搭配的 [温湿度卡片](https://github.com/chjspp520/wenshidu-card)、[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store) 均由 **chjspp520** 制作维护。
+> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai) 均由 **chjspp520** 制作维护。
 >
 > **免责声明**：作者仅提供软件功能，不对数据泄露提供安全保障。数据安全由用户自行负责，使用本软件即代表接受本条款（适用法律以所在地为准）。
 
 ### 核心特性
 
-- **30+ 种设备卡片类型支持**：灯光（单灯/灯组）、空调、插座/开关、耗材/电池、暖气/新风机、媒体播放器（支持后台播放/api 列表）、窗帘（单层/双层）、晾衣架（机械仿真拖拽）、风扇、通用设备、动态图标、时间轴、情景模式、快捷操作、按钮组、用户卡片、天气、电话/话费、健康数据、传感器、开关、选择器、数字输入、滑块、文本、按钮、图片、仪表图/进度条/柱状图/曲线图/环形图/饼图/热力图/日历图/混合图表等
+- **30+ 种设备卡片类型支持**：灯光（单灯/灯组）、空调、插座/开关、耗材/电池、暖气/新风机、媒体播放器（支持后台播放/api 列表）、窗帘（单层/双层）、晾衣架（机械仿真拖拽）、风扇、通用设备、动态图标、时间轴、情景模式、快捷操作、按钮组、用户卡片、天气、健康数据、传感器、开关、选择器、数字输入、滑块、文本、按钮、图片、仪表图/进度条/柱状图/曲线图/环形图/饼图/热力图/日历图/混合图表等
 - **丰富的弹出控制面板**：每种设备类型都有专属弹窗——灯光面板支持亮度/色温调节、按房间分组、批量开关；空调面板可调温度/模式/风速；窗帘面板支持百分比滑块控制、单双层切换；晾衣架面板带机械仿真拖拽和收藏位置；情景模式支持执行进度展示和状态验证
 - **两种显示模式**：
   - **普通模式**：左侧显示房间名称和传感器数据，右侧显示设备操作按钮，适合单房间展示
   - **头部模式（head）**：所有按钮铺满卡片，顶部可显示概览栏（灯光/空调/插座/耗材/环境/人员/能耗统计），适合放在页面顶部作为全屋控制中心
 - **通用动作系统（tap_action）**：统一的动作引擎覆盖所有可点击位置，支持 `toggle`（自动推断服务切换开关）、`set_value`（智能推断服务设置目标值）、`loop_assign`（循环赋值：每次点击把实体推进到值序列下一个值）、`process_execute`（流程执行：按步骤序列依次执行多实体操作，支持每步独立延时）、`quick-action`（快捷操作/情景模式）、`more-info`、`navigate`、`call-service`、`popup_card`、`card`（弹出设备内置控制弹窗）等 12 种动作类型，`toggle` 和 `set_value` 还支持多实体批量操作
-- **选项卡系统**：弹窗内支持选项卡分组，具备图标、高亮、自动跳转、条件过滤（display_only）、禁用、角标、分组归属（belong）等高级功能，支持按楼层/区域分组展示
+- **选项卡系统**：弹窗内支持选项卡分组，具备图标、高亮、自动跳转、条件过滤（display_only）、禁用、角标、分组归属（belong）等高级功能，支持按楼层/区域分组展示；**选项卡之间支持左右滑动切换**（跟手拖动 + 松手吸附 + 高亮跟手）
+- **左右滑动（全场景统一）**：弹窗选项卡、头部多页按钮、各卡片自己的分页（多房间 / 多用户 / 多档位 / 多数据集）都支持左右滑动，手感一致；纵向滚动仍归浏览器，起点落在按钮 / 输入框 / 日期导航上不算翻页，页面里的横向滚动区会主动让路；只有一页时不启用；**无需任何配置**（详见「八-A、左右滑动」）
 - **程序扩展坞（Dock）**：从屏幕右侧滑入的快捷启动栏，支持头部模式全部按钮类型和动作系统，点击触发按钮展开/收起
 - **独立卡片模式（Standalone）**：将单个设备控制面板直接作为一张卡片使用，支持空调、窗帘、媒体、晾衣架、图表等 20+ 种独立卡片类型
-- **平页多屏模式**：头部模式下支持多页按钮，横向滑动切换页面，底部圆点指示器显示当前页
+- **三张卡片已从"外置独立卡片"并入内建（内部子卡片）**：**温湿度面板**（`wenshidu`）、**设备回放**（`replay`）、**定时精灵**（`timer`）原先各自是**在本卡片之外单独安装的独立卡片**（`wenshidu-card.js` / `device-replay-card.js` / `timer-control-card.js`），现已**整体并入房间精灵卡片**，成为它的**内部子卡片** —— 独立 custom element 已退役（不再单独注册），改由本卡片以 `standalone_type: wenshidu / replay / timer` 直接内置渲染，也能作为 `type: wenshidu / replay / timer` 按钮嵌进按钮网格；配置写法见 6.42 / 6.40 / 6.41，实现位于 `modules/cards/wenshidu.js` / `device-replay.js` / `timer-control.js`（引擎内封在各自 Element 里，只对卡片原型暴露少数方法）
+- **多页模式（头部模式）**：用 `buttons_2` / `buttons_3` … 把按钮分到多页，**左右滑动切换页面**（跟手拖动 + 松手吸附 + 圆点高亮跟手），底部圆点指示当前页；桌面端也可用滚轮翻页
 - **图表卡片系统**：内置 10 种图表类型——仪表图（纯 SVG）、进度条（纯 CSS）、柱状图（纯 CSS）、曲线图/环形图/饼图/南丁格尔玫瑰图/热力图/日历图/混合图表（ECharts），以及插座功率流向桑基图
+- **个人账单卡片（`bill`）**：把 ha_data_store 的账单数据画成一张卡——概览（环形图 + 来源占比条 + 年度 / 月度收支 + 最近 N 日）、分析（四张环形图 + 月度趋势 + 支付时刻 + 对方排行）、日历（格子分两行写"收 / 支" + 年月选择）、查询（条件可折叠 + 汇总（合计行"有哪个显示哪个"，不计收支也摆得出来）+ 排序条 + 涉及年筛选）、历史（历史今日 / 历史本月）**五个选项卡**，并支持在**一个窗口里一路下钻**（年 → 月 → 日 → 时 → 那一个小时的账单）；明细行的字段还能直接点着去查询。配置见 6.45
+- **iKuai 全实体卡片（`ikuai_card`）**：把一台爱快路由器**整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.ikuai_all_entities`）就自动认设备与角色（**不写死任何实体 id**），顶层四个页签（路由 / Docker / 虚拟机 / 日志），路由页再分六个子页签（网络 / 线路 / DHCP / 客户端 / 本地认证 / 设置）；虚拟机带远程控制台与画面预览。配置见 6.46
+- **叮咚门铃卡片（`dingdong`）**：只配一个「实体清单」实体，就把一台叮咚（移康 eques）门铃装进一张卡 —— 抓拍 / 实时 / 反转三态画面 + 按天回看的事件·抓拍·录像混合时间轴 + 跨天双向时间轴 + 设置 + 诊断；不写死实体 id（按「域 + 后缀」从清单反查角色）。依赖 `eques_dingdong` 集成，配置见 6.47
 - **平面户型图**：支持 JSON 坐标数据的平面户型图渲染，实时显示各房间人员占用状态，拖动时间轴可回溯历史活动
 - **人员/天气/导航**：用户卡片支持多人头像布局（当前登录用户大头像居中）、在/离家状态检测、实时定位、高德地图导航路线规划、多地区天气预报（支持和风天气 API 与 HA 实体双数据源）
 - **情景模式**：一键执行预定义操作列表，支持气泡选择/直接执行模式、延时执行、执行进度实时展示、状态验证、执行历史记录，服务调用自动推断（覆盖 light/climate/cover/fan/media_player/vacuum/lock/automation/script 等所有域）。还可作为统一卡片类型（`type: action`）或 `tap_action: quick-action` 在弹窗、title_entities 等任意位置使用
@@ -54,8 +63,12 @@
 
 以下是与本卡片配套使用的推荐卡片和依赖集成：
 
-- **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等。建议优先安装配置。
-- **温湿度卡片** ([wenshidu-card](https://github.com/chjspp520/wenshidu-card)) — 房间温湿度传感器数据可视化卡片，支持实时数据展示和历史曲线
+> ⚠️ 下面三个集成分别对应三张卡片，**卡片本身不含数据采集，缺集成就没有数据**：
+> `ha_data_store` → `bill`（个人账单，v5.0.0+）· `esxi_control` → `esxi`（ESXi 虚拟化）· `ikuai` → `ikuai_card`（iKuai 全实体卡）。
+
+- **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等。建议优先安装配置。**`type: bill` 个人账单卡片的必需集成（需 v5.0.0 及以上）**，见 6.45。
+- **ESXi Control** ([esxi_control](https://github.com/chjspp520/esxi_control)) — ⚠️ **`type: esxi` 卡片的必需集成**。为每台主机 / 虚拟机 / 数据存储 / 许可证建实体，并生成聚合实体 `sensor.esxi_all_entities`；**没装集成时 ESXi 卡片没有数据**（只显示提示），安装见 6.44。
+- **iKuai 集成** ([ikuai](https://github.com/chjspp520/ikuai)) — ⚠️ **`type: ikuai_card` 卡片的必需集成**。为整台爱快（系统 / 线路 / DHCP / 客户端 / Docker / 虚拟机 / 日志…）建实体，并生成聚合实体 `sensor.ikuai_all_entities`；**没装集成时爱快卡片没有数据**，安装见 6.46。注意**不是**旧的 `ikuai_router` 集成。
 - **电力卡片** ([electricity-info-card](https://github.com/chjspp520/electricity-info-card)) — 家庭用电信息展示卡片，支持功率、电量、电费等多维度数据
 
 ---
@@ -317,7 +330,7 @@ automation:
 
 #### 头部多屏模式（多页滑动）
 
-当 `head: true` 且按钮数量超过一页时，可以通过 `buttons_2`、`buttons_3`…… 等配置将按钮分到多个页面，通过横向滑动切换页面，底部圆点指示器显示当前页位置。
+当 `head: true` 且按钮数量超过一页时，可以通过 `buttons_2`、`buttons_3`…… 等配置将按钮分到多个页面，**左右滑动即可切换页面**（跟手拖动 + 松手吸附；底部圆点指示当前页，拖动越过半屏时高亮就跟手过去）。桌面端也可以直接把**纵向滚轮**转成翻页。机制与其它选项卡完全一致，见「八-A、左右滑动」。
 
 ```yaml
 head: true
@@ -577,6 +590,13 @@ name: 客厅空调                    # 显示名称（可选）
 
 ### 支持的设备类型
 
+> **其中 `replay`（设备回放）/ `timer`（定时精灵）/ `wenshidu`（温湿度面板）三张，原先是在本卡片之外单独安装的独立卡片**（`device-replay-card.js` / `timer-control-card.js` / `wenshidu-card.js`），现已**整体并入房间精灵卡片**成为**内部子卡片**：独立 custom element 不再注册，配置改成本卡片的写法（分别见 6.40 / 6.41 / 6.42）。也就是说，用这三张现在**只需要房间精灵卡片本身**，不必再另装一张卡片。
+
+> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` 三张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
+> [`esxi_control`](https://github.com/chjspp520/esxi_control) · [`ikuai`](https://github.com/chjspp520/ikuai) ·
+> [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，个人账单）。
+> 安装方式与依赖细节见各自小节（6.44 / 6.45 / 6.46），**光装房间精灵卡片本身不够**。
+
 **常规设备类型：**
 
 | `standalone_type` | 说明 | 实体域 |
@@ -590,6 +610,14 @@ name: 客厅空调                    # 显示名称（可选）
 | `fnnas` | 飞牛 NAS 管理卡片（系统信息/电源/Docker/虚拟机管理） | fn_nas 集成实体 |
 | `entities_health` | 实体健康状态卡片（按房间/按状态展示全屋实体在线离线情况） | `sensor` |
 | `daily_report` | 今日家庭日报卡片（summary 日报/状态横幅/关键指标） | `sensor` |
+| `replay` | 设备回放卡片（户型图 + 设备时间轴，可播放/拖拽/选日期） | 任意（用 `entities:` 配置回放设备，见 6.40） |
+| `timer` | 定时精灵卡片（延时/定时执行设备动作，含任务列表与历史） | 任意（后端 `sensor.ha_data_store_timer`，见 6.41） |
+| `wenshidu` | 温湿度面板卡片（时间轴回放 + 温度/湿度两张户型图 + 3D 视图 + 历史曲线） | 任意（用 `rooms:` + `entities:` 配置，见 6.42） |
+| `overview` | 概览面板卡片（把概览弹窗内容直接渲染成常显卡片） | 无（用顶层 `overview:` 配置） |
+| `scene_mode` | 情景模式卡片（情景列表常显，点击就地执行并显示进度） | 无（用顶层 `scenes:` 配置） |
+| `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡）**⚠️ 需先装 `esxi_control` 集成** | `esxi_control` 集成实体（聚合实体 `sensor.esxi_all_entities`，回退 `sensor.entities`，见 6.44） |
+| `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表）**⚠️ 需先装 `ha_data_store` v5.0.0+** | ha_data_store 账单接口（配 `api_base_url` + `key`，见 6.45） |
+| `ikuai_card` | iKuai 全实体卡片（路由 / Docker / 虚拟机 / 日志四页签，只配一个聚合实体即认全设备）**⚠️ 需先装 `ikuai` 集成** | 新集成 `ikuai` 的聚合实体 `sensor.ikuai_all_entities`（见 6.46） |
 | `sensor` | 传感器卡片（数值显示） | `sensor` |
 | `switch` | 开关卡片 | `switch` / `input_boolean` |
 | `select` | 选择下拉卡片 | `select` / `input_select` |
@@ -645,6 +673,37 @@ series: "用量,时长"
 ```
 
 > 💡 `api_base_url` 和 `key` 省略时自动从顶层配置继承（如有）。
+
+**温湿度面板独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: wenshidu
+card_width: 440px
+default_main_room: 客厅          # 主房间：时间轴渐变按它的温度着色
+main_entities:
+  客厅:
+    temperature: sensor.keting_wendu
+rooms:                           # 户型图的房间多边形（SVG points 坐标）
+  - id: 客厅
+    name: 客厅
+    points: 68,283 253,283 253,229 311,229 311,331 273,331 273,508 128,509 128,353 68,352
+    labelX: "206"
+    labelY: "311"
+    dataX: "190"
+    dataY: "330"
+entities:                        # 每个房间的温湿度实体
+  客厅:
+    temperature: sensor.keting_wendu
+    humidity: sensor.keting_shidu
+temp_colors:
+  16-20: "#3498db"
+  20-25: "#2ecc71"
+  25-30: "#f39c12"
+  30-32: "#e74c3c"
+```
+
+> 完整字段（多房间、字体、单位显隐、3D、外部 API 数据源等）见 6.42。
 
 **窗帘独立卡片**
 
@@ -719,6 +778,106 @@ entity: sensor.power_distribution
 name: 用电分布
 ```
 
+**概览面板独立卡片**
+
+把「全屋态势」概览弹窗的内容（微气候 / 全屋能耗 / 人在 / 设备概览 / 实体健康 等）直接渲染成一张常显卡片，配置沿用概览弹窗同一套 `overview:` 列表：
+
+```yaml
+type: custom:room-elves-card
+standalone_type: overview
+overview:
+  - type: environment
+    name: 环境
+    icon: mdi:thermometer-water
+    rooms:
+      户外:
+        temperature: sensor.ketingwaiyangmian_wendu
+        humidity: sensor.ketingwaiyangmian_shidu
+      客厅:
+        temperature: sensor.keting_wendu
+        humidity: sensor.keting_shidu
+  - type: person
+    name: 人在
+    icon: mdi:run
+    rooms:
+      客厅: binary_sensor.keting_renzai
+    person:
+      - name: Alix
+        entity: device_tracker.ip15_94
+  - type: overview_device
+    icon: mdi:server
+    name: 服务器开启数量
+    condition: 'on'
+    entities:
+      - entity: binary_sensor.192_168_1_90
+        name: Exsi
+    tap_action:
+      card_config:
+        from_config_id: fuwuqi
+        get_type: all
+  - type: entities_health
+    entity: sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health
+    name: 实体健康
+    icon: mdi:heart-pulse
+```
+
+> **说明：**
+> - 与头部模式共用同一份 `overview:` 配置格式，各子项含义见「概览弹窗」章节。
+> - 刷新由 hass 推送驱动（概览相关实体变化即更新），不轮询；内容与弹窗完全同源（同一套渲染 + 同一套实时更新链路）。
+> - **灯 / 空调 / 插座 / 耗材** 四张概览卡片的数据来自房间 `buttons` 配置，面板形态下没有 `buttons` → 不会出现；其余（微气候 / 全屋能耗 / 人在 / 天气 / 设备概览 / 自动化管理 / 实体健康）均正常。
+> - `recently-used`（常用）是概览**行**上的入口按钮，不属于弹窗内容，因此面板形态下不显示。
+> - 面板内的 `from_config_id` 引用在点击时从全局配置仓库解析，需要页面上**其他卡片**已注册该 `config_id`（例如同一看板的头部模式卡片）。
+> - 居住动态卡片右侧的户型图与弹窗同口径：房间几何来自 `room_point_from`（未配置时用默认路径 `/local/pobaby_package/point/point.json`）加载后合并的数据。
+
+**情景模式卡片**
+
+把情景模式气泡的内容直接渲染成一张常显卡片，配置沿用按钮里 `type: scene_mode` 的同一套 `scenes:` 列表：
+
+```yaml
+type: custom:room-elves-card
+standalone_type: scene_mode
+width: 400px
+entity: input_text.scene_mode          # 执行历史写入的实体（可选）
+verify_timeout: 10
+scenes:
+  - name: 睡眠模式（关闭全屋灯光）
+    icon: mdi:bed-clock
+    icon_color: '#006e54'
+    confirm: true
+    actions:
+      - name: 全屋灯光
+        value: 'off'
+        entities:
+          客厅_大灯: light.keting_dadeng
+          厨房_大灯: light.chufang
+          主卧_吸顶灯: light.zhuwo_xidingdeng
+      - name: 小卫插座
+        select: true
+        value: 'off'
+        entities:
+          小卫插座: switch.xiaoweishengjian_chazuo
+  - name: 开始远程工作
+    icon: mdi:remote-desktop
+    confirm: true
+    actions:
+      - entity: switch.giot_cn_1165554495_v61ksm_on_p_2_1
+        value: 'on'
+        name: 开机
+        confirm_entity: sensor.iot_cn_2026036605_pw6u1_electric_power_p_3_2
+        confirm_value: '>10'
+        confirm_time: 5
+      - entity: switch.xian_shi_qi
+        value: 'off'
+        name: 显示器
+```
+
+> **说明：**
+> - 与按钮 `type: scene_mode` 共用同一套 `scenes:` 格式（`actions` / `entities` / `value` / `select` / `confirm` / `fold` / `delay` / `confirm_entity` / `confirm_value` / `confirm_time` 语义完全一致）。
+> - 卡片形态**始终是列表模式**（等价于气泡的 `mode: bubble`）：卡片没有"点击按钮"这一动作，否则只配一个情景时会被判为直接执行、渲染瞬间就跑掉。
+> - 点击某个情景 → 勾选项生效 → 卡片内容就地切成进度面板（执行中 / 验证中 / 逐项结果）→ 5 秒后自动回到情景列表；执行结果写入 `entity`（`input_text`）。
+> - 实时刷新由 hass 推送驱动（动作角标"已开启/总数"、设备明细的 on 状态、执行历史行），不需要轮询。
+> - 展开/折叠：`fold: true` 可让该情景的动作列表默认收起（`expand_all` 当前无实现）。
+
 ### 透传配置
 
 `standalone_type` 和 `entity` 之外的所有配置字段会自动透传给内部卡片，可以像在 `buttons` 中一样使用各设备类型的专属配置：
@@ -733,7 +892,7 @@ power_display_entity: sensor.ac_power            # 功率显示实体
 show_usage: true                                  # 显示使用统计
 ```
 
-> **注意：** 独立卡片模式与普通/头部模式互斥。配置了 `standalone_type` 后，`head`、`buttons`、`entities`、`overview` 等字段均无效。
+> **注意：** 独立卡片模式与普通/头部模式互斥。配置了 `standalone_type` 后，`head`、`buttons`、`entities` 等字段均无效。例外：`standalone_type: overview` 用顶层 `overview:` 配置面板内容；`standalone_type: scene_mode` 用顶层 `scenes:` 配置情景列表。
 
 ---
 
@@ -787,6 +946,8 @@ entities_tap_action:                  # 全局配置，所有实体共用
 ## 六、按钮配置详解（核心功能）
 
 `buttons` 是卡片最重要的配置，每个按钮可以控制一种或一组设备。
+
+> **分页与滑动**：按钮分到多页（`buttons_2` / `buttons_3` …）或弹窗里分了选项卡时，**都支持左右滑动切换** —— 规则与支持范围见「八-A、左右滑动」。
 
 > **`icon_text` 通用支持**：所有按钮类型（含 `type: button`、独立按钮、设备分组等）均支持 `icon_text` 配置项，
 > 用于在图标右上角显示一个斜三角徽章文字。支持 `preset_xx` 预设映射（如 `preset_state`、`preset_ac`、`preset_fan`、`preset_humidifier`、`preset_qweather`、`preset_media`）
@@ -2087,35 +2248,6 @@ weather:
 **弹窗布局效果：** 所有成员头像在头部并排显示，当前用户高亮（稍大+白色外圈），各自显示"在线/离线"状态胶囊。地址区域显示焦点用户的位置。地图上以不同颜色标记所有人的坐标，带导航路线规划。
 
 **小头像点击：** 点击任意小头像，弹窗切换为该成员专属的定位/导航/详情页。
-
-### 6.8 电话/话费 (type: phone)
-
-显示手机话费余额、流量使用情况等。
-
-```yaml
-  - type: phone
-    config:                                   # 方式一：使用 config 对象
-      monthly_consumption_entity: sensor.phone_monthly
-      account_balance_entity: sensor.phone_balance
-      points_entity: sensor.phone_points
-      total_data_entity: sensor.phone_total
-      used_data_entity: sensor.phone_used
-      remaining_data_entity: sensor.phone_remaining
-      ...（更多字段见下）
-```
-
-电话费用支持的所有实体字段：
-- `monthly_consumption_entity` - 月消费
-- `account_balance_entity` - 账户余额
-- `points_entity` - 积分
-- `total_data_entity` - 总流量
-- `used_data_entity` - 已用流量
-- `remaining_data_entity` - 剩余流量
-- `data_usage_rate_entity` - 流量使用率
-- `total_call_entity` - 总通话时长
-- `used_call_entity` - 已用通话
-- `remaining_call_entity` - 剩余通话
-- `call_usage_rate_entity` - 通话使用率
 
 ### 6.9 健康 (type: health)
 
@@ -5103,7 +5235,7 @@ buttons:
 
 #### 设备回放入口（show_device_replay）
 
-设备用电详情弹窗支持在顶部「房间/全屋」切换胶囊内新增一个**「回放」按钮**，点击后弹出 `device-replay-card` 设备回放卡片。通过复用 Store 配置共享机制（`config_id` / `from_config_id`），**无需在弹窗内重复配置回放卡片**，只需指定一个已注册的回放配置 `config_id` 即可。
+设备用电详情弹窗支持在顶部「房间/全屋」切换胶囊内新增一个**「回放」按钮**，点击后弹出**设备回放卡片**（本卡片内置的子卡片，`standalone_type: replay`）。通过复用 Store 配置共享机制（`config_id` / `from_config_id`），**无需在弹窗内重复配置回放卡片**，只需指定一个已注册的回放配置 `config_id` 即可。
 
 **配置方式：**
 
@@ -5120,7 +5252,7 @@ buttons_2:
       top_count: 4
 ```
 
-**前提**：`huifang` 这个 `config_id` 必须在主卡配置中通过 `tap_action` 注册了完整的 `custom:device-replay-card` 配置节点：
+**前提**：`huifang` 这个 `config_id` 必须在主卡配置中通过 `tap_action` 注册一份完整的**设备回放**配置节点 —— 注意 `type` 现在写**本卡片**（`custom:room-elves-card` + `standalone_type: replay`）：旧的 `custom:device-replay-card` 元素已随「并入内建」退役、不再注册，继续照旧写会拿不到卡片（见 6.40）。
 
 ```yaml
 buttons:
@@ -5150,9 +5282,9 @@ buttons:
 
 - `show_device_replay` 为**字符串**类型，值即为要引用的 Store `config_id`（不兼容 `true`/`false` 布尔值）
 - 配置后，device-usage 弹窗标题栏的「房间/全屋」切换胶囊内会显示**「回放」文字按钮**（样式与 `du-scope-btn` 一致）
-- 点击「回放」→ `RoomElvesStore.get(config_id)` 从 Store 取回放配置 → 弹出 `device-replay-card`
+- 点击「回放」→ `RoomElvesStore.get(config_id)` 从 Store 取回放配置 → 弹出**设备回放卡片**（由本卡片内置渲染，`showDeviceReplayPopup`）
 - 若指定的 `config_id` 未在 Store 中注册，控制台输出警告且不弹窗
-- 回放配置复用 Store 机制，**改一处（注册节点）多处生效**，`device-replay-card.js` 无需改动
+- 回放配置复用 Store 机制，**改一处（注册节点）多处生效**，`modules/cards/device-replay.js` 无需改动
 
 ---
 
@@ -5582,127 +5714,7 @@ buttons:
 
 ---
 
-### 6.38 爱快路由管理卡片 (type: ikuai)
-
-爱快路由管理卡片用于展示爱快路由器运行状态，并支持 Docker 容器与虚拟机管理。数据来源于 [ikuai_router 集成](Y:\custom_components\ikuai_router) 生成的 sensor / switch / camera 实体。
-
-卡片采用**三选项卡结构**（默认在"路由系统"），点击按钮弹出管理面板，支持通过 `popup_card` 或 `card` 动作打开。
-
-**选项卡**：
-
-| 选项卡 | 内容 |
-|--------|------|
-| 路由系统 | 系统信息、硬件信息（折叠）、在线客户端、网络信息、应用流量（环形图）、路由器管理 |
-| Docker | 容器列表，显示名称/状态/IP/CPU 占用，支持启停 + 日志查看 |
-| 虚拟机 | 每台 VM 的画面（开机显示摄像头画面，关机显示占位）、核心/内存/CPU 占用、启停开关 |
-
-#### 配置示例
-
-```yaml
-  - entity: input_boolean.ikuai
-    type: sensor
-    name: 爱快
-    icon: mdi:router-network
-    tap_action:
-      action: popup_card
-      width: 400px
-      card:
-        type: ikuai
-        name: 爱快
-        router:
-          - sys_info: sensor.ikuai_overview
-            name: 系统信息
-          - hardware_info: sensor.ikuai_system_info
-            name: 硬件信息
-          - online_client: sensor.ikuai_online_client
-            name: 在线客户端
-          - network_info: sensor.ikuai_iface_check
-            name: 网络信息
-          - app_flow_1d: sensor.ikuai_app_flow_1d
-            name: 1天应用流量
-          - app_flow_1h: sensor.ikuai_app_flow_1h
-            name: 1小时应用流量
-          - app_flow_30min: sensor.ikuai_app_flow_30min
-            name: 30分钟应用流量
-        network_control:
-          - mac_address: text.ikuai_mac_input
-          - allow: button.ikuai_yun_xu_lian_wang
-          - reject: button.ikuai_jin_zhi_lian_wang
-        network_traffic:
-          - speed: 网速
-            upload: sensor.ikuai_upload
-            download: sensor.ikuai_download
-          - total: 合计流量
-            upload: sensor.ikuai_totalup
-            download: sensor.ikuai_totaldown
-        log:
-          - log: sensor.ikuai_audit_url_log
-        docker:
-          - name: NextTerminal
-            entity: switch.ikuai_docker_nextterminal
-          - name: AdGuardHome
-            entity: switch.ikuai_docker_adguardhome
-        vm:
-          - name: win7
-            entity: switch.ikuai_vm_win7
-            camera: camera.ikuai_vm_win7
-```
-
-#### 配置项说明
-
-| 配置项 | 必填 | 类型 | 说明 |
-|--------|:----:|------|------|
-| `type` | ✅ | `string` | `ikuai` |
-| `name` | 否 | `string` | 卡片标题（默认 `爱快`） |
-| `width` | 否 | `string` | 弹窗宽度（默认 `400px`） |
-| `router` | 否 | `array` | 路由系统区域数组，按数组顺序渲染 |
-| `router[].sys_info` | 否 | `string` | 系统信息实体（`sensor.ikuai_overview`） |
-| `router[].hardware_info` | 否 | `string` | 硬件信息实体（`sensor.ikuai_system_info`，折叠显示） |
-| `router[].online_client` | 否 | `string` | 在线客户端实体（`sensor.ikuai_online_client`） |
-| `router[].network_info` | 否 | `string` | 网络信息实体（`sensor.ikuai_iface_check`） |
-| `router[].app_flow_1d` | 否 | `string` | 1天应用流量实体（`sensor.ikuai_app_flow_1d`） |
-| `router[].app_flow_1h` | 否 | `string` | 1小时应用流量实体（`sensor.ikuai_app_flow_1h`） |
-| `router[].app_flow_30min` | 否 | `string` | 30分钟应用流量实体（`sensor.ikuai_app_flow_30min`） |
-| `network_control` | 否 | `array` | 在线客户端联网控制配置 |
-| `network_control[].mac_address` | 否 | `string` | MAC 地址写入实体（`text.ikuai_mac_input`） |
-| `network_control[].allow` | 否 | `string` | 允许联网按钮（`button.ikuai_yun_xu_lian_wang`） |
-| `network_control[].reject` | 否 | `string` | 禁止联网按钮（`button.ikuai_jin_zhi_lian_wang`） |
-| `network_traffic` | 否 | `array` | 流量图表配置（点击系统信息标题栏速度区域弹出 ECharts 流量图表） |
-| `network_traffic[].speed` | 否 | `string` | 网速分组（值可为标题，如 `网速`） |
-| `network_traffic[].upload` | 否 | `string` | 上行速度实体 |
-| `network_traffic[].download` | 否 | `string` | 下行速度实体 |
-| `network_traffic[].total` | 否 | `string` | 合计流量分组（值可为标题，如 `合计流量`） |
-| `log` | 否 | `array` | 客户端访问历史配置 |
-| `log[].log` | 否 | `string` | 访问历史实体（`sensor.ikuai_audit_url_log`） |
-| `docker` | 否 | `array` | Docker 容器数组 |
-| `docker[].name` | 否 | `string` | 容器显示名 |
-| `docker[].entity` | ✅ | `string` | 容器电源开关实体（`switch.ikuai_docker_*`） |
-| `vm` | 否 | `array` | 虚拟机数组 |
-| `vm[].name` | 否 | `string` | 虚拟机显示名 |
-| `vm[].entity` | ✅ | `string` | 虚拟机电源开关实体（`switch.ikuai_vm_*`） |
-| `vm[].camera` | 否 | `string` | VM 画面摄像头实体（`camera.ikuai_vm_*`） |
-
-#### 交互说明
-
-- **系统信息**：运行时长 / CPU（占用+温度）/ 内存（已用+总量）每行一条；标题栏右侧显示实时上/下行速度（配置 `network_traffic` 后点击速度区域弹出流量图表）
-- **硬件信息**：整合在系统信息内，默认折叠，点击展开显示 CPU / 内存 / 硬盘 / 主板
-- **在线客户端**：名称+IP 小字、上行/下行速度与流量两行显示、按 IP 升序排列、刷新保持滚动位置；客户端名称中的 `%20`/`%` 自动替换为 `_`
-  - **联网开关**：根据 `client.reject`（0 允许 / 1 禁止）显示开关状态（允许绿色、禁止红色）；点击开关先把 MAC 写入 `mac_address` 实体，再根据当前状态按 allow/reject 按钮（用开关模拟点击按钮）
-  - **访问历史**：配置 `log` 后点击客户端名称/单元格弹出气泡，显示该客户端（按 MAC 过滤）的访问历史（时间/应用名/访问地址/备注）
-- **网络信息**：线路检测状态 chips + 各接口 IP/连接数/上下行速度/累计流量；点击接口名弹出详情气泡（线路检测信息 + 流量信息）
-- **流量图表**：配置 `network_traffic` 后点击系统信息标题栏速度区域弹出气泡，标题"流量"，右侧"1小时/12小时/1天"周期切换按钮，上方实时速度曲线 + 下方累计流量曲线（ECharts 渲染，气泡宽度为卡片宽度的 90%）
-- **应用流量**：近30分钟/1小时/1天合并为一个区域，标题栏切换按钮 + SVG 环形图（中心总量 + 协议占比图例），单位智能换算 B→MB/GB/TB
-- **路由器管理**：重启、重连 WAN，均弹出确认对话框
-- **Docker / 虚拟机**：每行显示名称 + 状态徽标 + 启停开关；Docker 支持查看日志气泡
-- **虚拟机画面**：开机显示摄像头实体画面（HA 系统自带 picture 卡片），关机显示"已关机"占位；信息栏含全屏按钮，点击弹出全屏 VM 画面弹窗
-
-#### 刷新机制
-
-卡片只构建一次 DOM，**周期刷新仅更新各数据容器内部内容**（不重建结构），保留选项卡状态、VM 画面、折叠状态、滚动位置。默认每 10 秒局部刷新一次。
-
-> **依赖说明**：爱快路由卡片数据来源于 [ikuai_router 集成](Y:\custom_components\ikuai_router)。使用前需先安装并配置该集成生成对应实体。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
-
-### 6.39 实体健康状态卡片 (type: entities_health)
+### 6.38 实体健康状态卡片 (type: entities_health)
 
 实体健康状态卡片用于以房间/状态两个维度展示全屋实体的在线/离线情况。数据来源为实体健康监控实体（`sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health`）的 `attributes`（`total` / `online` / `offline` / `entities[]`）。
 
@@ -5791,7 +5803,7 @@ buttons:
 
 > **依赖说明**：实体健康卡片数据来源于实体健康监控实体（`sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health`），需由统一存储系统生成该实体（`attributes.total/online/offline/entities[]`）。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
 
-### 6.40 今日家庭日报卡片 (type: daily_report)
+### 6.39 今日家庭日报卡片 (type: daily_report)
 
 今日家庭日报卡片用于展示后端统一存储系统聚合的「今日家庭状态日报」。数据来源为 `sensor` 实体（默认 `sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card`），读取 `state`/`summary`/`overall`/`alerts`/`sections`/`lights`/`offline`/`generated_at` 等属性。
 
@@ -5879,6 +5891,1812 @@ summary 长文本按全角分号 `；` 切成项，依据每项开头的语义�
 锚点缺失时该项自动合并到前一行，保证 summary 顺序/措辞微调时不错行。
 
 > **依赖说明**：日报卡片数据来源于后端统一存储系统生成的「今日家庭状态」实体（`state`/`attributes.summary` 等）。若配置了 `refresh` 按钮实体，后端需注册该 `button.*` 实体用于触发重新生成。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
+
+### 6.40 设备回放卡片 (type: replay)
+
+把「户型图 + 设备事件时间轴」做成可播放的一天回放：上半部分是户型平面图，回放中的设备按配置坐标摆放、随时间点亮/熄灭，还可叠加传感器数值气泡；下半部分是每个设备一条轨道的时间轴，底部时间滑块可拖动、可变速播放，并可切换日期回看历史某一天。
+
+数据来自 Home Assistant 的事件/历史接口与后端统一存储系统的历史查询接口（见本节末尾「后端接口」）。
+
+#### 四种使用方式
+
+**① 独立卡片（常显）**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: replay
+card_width: 500                     # 设计基准宽度（实际随容器等比缩放）
+floorplan_height: 400               # 户型图高度（同样按比例缩放）
+background_image: /local/pobaby_package/floorplan/1f.png
+entities:
+  - entity: light.ke_ting
+    name: 客厅-大灯
+    x: 0
+    y: 0
+    image_url: /local/pobaby_package/device/ke_ting_on.png
+    image_scale: 100
+  - entity: climate.ke_ting
+    name: 客厅-空调
+    x: 300
+    y: 100
+    image_url: /local/pobaby_package/device/kong_tiao.png
+    image_scale: 30
+    rotation: 90
+```
+
+**② 设备按钮（`buttons:` 里直接弹窗）**
+
+```yaml
+buttons:
+  - type: replay
+    name: 设备回放
+    icon: mdi:history
+    entities: [ ...同上的回放设备列表... ]
+```
+
+按钮本身不渲染成设备卡片，点击弹出回放卡弹窗；**再点一次关闭**。
+
+**③ `tap_action: card`**
+
+```yaml
+tap_action:
+  action: card
+  popup_position: center
+  card:
+    type: replay
+    entities: [ ... ]
+```
+
+**④ `tap_action: popup_card`**
+
+```yaml
+tap_action:
+  action: popup_card
+  popup_position: center
+  width: 760px
+  card:
+    type: replay
+    entities: [ ... ]
+```
+
+#### 顶层配置字段
+
+| 字段 | 必填 | 类型 | 默认 | 说明 |
+|------|:----:|------|------|------|
+| `entities` | **是** | `array` | — | 回放设备列表，每项见下一节。为空时卡片不渲染数据 |
+| `card_width` | 否 | `number` | `400` | **设计基准宽度**。设备坐标、图标尺寸都按它书写；实际渲染尺寸 = 基准 ×（容器宽度 / 基准），即卡片会随容器等比缩放 |
+| `floorplan_height` | 否 | `number` | `400` | 户型图高度（设计基准），同样参与等比缩放 |
+| `background_image` | 否 | `string` | — | 户型图背景图 URL |
+| `background_left` / `background_top` | 否 | `number` | `0` | 背景图偏移（设计基准像素）。设备坐标会叠加这个偏移 |
+| `background_scale` | 否 | `number` | `100` | 背景图宽度 = `card_width × scale / 100` |
+| `device_track_height` | 否 | `number` | `20` | 每条设备轨道的高度（px） |
+| `device_track_font-size` | 否 | `number` | `12` | 轨道左侧设备标签的字号（px） |
+| `device_label_align` | 否 | `string` | `left` | 轨道标签文字对齐：`left` / `center` / `right` |
+| `min_duration_filter` | 否 | `number` | `0` | 过滤掉持续时长小于该值（秒）的事件，避免瞬时抖动刷屏 |
+| `rooms` | 否 | `object` | 内置配色 | 轨道标签底色映射，`房间名: 颜色`，见下方 |
+| `energy.entities` | 否 | `array` | — | 户型图上叠加的传感器数值气泡，见下方 |
+| `api_base_url` | 否 | `string` | — | 后端统一存储系统地址（如 `http://192.168.1.10:8000/api/ha_data_store/`）。未配置时只回放 HA 当天状态变化 |
+| `key` | 否 | `string` | — | 后端接口鉴权 key |
+| `check_entity` | 否 | `string` | — | 后端可用性检查实体；配置后才启用历史日期与「有数据」标记 |
+| `test_mode` | 否 | `boolean` | `false` | 编辑模式（保留给调试用） |
+| `name` / `icon` | 否 | `string` | — | 作为按钮/卡片位时的显示名与图标（通用字段） |
+
+> **透传继承**：这四种入口都支持直接复用外层卡片的 `api_base_url` / `key` —— 外层配置过就不必在回放卡里重复填写。
+
+#### entities 配置字段（每个回放设备一项）
+
+| 字段 | 必填 | 类型 | 默认 | 说明 |
+|------|:----:|------|------|------|
+| `entity` | **是** | `string` | — | 设备实体 ID（`light` / `switch` / `climate` / `media_player` 等）。它的状态变化构成回放事件 |
+| `name` | 否 | `string` | 实体 ID | 设备名，同时用作轨道左侧标签文字；同名事件会归到同一条轨道 |
+| `x` / `y` | 否 | `number` | `0` | 户型图坐标（按 `card_width` 设计基准书写，会随容器等比缩放） |
+| `image_url` | 否 | `string` | — | 设备图标；不配置时退化为一个圆点 |
+| `image_scale` | 否 | `number` | — | 图标宽度 = `card_width × scale / 100`（与下面两项**三选一**） |
+| `image_width` / `image_height` | 否 | `number` | — | 图标固定像素宽/高（与 `image_scale` 三选一，同时配两者会报错并跳过） |
+| `rotation` | 否 | `number` | `0` | 图标旋转角度（度），以元素左上角为原点 |
+| `layer` | 否 | `number` | `1` | 层叠顺序，数值越大越靠上 |
+| `color` | 否 | `string` | 按名称推断 | 无图标时的圆点颜色；同时作为该设备轨道填充色 |
+| `on_state` / `on_states` | 否 | `string` / `array` | 内置常见开启态 | 自定义「开启」状态值（如 `open`、`playing`、`heat`、`on`），用于判定设备何时处于运行中 |
+| `room` | 否 | `string` | 名称前缀 | 房间名，用于从 `rooms` 取轨道标签底色 |
+
+#### energy.entities 配置字段（户型图数值气泡）
+
+```yaml
+energy:
+  entities:
+    - entity: sensor.ke_ting_gong_lv
+      name: 功率
+      unit: W
+      x: 10
+      y: 330
+      color: "#ffffff"
+      sensor_background_color: rgba(34, 197, 94, 0.8)
+```
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `entity` | **是** | `string` | 传感器实体 ID |
+| `name` | 否 | `string` | 气泡前缀文字（如 `功率`、`日用电`） |
+| `unit` | 否 | `string` | 数值后缀单位 |
+| `x` / `y` | 否 | `number` | 气泡位置（按 `card_width` 基准，随容器缩放） |
+| `color` | 否 | `string` | 文字色 |
+| `sensor_background_color` | 否 | `string` | 气泡底色 |
+
+#### rooms 配置（轨道标签底色）
+
+```yaml
+rooms:
+  客厅: "#ea5506"
+  卧室: "#3498db"
+  儿童房: "#9b59b6"
+```
+
+设备未显式配 `room` 时，按设备名里包含的房间关键字匹配；都匹配不到用内置默认色。
+
+#### 卡片布局
+
+```
+┌──────────────────────────────────────────┐
+│ 户型平面图                                │
+│   背景图 + 设备图标（随回放时间点亮/熄灭）  │
+│   + 传感器数值气泡                        │
+├──────────────────────────────────────────┤
+│ ◀  2026-09-27  ▶  此刻    1x ▾   [播放]   │  ← 控制条
+├──────────────────────────────────────────┤
+│ 客厅-大灯  ▓▓▓░░▓▓▓▓░░▓▓░░▓▓              │  ← 每个设备一条轨道
+│ 客厅-空调  ░▓▓░░░░▓▓░░▓▓▓░                │     悬停显示当天明细
+├──────────────────────────────────────────┤
+│ ────────────●──────────────  15:55        │  ← 时间滑块（可拖拽）
+│ 00:00   04:00   08:00   12:00   16:00 …   │
+└──────────────────────────────────────────┘
+```
+
+#### 交互操作
+
+| 操作 | 行为 |
+|------|------|
+| 拖动时间滑块 | 跳到该时刻（平面图与轨道同步刷新） |
+| 播放 / 暂停 | 以所选速度自动推进时间 |
+| 速度选择 `1x` / `5x` / `10x` / `30x` | 播放倍速 |
+| `◀` / `▶` / `此刻` | 前一天 / 后一天 / 回到今天 |
+| 点击日期框 | 弹出日期选择器（月历，带「有数据」标记：`H` = HA 有数据、`A` = 后端有数据） |
+| 悬停设备轨道 | 气泡显示该设备当天的运行明细（时间段 + 时长） |
+
+#### 后端接口与依赖
+
+| 用途 | 接口 / 方法 |
+|------|------|
+| 实时事件 | HA WebSocket `subscribe_events(state_changed)`（订阅失败时自动降级为 2 秒轮询） |
+| 状态历史 | HA WebSocket `history/history_during_period` |
+| 环境数据（气泡数值） | `?type=env_history&key=...` |
+| 房间日统计 | `?type=rooms_daily&key=...` |
+| 日期选择器（年月 / 天标记） | `?type=device_data_periods&key=...`（`level=year` / `level=month&year=YYYY` / `level=day&month=YYYY-MM` 三档，**全局口径**不带 `entity_id`） |
+
+> 未配置 `api_base_url` / `key` 时，只回放 HA 自身能查到的当天状态变化，日期选择器回到"年月都可选"的乐观渲染（不置灰、不标 A）。
+
+#### 说明与已知边界
+
+- **样式与主题**：全部样式在 `room-elves-card-styles.css`（作用域 `.device-replay-card-host`），配色跟随房间精灵主题（`--room-*`）。**例外**：按钮（蓝底白字）、时间轴与时间指示器（红色）、tooltip（蓝底白字）是回放卡自身的语义色，固定不跟随主题。
+- **尺寸自适应**：`card_width` / `floorplan_height` 是设计基准，卡片随容器宽度等比缩放（独立卡片铺满容器、弹窗内随弹窗宽度），高分屏按 `devicePixelRatio` 渲染。
+- **渲染方式**：纯 DOM API 构建（无 `innerHTML` 字符串拼接）；定时器注册在房间精灵的 `TimerManager` 上，后台标签页自动跳过重绘。
+- **性能**：设备数量多、或外层卡片秒级刷新时，建议给 `min_duration_filter` 设置一个非零值（如 `30`）过滤瞬时事件。
+- **原独立卡片已退役**：本卡片由独立卡片 `device-replay-card.js` 迁移而来，迁移后不再作为独立的 `custom:device-replay-card` 元素注册，配置需按上面的四种方式重写。
+
+#### 扩展接口（供其它模块调用）
+
+实现位于 `modules/cards/device-replay.js`，引擎封在模块内的 `DeviceReplayElement` 中，只对外暴露三个方法（注册在卡片原型上）：
+
+| 方法 | 签名 | 说明 |
+|------|------|------|
+| `createDeviceReplayCard` | `(config, options) => HTMLElement` | 创建回放卡，返回卡片根元素。内部顺序：`setConfig`（此时无 hass，不渲染）→ `connectedCallback` → 注入 hass（触发 `render` 与取数）。元素上挂 `root.__replayEl` 指向引擎实例 |
+| `updateDeviceReplayCard` | `(card, config) => void` | 宿主 hass 变化或配置变化时调用。用「配置引用 + 指纹」短路，配置没变时只注入 hass、不重建卡片 |
+| `showDeviceReplayPopup` | `(config, triggerButton) => boolean` | 弹出回放卡弹窗（`showPopup`，`className: device-replay-popup-root`）。**已打开时再调用会关闭**（设备按钮的 toggle 语义），关闭/被替换时调 `el.destroy()` 收尾 |
+
+分派链路：
+
+| 入口 | 链路 |
+|------|------|
+| `standalone_type: replay` | `standalone.js` → `_resolveCardEntry` → `COMPOSITE_CARD_REGISTRY.replay` → `createDeviceReplayCard` |
+| `cards:` 区 / `popup_card` | `card-factory.js` → 注册表统一分派 → `createDeviceReplayCard` |
+| 设备按钮 `type: replay` | 按钮点击 → `showDevicePopup` → `popup-show.js` 的 `type === 'replay'` 委托 → `showDeviceReplayPopup` |
+| `action: card` + `card.type: replay` | `actions.js` 的 `case 'replay'` → `showDeviceReplayPopup` |
+
+> 引擎实例的 `destroy()`（内部即 `disconnectedCallback`）会清理：事件订阅、托管定时器与 `rAF`、`ResizeObserver`、日期选择器弹窗、文档级监听与各类缓存 —— 弹窗关闭或被替换时由 `onClose` / `onDestroy` 调用。
+
+### 6.41 定时精灵卡片 (type: timer)
+
+「延时 / 定时执行设备动作」的控制台：主界面显示倒计时时间框与进行中的任务，点击可打开**设置弹窗**新建设备定时器（选设备 → 选时长或时间点 → 选动作），也可以在**任务列表弹窗**里查看、取消已有任务与历史记录。
+
+任务由后端 **HA 数据统一存储系统** 统一管理，分两类：**延时任务**（倒计时结束后执行，如「30 分钟后关灯」）与**定时任务**（指定时间点、可每天/每周/每月重复）。卡片通过 `sensor.ha_data_store_timer` 读取列表，通过 HA 事件与后端交互（见下方「后端依赖」）。
+
+#### 四种使用方式
+
+**① 独立卡片（常显）**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: timer
+entity: light.ke_ting            # 默认选中的设备（可选）
+default_duration: "00:30:00"     # 默认时长，默认 00:30:00
+card_style: mini                 # mini / normal / icon
+```
+
+**② 设备按钮（`buttons:` 里直接弹窗）**
+
+```yaml
+buttons:
+  - type: timer
+    name: 定时精灵
+    icon: mdi:timer-cog-outline
+```
+
+按钮本身不是设备卡片，点击弹出「任务中心」；再点一次关闭。图标模式（`card_style: icon`）下显示任务数徽章。
+
+**③ `tap_action: card`**
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: timer
+    card_style: normal
+```
+
+**④ `tap_action: popup_card`**
+
+```yaml
+tap_action:
+  action: popup_card
+  popup_position: center
+  card:
+    type: timer
+```
+
+#### 三种卡片形态（`card_style`）
+
+| 值 | 形态 | 说明 |
+|----|------|------|
+| `mini`（默认） | 小卡片：时间框 + 进度条 + 启动/取消按钮 | 适合塞进 `buttons:` 网格；`second_style: pull-down` 时点击时间框弹出时间选择器 |
+| `normal` | 标准卡片：标题 + 时间框 + 任务滚动列表 | 高度由 `normal_height` 控制；点击标题打开任务列表弹窗 |
+| `icon` | 图标模式：只显示一个图标（带任务数徽章） | 点击图标打开任务中心弹窗，适合只占用一个按钮位 |
+
+#### 顶层配置字段
+
+| 字段 | 必填 | 类型 | 默认 | 说明 |
+|------|:----:|------|------|------|
+| `entity` | 否 | `string` | — | 默认选中的设备；`mini`/`normal` 形态下显示为该设备的定时器（不配置则打开设置弹窗时自行选择） |
+| `default_duration` | 否 | `string` | `00:30:00` | 默认时长（`时:分:秒`） |
+| `card_style` | 否 | `string` | `mini` | 卡片形态：`mini` / `normal` / `icon` |
+| `second_style` | 否 | `string` | `normal` | 为 `pull-down` 且 `card_style: mini` 时，点击时间框弹出时间选择器 |
+| `icon` | 否 | `string` | `mdi:timer-cog-outline` | 图标模式的图标 |
+| `show_buttons` | 否 | `boolean` | `true` | 是否显示启动 / 取消按钮 |
+| `show_debug` | 否 | `boolean` | `false` | 显示调试信息 |
+| `time_box_font_size` | 否 | `string` | `20px` | 时间框字号 |
+| `time_box_width` / `time_box_height` | 否 | `string` | `auto` | 时间框尺寸 |
+| `time_box_background` | 否 | `string` | `#f8f9fa` | 时间框背景色 |
+| `time_box_progress_background` | 否 | `string` | `#1976d2` | 时间框内进度条颜色 |
+| `timer_running_border` | 否 | `string` | `1px solid #1976d2` | 运行中卡片的边框 |
+| `status_indicator_color` | 否 | `string` | `#28a745` | 状态指示点颜色（后端连接状态） |
+| `status_indicator_width` / `status_indicator_height` | 否 | `string` | `6px` | 状态指示点尺寸 |
+| `start_btn_color` | 否 | `string` | `#28a745` | 启动按钮颜色 |
+| `start_btn_width` / `start_btn_height` | 否 | `string` | `auto` | 启动按钮尺寸 |
+| `cancel_btn_color` | 否 | `string` | `#dc3545` | 取消按钮颜色 |
+| `cancel_btn_width` / `cancel_btn_height` | 否 | `string` | `auto` | 取消按钮尺寸 |
+| `normal_height` | 否 | `string` | `100px` | `normal` 形态的高度 |
+| `normal_background` | 否 | `string` | 主题色 | `normal` 形态背景色（不配置则用 `--timer-card-bg`，即随主题） |
+| `width` / `popup_position` | 否 | — | — | 弹窗宽度与位置（作为按钮/卡片位时的通用字段） |
+
+> `theme` / `dark_light_theme` 配置项**保留但不再生效**（兼容旧配置）：配色统一由房间精灵主题提供。
+
+#### 交互
+
+| 操作 | 行为 |
+|------|------|
+| 点击时间框 | `second_style: pull-down` 时弹出时间选择器；否则进入设置 |
+| 点击启动 | 按当前时长创建延时任务（`create_timer`） |
+| 点击取消 | 取消该设备进行中的延时任务（`cancel_entity_timer`） |
+| 点击标题 / 图标 | 打开任务列表弹窗或任务中心 |
+| 任务项 | 显示进度条与剩余倒计时；定时任务显示距下次触发的时间 |
+| 历史记录 | 任务列表弹窗内可筛选历史并清空（`clear_all_history`） |
+
+#### 设置弹窗（添加定时器）
+
+| 区块 | 内容 |
+|------|------|
+| 设备选择 | 按分类分组（灯光 / 气候 / cover / 风扇 / 媒体 / 开关 / 虚拟实体），支持搜索、可折叠 |
+| 定时时长 | 时 / 分 / 秒输入 + 快捷时长按钮；可切换为**重复定时**：每天 / 每周几（`timer-day-btn`）/ 每月某日（`timer-monthly-day-btn`） |
+| 定时动作 | `turn_off` 关闭 / `turn_on` 开启 / `toggle` 切换（`auto` 为按当前状态自动取反） |
+| 任务概览 | 该设备当前已有的任务列表 |
+| 底部按钮 | 取消 / 确定（确定时按类型发 `create_timer` 或 `create_schedule`） |
+
+#### 后端依赖
+
+| 用途 | 实体 / 事件 |
+|------|------|
+| 任务列表与进行中任务 | `sensor.ha_data_store_timer` 的 `all_task_list` 属性（含 `is_schedule`、`entity_id`、`remaining_seconds` / `schedule_countdown`、`status` 等） |
+| 拉取全部任务 | 事件 `ha_data_store_timer_event`，`action: get_all_timers` |
+| 新建延时任务 | `action: create_timer` |
+| 新建定时任务 | `action: create_schedule` |
+| 取消任务 | `action: cancel_entity_timer`（延时）/ `cancel_schedule`（定时） |
+| 清空历史 | `action: clear_all_history` |
+| 后端响应 | 订阅事件 `ha_data_store_timer_response` |
+
+#### 扩展接口（供其它模块调用）
+
+实现位于 `modules/cards/timer-control.js`，引擎封在模块内的 `TimerControlElement` 中，对外暴露：
+
+| 方法 | 签名 | 说明 |
+|------|------|------|
+| `createTimerCard` | `(config, options) => HTMLElement` | 创建卡片并返回根元素；`options.lightweight = true` 时 root 不插入 DOM（仅承载数据与弹窗，供按钮路径复用） |
+| `updateTimerCard` | `(card, config) => void` | 注入宿主与最新 hass、应用新配置 |
+| `_showTimerTaskCenter` | `(group, button) => boolean` | 图标模式的任务中心弹窗；由 `popup-show.js` 的 `type === 'timer'` 分支委托调用 |
+
+分派链路：
+
+| 入口 | 链路 |
+|------|------|
+| `standalone_type: timer` | `standalone.js` → `COMPOSITE_CARD_REGISTRY.timer` → `createTimerCard` |
+| `cards:` 区 / `popup_card` | `card-factory.js` → 注册表统一分派 → `createTimerCard` |
+| 设备按钮 `type: timer` | 按钮点击 → `showDevicePopup` → `popup-show.js` 委托 → `_showTimerTaskCenter` |
+| `action: card` + `card.type: timer` | `actions.js` → `createTimerCard` / 弹窗 |
+
+#### 说明与已知边界
+
+- **主题**：跟随房间精灵主题，`--timer-*` 变量在 `room-elves-card-styles.css` 里桥接到 `--room-*`（卡片与弹窗各写一份变量，因为弹窗内容不在卡片祖先链内）。
+- **渲染方式**：纯 DOM API 构建（无 `innerHTML` 字符串拼接）；定时器统一走宿主的 `TimerManager`。
+- **数据来源**：任务由后端统一存储系统管理，卡片本身不持久化任务；后端未就绪时卡片显示「等待 Hass 连接」状态，状态指示点用于提示连接情况。
+- **原独立卡片已退役**：本卡片由独立卡片 `timer-control-card.js`（LitElement + Shadow DOM）迁移而来，配置需按上面的四种方式重写。
+
+### 6.42 温湿度面板卡片 (type: wenshidu)
+
+全屋温湿度面板：**时间轴控制区 + 温度户型图 + 湿度户型图**，支持拖时间轴回放历史时刻、点房间看历史曲线、切 3D 温度视图。房间多边形、房间实体、配色全部由配置给出。
+
+面板由独立卡片 `wenshidu-card.js`（9,163 行 / 自带 Shadow DOM + ECharts + Three.js）迁移而来，引擎封在 `modules/cards/wenshidu.js` 的 `WenshiduElement` 内，样式统一在 `room-elves-card-styles.css` 的 `.wd-` 段。
+
+#### 四种使用方式
+
+**① 独立卡片（常显）**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: wenshidu
+card_width: 440px
+default_main_room: 客厅
+main_entities:
+  客厅: { temperature: sensor.keting_wendu }
+rooms: [ ... ]
+entities: { ... }
+```
+
+**② 内嵌到按钮区（`card` 数组）**
+
+```yaml
+buttons:
+  - card:
+      - type: wenshidu
+        layout: mini          # mini：只显示户型图，点击卡片空白区弹出完整面板
+        default_main_room: 客厅
+        rooms: [ ... ]
+        entities: { ... }
+```
+
+**③ `tap_action: card`**
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: wenshidu
+    default_main_room: 客厅
+    rooms: [ ... ]
+    entities: { ... }
+```
+
+**④ `tap_action: popup_card`**
+
+```yaml
+tap_action:
+  action: popup_card
+  popup_position: center
+  card:
+    type: wenshidu
+    rooms: [ ... ]
+    entities: { ... }
+```
+
+#### 面板结构
+
+| 区块 | 内容 | 相关配置 |
+|------|------|---------|
+| 时间轴控制区 | 前一天 / 后一天 / 此刻 / 数据源切换按钮（HA ↔ API）、2D／3D 切换、演进 / 停止、时间显示、温度渐变条、刻度与时间标签 | `show_time_section`、`layout`、`show_3dtemperature_section` |
+| 温度户型图 | 房间多边形按温度着色 + 房间名 + 房间温度值 | `rooms`、`entities`、`temp_colors`、`show_temperature_section` |
+| 湿度户型图 | 同上，按湿度着色 | `humidity_colors`、`show_humidity_section` |
+| 3D 温度视图 | Three.js 立体温度柱（可拖拽旋转、点柱看刻度） | `show_3dtemperature_section`（默认 **false**） |
+| 房间历史曲线 | 点房间多边形 / 房间数值弹出单房间温湿度曲线；点「全屋温度 / 全屋湿度」标题（或标题按钮）弹出全屋曲线，区间可选 1/2/3/5/7 天 | `chart_period` |
+| 日期选择器 | 点当前日期打开日历，可选任意日期回放；带 API 数据的日期显示角标 | `api_base_url` + `key` |
+
+**常用交互**：拖动时间轴 → 回放到当天某一时刻；「演进」→ 自动播放一整天；「此刻」→ 回到实时；点击房间 → 该房间变为主房间（时间轴渐变改用它的温度着色）并弹出曲线。
+
+#### 顶层配置字段
+
+| 字段 | 必填 | 类型 | 默认 | 说明 |
+|------|:----:|------|------|------|
+| `card_width` | 否 | `string` | 自适应 | 面板宽度，如 `440px` |
+| `layout` | 否 | `string` | `normal` | `normal` 显示全部区块；`mini` 隐藏时间轴区与标题（适合内嵌），并启用"点击空白区弹出完整面板" |
+| `show_time_section` | 否 | `boolean` | `true` | 是否显示时间轴区（`layout: mini` 时强制隐藏） |
+| `show_temperature_section` / `show_humidity_section` | 否 | `boolean` | `true` | 是否显示温度 / 湿度户型图 |
+| `show_title` | 否 | `boolean` | `true` | 户型图上方是否显示「全屋温度 / 全屋湿度」标题（标题可点击弹全屋曲线） |
+| `show_room_label` | 否 | `boolean` | `true` | 是否在房间内显示房间名 |
+| `show_room_data` | 否 | `boolean` | `true` | 是否在房间内显示温湿度数值 |
+| `show_3dtemperature_section` | 否 | `boolean` | `false` | 是否显示 2D／3D 切换按钮与 3D 视图（首次进入需加载 Three.js） |
+| `default_main_room` | 否 | `string` | `main_entities` 的第一个房间 | 主房间：时间轴渐变按它的温度着色，对应房间会被高亮 |
+| `viewBox` | 否 | `string` | `0 0 1100 1200` | 户型图坐标系（SVG viewBox），房间坐标按它等比缩放居中 |
+| `corner_radius` | 否 | `number` | `15` | 房间多边形圆角半径（也可在单个房间上覆盖） |
+| `temp_decimal_places` / `humidity_decimal_places` | 否 | `number` | `1` / `0` | 温度 / 湿度小数位 |
+| `chart_period` | 否 | `string` | `hour` | 曲线图默认粒度 |
+| `card_bg` | 否 | `string` | 不设置 = 跟随主题 | 面板底色。**不配则由房间精灵主题提供**；配了则以配置为准（内联样式覆盖主题） |
+| `control_card_bg` / `floor_plan_panel_bg` | 否 | `string` | 不设置 = 跟随主题 | 时间轴控制区 / 户型图面板的背景色，规则同上 |
+| `control_floor_boxshadow` | 否 | `string` | — | 控制区与户型图面板的阴影 |
+| `popup_modal_width` | 否 | `string` | `card_width` | 弹窗形态的宽度 |
+| `room_point_from` | 否 | `string` | `/local/pobaby_package/point/point.json` | 从 JSON/YAML 点位文件补充房间与实体（与户型图卡片共用缓存）；也可在 `rooms` 数组里用 `- room_point_from: xxx` 标记项指定 |
+| `api_base_url` + `key` | 否 | `string` | — | 外部温湿度 API（HA 数据统一存储系统）。HA 无历史数据时可切到 API 数据源；日期选择器上的 API 日期角标也来自它 |
+| `theme` | 否 | `string`/`object` | 不配置 = 跟随卡片主题 | 面板**单独**的主题：`light`/`dark`/`black`/`darkgray`/`transparent`/`on`/`off`/`time`/`phone`/`device`/实体ID/`{value\|entity}`。不配置则跟随卡片级 `theme:`，见下方「主题」说明 |
+| `dark_light_theme` | 否 | `string` | `dark,light` | `on`/`off`/`time`/`phone` 用哪两套主题（`暗色名,亮色名`） |
+| `title_button_*` | 否 | — | — | 标题按钮：`type`（`circle`/方形）、`size`、`color`、`hover_color`、`icon`、`label_position`、`show_label`、`position`（`top`/`left`/…）、`position_temperature`、`position_humidity`。配置了 `title_button_type` 即视为启用 |
+| `enable_popup_card` | 否 | `boolean` | `true`（仅 mini 或隐藏时间轴时生效） | 点击卡片空白区是否弹出完整面板 |
+| `popup_position` | 否 | `string` | `center` | 弹窗形态的位置 |
+
+#### 房间与实体结构
+
+```yaml
+rooms:                      # 户型图几何（每个房间一块多边形）
+  - id: 客厅                # 房间标识，与 entities 的键对应
+    name: 客厅              # 显示名（可与 id 不同）
+    points: "68,283 253,283 ..."   # SVG 多边形顶点（x,y 空格分隔）
+    labelX: "206"           # 房间名坐标
+    labelY: "311"
+    dataX: "190"            # 温湿度数值坐标
+    dataY: "330"
+    room-data_font_size_round: 80,1   # 数值字号,小数位（可覆盖全局）
+    room-label_font_size: 55          # 房间名字号
+    room-unit_display:                # 是否显示单位
+      temperature: true
+      humidity: true
+
+entities:                   # 每个房间的温湿度实体
+  客厅:
+    temperature: sensor.keting_wendu
+    humidity: sensor.keting_shidu
+
+main_entities:              # 仅主房间（用于时间轴渐变的温度着色），格式同 entities
+  客厅:
+    temperature: sensor.keting_wendu
+
+temp_colors:                # 温度区间 → 颜色（区间左闭右开，最后一个区间含右端点）
+  16-20: "#3498db"
+  20-25: "#2ecc71"
+  25-30: "#f39c12"
+  30-32: "#e74c3c"
+humidity_colors:            # 湿度区间 → 颜色
+  0-30: "#e74c3c"
+  30-50: "#f39c12"
+  50-70: "#2ecc71"
+  70-100: "#3498db"
+```
+
+#### 扩展接口（供其它模块调用）
+
+实现位于 `modules/cards/wenshidu.js`，引擎封在 `WenshiduElement` 中，`WenshiduCardMixin` 对外暴露：
+
+| 方法 | 签名 | 说明 |
+|------|------|------|
+| `createWenshiduCard` | `(config, options) => HTMLElement` | 创建面板并返回根元素 |
+| `updateWenshiduCard` | `(card, config) => void` | 注入宿主与最新 hass、应用新配置 |
+| `showWenshiduPopup` | `(config, triggerButton) => Function` | 弹窗形态（返回关闭函数） |
+| `_collectWenshiduEntities` | `(cfg, out: Set) => void` | 把 `entities` / `main_entities` 里的实体登记进宿主订阅集（`subscriptions.js` 调用） |
+
+分派链路：
+
+| 入口 | 链路 |
+|------|------|
+| `standalone_type: wenshidu` | `standalone.js` → `COMPOSITE_CARD_REGISTRY.wenshidu` → `createWenshiduCard` |
+| `buttons` 内嵌 / `popup_card` | `card-factory.js` → 注册表统一分派 → `createWenshiduCard` |
+| `action: card` + `card.type: wenshidu` | `actions.js` → `showWenshiduPopup` |
+
+#### 主题（默认跟随卡片，配了才单独一套）
+
+**默认跟随房间精灵卡片的主题**——不配置 `theme` 时，面板与卡片用同一套配色（卡片切 dark，面板就是 dark）。若给面板单独配了 `theme`，则**只有面板**换成那一套，卡片与其它卡片不受影响。
+
+```yaml
+# ① 默认：跟随卡片主题
+type: custom:room-elves-card
+theme: dark                    # 卡片主题（面板跟着变深）
+standalone_type: wenshidu
+
+# ② 面板单独一套主题（卡片仍是亮的，只有面板变深）
+type: custom:room-elves-card
+theme: light
+standalone_type: wenshidu
+card:
+  theme: dark                  # 面板自己的主题 → 只影响面板
+```
+
+| 面板 `theme:` 写法 | 效果 |
+|---|---|
+| 不配置（默认） | **跟随卡片主题**（卡片级 `theme:` 是什么，面板就是什么） |
+| `light` / `dark` / `black` / `darkgray` / `transparent` | 面板单独用这一套（卡片不受影响） |
+| `on` / `off` | 按 `dark_light_theme` 的亮色 / 暗色套（默认 `dark,light`） |
+| `time` | 面板按时间自动切换（06:00-18:00 亮色，其余暗色） |
+| `phone` / `device` | 面板跟随手机/系统的深浅色 |
+| `<实体ID>` | 面板由实体状态决定（如 `input_select.panel_theme`，下拉状态直接写主题名即可） |
+| `{ value: dark }` / `{ entity: input_select.xxx }` | 对象写法，同上 |
+
+- 色值只有一处来源：面板复用宿主主题系统的配色表（`modules/core/theme.js` 的 `COLOR_SCHEMES`），**不再自带一套配色表**。
+- 面板主题**只写自己的根元素**，不碰 `documentElement`，因此不会影响卡片与其它卡片；`time` / `phone` 模式下的 60s 定时器与系统主题监听只在该模式下建立，配置改动或卡片销毁时释放。
+- 背景色优先级：`card_bg` / `control_card_bg` / `floor_plan_panel_bg`（配了就用，覆盖主题）> 生效中的主题 > 面板内置兜底色。
+- 图表数据色（温度区间色 `temp_colors`、湿度区间色 `humidity_colors`、曲线系列色）与状态按钮色属于数据/状态语义，不随主题变化。
+
+> 从原独立卡片迁移过来时：原先面板里的 `theme:` 现在含义不变（面板单独一套），若希望"跟卡片一致"直接删掉即可；`dark_light_theme` 用于 `on` / `off` / `time` / `phone` 的暗亮映射。
+
+#### 说明与已知边界
+
+- **渲染方式**：纯 DOM API 构建（面板、户型图 SVG、日期选择器、曲线弹窗均无 HTML 字符串拼接）；户型图用 `createElementNS`。
+- **生命周期**：hass 变化按「关注实体指纹」去重（空闲时每秒仅一次对象身份比较），周期刷新（30s，外部 API 数据源 180s）统一走宿主 `TimerManager`；3D 的 rAF / 事件监听 / ResizeObserver 在切换回 2D 或关闭时全部释放。
+- **曲线图**：走宿主 `showPopup` + 统一 ECharts 加载入口（本地 `www/pobaby_package/js/echarts.min.js` 优先、CDN 兜底），弹窗关闭时实例自动 dispose。
+- **原独立卡片已退役**：本卡片由 `wenshidu-card.js` 迁移而来（源文件归档在 `src/wenshidu-card.js`），原有 `type: custom:wenshidu-card` 配置需按上面的四种方式重写，配置项名称不变。
+
+---
+
+### 6.43 通讯模块卡片 (type: comm)
+
+读取运营商账户信息（话费 / 流量 / 通话 / 套餐权益）与通讯记录，**弹窗形态**，弹窗内两个面板：「账户」「通讯记录」。
+
+> **底部圆点会跟着滑动高亮**：拖动中越过半屏就切到下一个圆点，松手那一刻即定在目标页（不会"滑完才闪过去"）。翻页机制见 `modules/infra/swipe-tabs.js`（通用模块，与 ESXi 卡片共用同一份实现）。
+>
+> **本卡没有选项卡栏**：在面板区域**左右拖动**即可切换（手机触摸、桌面鼠标拖动都支持），采用苹果式「跟手 + 吸附」——
+> - **拖动中**两个面板实时跟随手指横向平移（不是切换时闪一下的淡入），拖多少走多少；
+> - **松手**后按「位移超过面板宽度的 **28%**」或「甩动够快（> **0.35 px/ms**）」吸附到目标页，否则原路回弹；吸附曲线 `cubic-bezier(0.32, 0.72, 0, 1)` / 0.32s（近似 iOS 的减速感）；
+> - **首 / 尾页**继续向外拖时位移打 **3.5 折**（阻尼：拖得动、拖不走，有手感反馈）；
+> - **起手 6px 内先判主轴**：只有横向明显占优（> 1.2× 纵向位移）才进入翻页，否则整段手势交给浏览器纵向滚动 —— 明细列表上下滑不受影响。方向锁定后才 `setPointerCapture`（拖出容器也不丢事件，又不会破坏面板内的点击）。
+>
+> 底部一组小圆点指示当前面板，**圆点也可点击** —— 桌面端、键盘（Tab 聚焦 + 回车）与无障碍用户靠它切换，点击同样播放滑动动画。**卡片高度固定为「账户」面板的高度**：记录面板绝对定位、不参与高度计算，流水在面板内部滚动，因此翻页时卡片高度纹丝不动。
+
+**数据来源**：`shaobo_pocket_carrier` 集成生成的**「数据总览」实体**（如 `sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan`）。该实体的每个属性节点对应一个子传感器（节点内为 `entity_id` / `state` / `icon` / `单位` + 子实体全部属性），卡片一次性读取全部节点，无需逐个配置子实体。
+
+**推荐写法：只写电话号码**，卡片按「电话号码 + 后缀」自动拼接整套实体：
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: comm
+    tel_1: 13363902961
+    name: 通讯
+    width: 430px
+```
+
+> 一个 `tel_N` 展开出 **10 个实体**：`sensor.{tel}_overview`（数据总览）、`button.{tel}_button`（二次认证）、`text.{tel}_code`（验证码）、`date.{tel}_date`（查询起始日期）、`button.{tel}_update_region`（更新归属地库）、`switch.{tel}_daily_reset`、`switch.{tel}_auto_login`、`switch.{tel}_auto_region_update`、`switch.{tel}_auto_query`、`time.{tel}_auto_query_time`。号码会清洗为纯数字（`133-6390-2961` 也能识别），按**数字序**排列（`tel_2` 在 `tel_10` 之前）。多个号码写 `tel_1` / `tel_2` / …
+>
+> **旧配置仍可用**：`entity` / `entities`（含各自的 `button` / `code` / `date`）与 `tel_N` **可以并存** —— 指向同一实体时按实体 ID 去重，不会出现两个号码。
+>
+> 键名写法：`tel_1` / `tel_2`…（主推），只配一个号码时也可直接写 `tel`；**大小写不敏感**。若一个号码都没解析出来，卡片提示会把**实际收到的配置键**列出来，可直接分辨是"配置没传进来"还是"键名写成 `tel1` 了"。
+
+```yaml
+# 旧写法（等价，仍然支持）
+tap_action:
+  action: card
+  card:
+    type: comm
+    entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+    name: 通讯
+    width: 430px
+
+# 或作为通用弹窗内容（popup_card）
+tap_action:
+  action: popup_card
+  card:
+    type: comm
+    entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+```
+
+| 参数 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `tel_N` | ❌ | `string` | **推荐**：电话号码（`tel_1: 13363902961`），自动拼接整套实体；多个号码写 `tel_1` / `tel_2`… |
+| `tel_N_name` | ❌ | `string` | 该号码的**显示名**（`tel_1_name: 我的`），显示在头部号码块的下行；未配则回落运营商 |
+| `entity` | ❌ | `string` | 单个「数据总览」实体 ID（旧写法，与 `tel_N` 可并存） |
+| `entities` | ❌ | `array` | 多个数据总览实体（多号码 / 多运营商），元素为字符串或 `{ entity, name }`；配置 **2 个及以上**时头部出现号码切换行 |
+| `name` | ❌ | `string` | 卡片标题。**不配则不显示标题行**（不再回落「通讯」—— 弹窗自身已有标题） |
+| `icon` | ❌ | `string` | 标题图标，默认 `mdi:sim` |
+| `width` | ❌ | `string` | 弹窗宽度，默认 `720px` |
+| `popup_position` | ❌ | `string` | 弹窗位置，默认 `center` |
+| `initial_tab` | ❌ | `string` | 初始选项卡：`account`（默认）/ `records` / `analysis`（需同时开 `analysis`） |
+| `analysis` | ❌ | `bool` | **开启第三页「统计分析」**（默认 `false` 不显示这一页）。数据来自本地通讯库 API，与实体数据无关 |
+| `key` | ❌ | `string` | 本地数据服务的 API Key。开了 `analysis` 就**必填** —— 但**不配时自动从顶层配置继承**（与空调日历 / 媒体卡同一套约定），所以通常只在根卡片上写一次。逐字段回落：本卡 > 顶层 > 无 |
+| `api_base_url` | ❌ | `string` | 数据服务地址，**不配时同样从顶层配置继承**；顶层也没有则用默认 `/api/ha_data_store`（同源相对路径，通常不用填） |
+| `fields` | ❌ | `object` | **节点名覆盖**，见下方说明 |
+| `button` | ❌ | `string` | 通话详单二次认证 `button` 实体；配置后 hero 标签区出现可点击的**授权状态标签**（气泡入口） |
+| `code` | ❌ | `string` | 通话详单验证码 `text` 实体；配置后气泡内出现验证码输入框 + 「写入」按钮 |
+| `date` | ❌ | `string` | 通话详单查询起始日期 `date` 实体；配置后气泡内出现日期选择（改动即提交） |
+
+多号码配置示例（`tel_N` 简写 —— 实体自动拼接，`tel_N_name` 是号码块的显示名）：
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: comm
+    tel_1: 13363902961
+    tel_1_name: 我的
+    tel_2: 17702925695
+    tel_2_name: CM
+    width: 430px
+```
+
+等价的完整写法（实体自己指定）：
+
+```yaml
+    entities:
+      - entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+        name: 我的
+      - entity: sensor.zhong_guo_lian_tong_xxxxxxxxxxx_shu_ju_zong_lan
+        name: 联通
+```
+
+**卡片头部**（参照 `electricity-info-card` 的多户标题行 `multi-user-info`）：
+
+- **标题行**：只在配置了 `name` 时出现，**居中显示且不带图标**；**不配就没有标题行**，头部只留号码行（弹窗自身已有标题，卡片里再来一行是重复信息）。`icon` 配置项仍然接受（不会报错），但头部不再绘制图标 —— 它与卡片 hero 的图标重复。
+- **号码切换行**：等宽的若干块，每块**两行** —— 上行**话费余额**（`¥128.50`，与账户面板同源；拿不到数据显示 `—`，欠费转红）、下行**名称**（`tel_N_name`，未配则回落运营商 → 号码尾）。号码本身不在块里显示（卡片上方 hero 已有大号号码），收进**悬停提示**（同样走掩码出口）。未激活块半透明、激活块用主题色；块下方是一条**发光滑动指示条**，指示条之下还有一条横向贯穿的分隔线。点任意块即切换号码（面板与头部一起重建，指示条随之滑动）。
+- **出现条件**：号码 ≥2 个时显示；单号码则只在配了 `tel_N_name` 时显示（否则单块没有额外信息可承载，纯占高度）。
+
+**`fields` 节点名覆盖**：卡片按内置的中文别名表定位节点（余额 / 流量 / 通话 / 积分 / 通话记录 等）。若在 HA 里把子实体改了名，导致别名对不上（现象是该区块整块不显示），可用 `fields` 手动指定：
+
+```yaml
+fields:
+  balance: 我的话费        # 覆盖「话费余额」节点
+  call_record: 通话详单
+```
+
+#### 详单认证入口（hero 中的授权状态标签 + 气泡）
+
+配置了 `button` / `code` / `date` 中任意一项后，hero 的标签区会多出一个**可点击的授权状态标签**。有效性判定以数据总览的「通话记录」节点为准：`授权剩余有效时长` 解析为 **0（或 ≤0）即判为失效**，其次看 `详单授权状态` 文案（过期 / 失效 / 未认证 / 无效）；两者都取不到时才退化到认证按钮实体上的同名属性。
+
+| 情况 | 标签文案 | 颜色 |
+|------|----------|------|
+| 剩余时长 > 0 | `剩余 30 分钟` | 绿 |
+| 剩余时长为 0，或状态文案含过期/失效 | `已过期` | 红 |
+| 两项信息都取不到 | `详单认证` | 中性灰 |
+
+点击该标签弹出气泡，**所有认证操作与设置都在气泡内完成**，不占用面板空间；九项全不配置则标签不出现。标签的 `title` 会带上原始「详单授权状态」文案（如「已过期 (需重新认证) · 展示本地缓存流水」）。
+
+气泡从上到下分三段：
+
+1. **主操作**：`button.{tel}_button` —— 文案随「验证码是否已填写」切换（未填 = 「获取验证码 / 刷新流水」，已填 = 「提交认证并拉取流水」）；
+2. **认证字段**：验证码输入（`text.{tel}_code`，写入即提交）、查询起始日期（`date.{tel}_date`，改动即生效）；
+3. **自动化设置**（分组标题 + 卡片式行列表）：默认 4 行开关 —— **自动获取通话记录**（`switch.{tel}_auto_query`）/ **自动短信登录**（`switch.{tel}_auto_login`）/ **自动更新号码归属地库**（`switch.{tel}_auto_region_update`）/ **每日重置查询起始日期**（`switch.{tel}_daily_reset`），加 1 行时间选择（**自动获取通话记录时间**，`time.{tel}_auto_query_time`）；底部一个动作按钮 **更新号码归属地库**（`button.{tel}_update_region`，一次性动作，与开关在语义上分开）。开关开 = 蓝、关 = 灰；实体不存在时置灰禁用（`title` 说明缺哪个实体）。行顺序按使用频率排：自动获取 → 时间 → 登录 → 归属地 → 重置。
+
+> **每行用哪种控件，看实体的真实域**（`_commSettingControl` 分派），而不是一律画开关：
+
+| 实体域 | 控件 | 点击动作 |
+|---|---|---|
+| `button.*` / `input_button.*` | **动作按钮**（行内小胶囊） | `button.press` / `input_button.press` |
+| `time.*`（或域名缺省的 `type: time` 行） | 时间输入框 | `time.set_value` |
+| `switch.*` / `input_boolean.*` / 域未知 | HA 风格滑动开关 | `<域>.turn_on` / `<域>.turn_off` |
+
+> 为什么必须按域选型：`button.*` 没有 on/off 状态，画成开关会"永远显示已关闭"，点击又去调该域**不存在**的 `switch.turn_on` → 表现为"点了没反应"。开关的服务名同样按实体域拼（`switch` / `input_boolean` 都能用）。实体不存在时置灰禁用，不发起调用。
+
+> 气泡里**所有点击动作都走宿主的统一动作系统**（`core/actions.js` → `handleCallServiceAction`），不是直接 `hass.callService` —— 这样操作记录埋点、本地服务分发与远程服务走的是同一条路径，埋点还能拿到"操作前"的状态快照。卡片内唯一的服务调用出口是 `_commCallService()`。⚠️ 埋点对象必须带**可记录的 `action`**（用 `core/action-log.js` 导出的 `actionLabelForService()` 映射：`button.press`→`press`、开关类→`toggle`、其余→`set_value`）—— 只写 `service` 会被埋点判成 `more-info` **静默丢弃**（既不记录、也不打印）。
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: comm
+    entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+    button: button.zhong_guo_dian_xin_13363902961_tong_hua_xiang_dan_er_ci_ren_zheng
+    code: text.zhong_guo_dian_xin_13363902961_tong_hua_xiang_dan_yan_zheng_ma
+    date: date.zhong_guo_dian_xin_13363902961_tong_hua_xiang_dan_cha_xun_qi_shi_ri_qi
+    name: 通讯
+    width: 430px
+```
+
+| 元素 | 交互 | 调用的服务 |
+|------|------|------------|
+| 验证码输入框 + 「写入」 | 填写后点「写入」，或直接回车 | `text.set_value`（参数 `value`） |
+| 起始日期 | 选择日期即提交 | `date.set_value`（参数 `date`） |
+| 二次认证按钮 | 点击 | `button.press`（语义见下表） |
+
+**按钮语义**（由集成 `shaobo_pocket_carrier` 决定，卡片只负责触发并按状态显示文案）：
+
+| 当前状态 | 按下后的行为 |
+|----------|--------------|
+| 验证码已填写 | 提交「姓名 + 身份证号 + 验证码」认证，成功后立即拉取流水；按钮文案显示为「提交认证并拉取流水」 |
+| 验证码为空、授权仍有效 | 仅立即刷新一次流水 |
+| 验证码为空、授权已失效 | 下发验证码短信，并在 180 秒内等待验证码写入后**自动提交**（无需再按） |
+
+常规用法：点按钮下发短信 → 填验证码 → 点「写入」（授权失效时集成会自动提交）→ 若已错过等待窗口，再点一次按钮提交。
+
+气泡内的布局自上而下三块：
+
+1. **主操作按钮**（全宽）：未填验证码时是蓝色 `获取验证码 / 刷新流水`（按下即下发短信）；**验证码已填写后自动转绿色 `提交认证并拉取流水`** —— 让"获取"与"提交"两种语义一眼可分。按钮下方那行小字（180 秒内自动提交的说明）只在未填验证码时出现。
+2. **字段区**（浅灰底圆角块）：`短信验证码`（输入框 + `写入` 按钮，回车等效）与 `查询起始日`（`date` 输入，改动即提交）。两行统一用「**定宽标签 + 控件**」两列，输入框左边界对齐。
+   > 字段区下方紧跟一段**自动填写说明**（仅当配置了验证码实体时出现）：集成侧本就有「验证码写入即自动提交」机制（`telecom_auth.py` 的 `_async_after_set`），所以**若你在 HA 里另配了"短信转发 → 写入验证码实体"的自动化，这里完全不用手动输入** —— 按下「获取验证码」后短信一到就自动提交认证。卡片**无法探测该自动化是否存在**（集成未暴露对应属性），因此做成固定说明而不是条件提示，免得用户默认"必须手输"。
+3. **状态提示**（逐条列出，前置小圆点）：以**「详单授权状态」原文**为主（如「已过期 (需重新认证) · 展示本地缓存流水」）；取不到原文时显示 `授权剩余 N 分钟` / `授权已过期`；等待验证码期间追加 `自动提交等待中`（剩余秒数）；仅当 `最近执行结果` 表示失败（含「失败 / 错误 / 未填写 / 缺少 / 无效 / 作废」）时才附上原因。**验证码下发时间、填写时间等纯历史信息不再显示** —— 它们不代表当前状态。
+
+> 标题行 `详单认证` 保留：入口标签已经显示授权状态，气泡内不再重复显示徽标。
+
+> 认证气泡**不随面板销毁**：数据刷新或认证操作后的定向刷新会同步重建气泡内容（按下按钮后能看到最新执行结果，输入框里未提交的内容也会保留）；关闭卡片弹窗时会一并收掉气泡。
+
+> 按下按钮、写入验证码、修改日期后，卡片会在 **3 秒后主动刷新一次**（集成侧动作是异步的，要等运营商接口），常态另有 60 秒兜底刷新。
+> 多号码时可在 `entities` 的每个条目里分别指定 `button` / `code` / `date`，切换号码即切换到该号码的认证实体。
+
+#### 选项卡 1：账户
+
+| 区域 | 内容 |
+|------|------|
+| 顶部概览（hero） | **纵向三段**：① 号码（**默认打星** `133****2961`，点击号码行展开完整号码，再点收起；切换号码时自动回到打星态），运营商以**右上角丝带**呈现（贴角 + 左下圆角，不占整行）；② **三指标行** —— **话费余额**（蓝，欠费时转红）、**剩余流量**（青）、**积分**（橙），只有数值 + 名称，某项无值显示 `—` 以保持三列对齐；③ 标签行 —— **四个可点击入口**（白底蓝边 + 右侧展开箭头，各带 `title` 提示）：**账户状态**（欠费红/正常绿，勾/叹号图标 → 点击弹话费明细气泡）、**主卡**（证件图标 → 主卡信息气泡）、**套餐名**（包裹图标 → 套餐与权益气泡）、**详单授权状态**（盾牌图标 → 详单认证气泡，仅配置了认证实体时出现）。标签一律用**短名**，细节交给 `title` 与气泡：「主卡」的 `title` 里带卡槽角色原文（`点击查看主卡信息（主号 (主卡)）`），套餐标签的 `title` 里带套餐全称。其中**套餐标签直接显示套餐名**（由 `套餐全称` 截掉「套餐 + 版本号」得到，如 `5G畅享199元套餐201910` → `5G畅享199元`，完整名在 `title` 中；取不到套餐名时退回「套餐与权益」）。**家庭融合、号码归属地两个标签已按需移除**（前者在套餐气泡的「融合类型」里、后者在主卡信息气泡里都有） |
+| 流量 | ECharts **单层环**：本机 + 各副卡各占一段（段值取该成员已用量），**末尾再加一段灰色的「剩余」** —— 环整体即套餐总量，一眼看到还剩多少；**中心显示剩余量 + 剩余占比**（如 `226.36 GB` / `剩余 63%`），右列为 `已用 / 总量` 一行 + 同色图例（含「剩余」行；名称 / 用量 / 占比%，取整）+ 流量包明细。悬停任一段出 tooltip（名称 / 用量 / 占比，**百分比相对套餐总量**）；**触摸端改为点击某段弹小气泡**（触摸下 ECharts 内置 tooltip 定位不准、且触摸没有 mouseout 会一直挂着，故触摸端改用宿主 `_showBubble`，点外部即关）。拿不到总额度时不加「剩余」段（退化为已用量构成）；完全没有成员明细时退化为单值「剩余占比」进度环 |
+| 通话 | 同上（单位分钟、共用同一套图例配色） |
+| 页脚 | 数据最近更新、轮询间隔、凭证状态 |
+
+**「话费明细」气泡**（点 hero 的账户状态标签）：当前可用话费、本月已消费、包含通用余额、包含专用余额、上月出账、欠费金额，以及近 6 个月出账条形图（**出账额固定 1 位小数**，`0.4 / 0.00001 / 0.5` 统一显示为 `0.4 / 0.0 / 0.5`，并用 `tabular-nums` 对齐小数点；其余金额仍保留最多 2 位）。
+
+**「主卡信息」气泡**（点 hero 的主卡标签）：机主姓名、用户星级、网龄、信用额度、网络、归属地、卡槽角色、主套餐、名下宽带、名下副卡、名下固话、实名认证。
+
+**「套餐与权益」气泡**（点 hero 的套餐与权益标签）：套餐全称、融合类型、网络制式、融合宽带、融合副卡、积分与积分体系、剩余短信，以及兑换特权提示。
+
+#### 选项卡 2：通讯记录
+
+**上部「本月通话」**（纯统计，全部由流水清单现算）：
+
+- **标题栏右侧的「号码已隐藏 / 号码已显示」开关**：**默认隐藏中间几位**，一处控制**整卡所有号码** —— hero 的大号号码、顶部号码胶囊、Top3 排名里的号码、通话明细主号、主卡信息气泡里的名下固话。隐藏态下每个号码的 `title` 仍是完整号码（悬停可核对）
+- **四宫格**：总次数（优先取节点「本月通话次数」，清单被 `overview_call_limit` 截断时也准）、**总时长**（明细求和）、总费用（明细求和）、**通话地点**（= 有归属地的记录里去重后的地点个数；运营商完全不给 `location` 时显示 `—` 而不是 0）
+- **四宫格可点开看明细**（各区内容不同，气泡宽度固定 **320px**）：
+  - **总次数** → 接听 / 呼叫次数（未接等其它类型归入「其它」，无则不显示该行）
+  - **总时长** → 接听 / 呼叫累计时长
+  - **总费用** → **0 元不给点击**（本月没花钱，弹出来是空信息）；非 0 → 费用最高的三通（时间 · 号码 · 金额）
+  - **通话地点** → 每个地点的**时长 + 次数**
+  - **流量**：总流量 → 本月流量概况（有上网的天数 / 日均 / 最大单日 / 单次最大 / 日均会话数）；上网时长 → **24 小时分布曲线**（见下）；上网次数 → 单次流量 Top5；总费用 → 计费会话（0 元同样不响应）
+  - **短信：四格都不可点**（按需求不响应）
+  - 接听 / 呼叫的判据与明细里的方向箭头**同源**（`_commCallDirArrow`），两处口径不会打架
+  > 气泡里的键值表**单独一套样式**（作用域 `.comm-mini-tip`）：**单列**布局、标签用"主题深色 + 0.72 不透明度"。面板那套 `.comm-kv-*` 是两列 + 浅灰标签（为面板宽度与底色设计的），直接复用会在 320px 浮层里把长值折断、且整体显灰。
+  > **24 小时分布曲线**（`_commHourChart`）：SVG 单位坐标 + `viewBox`，宽度交给 CSS —— 气泡在展开前宽度是 0，任何依赖 `offsetWidth` / canvas 尺寸的绘制（ECharts、canvas）都会画歪，而 SVG 靠浏览器缩放、不需要测量。24 个时段按真实小时铺满（缺的小时补 0），x 取**每格中心** `(h + 0.5) × 格宽`，HTML 横轴刻度按同一比例绝对定位 —— 用 flex 均分会与真实时段错位。曲线平滑（Catmull-Rom 转三次贝塞尔）+ 半透明面积，非零时段标小圆点、**峰值点换暖色**；每小时一个透明命中区（原生 `title` 悬停可看），触摸端不依赖悬停 —— 下方「峰值 XX 时 · 时长」与「N / 24 个时段有会话」已把关键信息给全。
+  > 不画渐变的原因：气泡挂在 shadowRoot 下，`<defs>` 里的 id 在多卡片并存时会互相覆盖。
+- **每日柱状图（每个分类各一张，只画本分类数据）**：通话 = `每日通话时长`、流量 = `每日上网流量`、短信 = `每日短信条数`。**纯 CSS** 柱子（不占第二个 ECharts 实例）：横轴 = 当月每一天（按真实天数铺满，没数据的日子补 0），纵轴按**当月单日最大值**归一，今天那根是暖色；悬停任一天弹出小浮层（日期 / 数值 / 次数）。横轴只标 `1 / 5 / 10 …` 与末日。
+  > 早先设计过一张「每日趋势」三合一图（通话正柱 / 短信负柱 / 流量折线，双 Y 轴、0 刻度对齐、单位自适应）—— **已按用户要求下线**；三个方法 `_commTrendSection` / `_commTrendData` / `_commTrendOption` 保留但无调用点。
+- **通话时长 Top3**（**按号码聚合**）：排名徽标（前三名**金 / 银灰 / 古铜**三色）+ 号码 + **累计时长** + **通话次数胶囊** + 最近一次通话时间（累计 0 秒的号码不入榜）
+
+> Top3 是「**本月最费时间的三个号码**」，不是「单次最长的三通电话」—— 同一号码的多通会合并成一条，胶囊上的 `3 次` 即该号码本月通数；同分（累计时长相同）时按次数多的排前。悬停任一项的 `title` 会给出完整说明（`号码 · N 次 · 累计时长`）。点击仍按该号码筛选下方明细。
+- **通话地点**（**两种口径，点小标题右侧按钮切换**）：`我的地点`（`location`，通话发生地，**默认**）↔ `对方地点`（`number_location`，号码归属地）。标签上显示该口径下的地点与通话次数（如 `西安 · 106 次`），按次数降序排列；该口径字段为空时回退到另一个字段。切换后**统计聚合、四宫格「通话地点」个数、配色基准、筛选字段**一起换（同时清掉旧口径的地点筛选 —— 旧筛选值在新口径下可能不存在，留着会变成"筛选中却看不到选中项"）。**配色与下方明细的地名共用同一套 8 色板**（同一地名在两处、两种口径下都同色），选中筛选时**不再覆盖成统一蓝**（那会丢掉"地点 → 颜色"的对应），改为加粗 + 用当前文字色内描边
+
+> **点击排行项或地点标签 = 筛选**：下方明细只显示该号码 / 该地点的通话。筛选状态下**明细标题下方会多出一行筛选条**（`.comm-filter-bar`，淡蓝底）：`筛选口径 值 · 命中 / 共 N 条`，右端是「清除筛选」按钮 —— 例如 `对方地点 上海 · 12 / 共 118 条 [清除筛选]`。**筛选信息不挤进标题行**，标题始终是「通话明细」四个字；不筛选时标题直接带总数（`通话明细 · 118 条`），不多占一行。**再点一次同一项即取消**。不点击时始终显示全部（原行为不变）。统计区（四宫格 / 每日柱状图 / Top3 / 地点）**始终基于全部明细**，不会因为筛选而只剩一项；切换号码会清空筛选。筛选会重建明细面板，但**滚动位置会被保留** —— 刚滚到的位置不会被推回顶部（切排序、切视图、点地图圆点/省份同理）。
+
+> 数据来源 / 详单授权状态 / 缓存说明等元信息**不再铺在这里** —— 授权状态在 hero 的认证标签上已有体现。
+
+**第二页按分类分段显示**：页面顶部是**分类切换器**（**通话 / 流量 / 短信**，分段控件带图标），**一次只铺一类** —— 第二页原本把通话、短信、上网全列出来，太长了。
+
+| 分类 | 内容 |
+|---|---|
+| **通话** | 本月通话概览（四宫格 / Top3 / 通话地点）+ 通话明细（列表 / 地图、筛选、排序） |
+| **流量** | 本月上网（四宫格 + 上网明细 / **上网地点分布**） |
+| **短信** | 本月短信（四宫格 + 短信明细 / **短信地图**） |
+
+- **只列出有数据的分类**：没有短信节点就不会出现「短信」标签（点进去空的标签是误导）；**只剩一类有数据时不显示切换器**，与旧行为一致。
+- **当前分类若已没数据**（如切号后新号码没有上网数据）→ 自动回落到通话，不会点出空白页。
+- **切换器吸顶固定**（`position: sticky; top: 0`，配不透明底色 + 下分隔线）—— 面板内容再长，切换器也一直看得见；底色不能省，否则滚动内容会从它底下透出来。
+- **切分类保持滚动位置**（与筛选 / 排序 / 切视图同一条路径）—— 切换器吸顶后不需要把页面拽回顶部，那样反而突兀。
+
+**「本月短信」与「本月上网」**：同一份「数据总览」里另外两个明细节点 —— `短信记录` 与 `上网记录`。**节点不存在就整块不渲染**（集成未提供 / 运营商不支持），不留空区块。
+
+- **本月短信** = 四宫格（总条数 / 发送 / 接收 / 总费用）+ **每日短信条数**柱状图 + 明细列表（时间 · 发送/接收徽标 · 号码 · 费用）。发送 / 接收按 `type` 关键词判（发送 / 发出 / 发信 ↔ 接收 / 收到 / 来信），**不假设固定取值**（运营商写法不统一）。数字走整卡掩码出口。
+- **「地点」标题行还有方向筛选**：`全部 / 呼叫(发送) / 接听(接收)`（语音用"呼叫/接听"、短信与微信用"发送/接收"；**流量没有方向，不给这个键**）。它只作用于**地点胶囊的统计**（以及短信的明细与地图）—— 排行榜 / 四宫格 / 每日柱状图仍反映全量，否则"总次数"会跟着变、看着像丢了数据。与地点口径、地点筛选**正交**，可叠加；切方向**不清地点筛选**。
+- **短信与上网也有「列表 / 地图」切换**（挂在小标题右端，与通话明细**共用同一个偏好** `card._commDetailView`，切一次三处都跟随）：走的还是通话那套地图件（`_commGeoGraph` + `_commMigrationChart`），底层一行没改。**短信**与通话同形态 —— 有我的地点也有对方归属地，画出**流向线**；**上网**那批数据**没有"对方归属地"**（不涉及联系人），所以图上只有地点、没有流向线（标题下明写「只标地点…」），标题也从「上网明细 · …（按日折叠）」换成「上网地点分布 · N 次上网 · M 天」。
+- **这两张地图也支持地点筛选**（与通话明细同一套交互）：点地点 / 点省份即筛选，标题下方多一行 `我的地点 西安 · 2 / 共 3 条` + 「清除筛选」，再点同一项即取消。三个分类的筛选状态**各存一份**（`_commCallFilter` / `_commSmsFilter` / `_commTrafficFilter`），互不干扰；**切月份 / 换号会把三个一起清掉**（新月份未必有那个地点）。短信两种口径都能筛（我的地点 / 对方地点），上网只有我的地点。
+- **「地点胶囊列表」三处都有**（小标题 + 口径切换 + 一排 `西安 · 62 次`，点一颗即筛选、再点取消）：抽成通用的 `_commPlaceBlock`，通话 / 短信 / 上网共用。**短信两种口径**（与通话共用同一个口径偏好，切一次两处一起变）；**上网只有我的地点**（那批数据不涉及联系人）→ 不给切换按钮、量词用「次」、标题写「上网地点」；短信量词是「条」。配色与地图、明细标签**共用同一张表**（都基于全部记录分配），所以统计里的胶囊、地图上的点、明细里的地名是同一个颜色。
+- **短信 / 上网明细每行也带地点**：短信是 `时间 | 发送/接收 | 号码 | 西安 → 北京 | 费用`（两侧都有，箭头按发送 / 接收判）；上网是 `时间 | 流量 | 时长 | 西安 | 业务类型`（只有"我在哪儿上的网"，单段无箭头）。没地点的那条**不渲染空标签**。
+- **本月上网** = 四宫格（总流量 / 上网时长 / 总费用 / 上网次数）+ **每日上网流量**柱状图 + 明细列表（时间 · 流量 · 时长 · 业务类型）。汇总优先读节点的 `合计`（集成已算好），**字段缺失时按会话清单回退求和**，老数据 / 字段改名后仍能出数。
+- **流量单位自适应**：小于 1024MB 显示 `12.92 MB`，≥ 1024MB 转 `1 GB`（如 `20 GB`）。
+- 明细里 **0 元不显示** —— 绝大多数短信 / 上网不计费，逐行标「0 元」只是噪音（与通话明细同一取舍）。
+
+> **每日柱状图是同一套组件**（通话时长 / 上网流量 / 短信条数共用）：`_commDailySeries(monthKey, dayMap, opts)` 的 `value` 决定按哪个指标归一（**字段名不能叫 `valueOf`** —— 那是 `Object.prototype` 的内置方法，永远非 falsy，"不传就回落默认值"的分支会失效），`label` / `countLabel` / `format` 决定提示文案。所以「9月26日 · 2.76 MB · 2 次上网」与「9月1日 · 2 条」出自同一个浮层实现。
+
+#### 选项卡 3：统计分析（需配置开启）
+
+配置 `analysis: true` + `key: <API Key>` 后，底部圆点会多出第三页（**不配就没有这一页**，默认不显示）；可选 `api_base_url`（默认 `/api/ha_data_store`，同源相对路径，通常不用填）。
+
+**它和第二页是什么关系**：第二页读「数据总览」**实体**（集成算好的当月数据），第三页读**本地通讯库 API**（原始记录，跨度可达十几年）。两者口径不同，所以**不强行对齐**：第三页有自己的范围条与渠道切换，**也不随顶部号码切换而变** —— 相当于一个独立的分析视图。
+
+> **数据实况**（实测）：105,032 条 · 2006-10 ~ 今天 · 3 个我方号码 / 2074 个对方号码 · 微信 29448 / 流量 28415 / 短信 27385 / 语音 19783。
+
+**默认视图「历史上的今天」**：按「月日相同」汇总历年同一天（`onthisday`），主图按年给柱；点某根柱子直接进入「全部数据」的该年。右上角胶囊按钮在「历史上的今天 ⇄ 全部数据」之间切换。
+
+**「全部数据」视图**：
+
+| 区块 | 内容 |
+|---|---|
+| 范围条 | 面包屑：`全部数据 › 2026 年 › 2026-09 › 09-30` —— **每一级都可点**，不用一级级退 |
+| 通话时长榜 | 标题右端可选 **Top3 / Top5 / Top10 / 全部**（默认 Top3，状态存 `card._commRankN`，切换零额外请求）。标题带总数：`通话时长 Top3 / 共 24 个`。点某项 → 按该号码筛选下方明细（再点取消） |
+| 指定日期 | 「历史今日」专属：`查某人` 旁边的胶囊按钮，默认写「日期」，点开项目通用的日历弹窗挑一天 —— **只取月日**（"历年同月同日"）。指定后按钮显示 `09-21`、面包屑第一层变 `历年 09-21`（点它回到今天）。基准日会下发给**全部六条 `onthisday` 请求**（主图正反向 / ranking / detail / 地图），所以图、KPI、排行、明细、地图一起变 |
+| 查某人 | 头部「查某人」按钮：输入号码 / 姓名，或从 `parties` 前 8 的常用联系人里点一个（输入后会先用 `contact` 探一次，查不到当场提示）。选中后按钮变成「名字 ✕」，面包屑多一层。它是个**正交维度** —— 与「历史今日 / 全部数据」「全部 / 年 / 月 / 日」自由叠加（"历史今日 × 某人"、"某人 × 2025 年"都成立），所有查询（主图 / KPI / 明细 / 地图）都带上 `party_numbers`（有号码时）或 `party_names`（微信记录没有号码，只有姓名）。指定人时**那个位置整块不出现**（「联系排行」只会返回这一个人自己，没有信息量；曾经换成"该人的年度分布"，但列表区改成层级汇总后两者完全重叠 —— 同一份数据换个长相，所以去掉，只留下面那份汇总） |
+| 渠道切换 | 语音 / 短信 / 微信 / 流量（分段控件，与第二页同一套样式） |
+| 月份切换 | 顶部行右端 `◀ 2026-10 ▶` + 「本月」回位键。**本月走实体，历史月份走本地库 API**（`type=records&month=`）—— 数据先被"伪装"成第二页认识的实体节点（`通话流水清单` / `短信记录` / `上网会话清单`），所以柱状图 / 四宫格 / 明细**一行都没改**。首次进某月显示"正在读取…"，请求回来后面板自动重建。<br>**中间那个月份标签可点**（标题也提示"点击选择年月"）：弹出两列面板 —— 左边年份（可滚）、右边 12 个月（3×4），**年月分开选**。**选年只改选中**（右列重绘、当前月高亮仍在，不跳也不收面板），**选月才跳转并收起** —— 所以"某年某月"是两次点击，且不会在选年途中被弹走。<br>**范围来自后端 `type=months`**：先在乐观值（近 20 年 + 只禁未来）上把面板画出来（秒开），接口回来后收敛 —— **年份只留有数据的那几年**、**没数据的月份禁用**（打开 2024 年只会亮出 3 月 / 7 月），正在看的那个月永不禁用。接口拿不到就保持乐观渲染，功能照用。结果按卡片缓存（并发也只发一次），失败不缓存、下次可重试。 |
+| 主图 | **双向柱**：上行 = 呼叫 / 发送，下行 = 接听 / 接收；**点柱子下钻一层**。纵轴**随渠道换指标**：语音 / 短信 / 微信 = **条数**（时长与金额在悬停提示里）；**流量 = 数据量（`traffic_usage`）** —— 一条流量记录是一次上网会话，"条数"只是会话次数，跟用了多少流量没关系。纵轴单位**按整根轴的量级自适应**：`max ≥ 1000 MB` 走 GB（图例「流量（GB）」，刻度 `332 GB`）、否则走 MB（`420 MB`），都不保留多余小数（GB 档刻度 < 10 时留一位，否则 0.5 GB 会变成 0）。后端未返回该字段时回落条数并在图下注明 |
+| KPI | 条数 / **时长或流量** / 金额 / **联系人或地点**（四宫格，与第二页同款小格）。第二格**随渠道换指标**：语音 = 通话时长；**流量 = 数据量（`traffic_usage`，单位 MB）** —— 流量记录的 `duration` 是"上网时长"（会话持续多久），与"用了多少流量"是两个口径（实测 642 秒只跑 0.05 MB）；短信 / 微信显示 `—`。<br>**四格都可点**，弹「构成」气泡：语音 / 短信 / 微信按**方向**分（呼叫 vs 接听、发送 vs 接收），数据拆自已有的两个 total，零额外请求（短信 / 微信的时长格恒为 0，那一格不可点；金额 0 元同样不可点）。<br>**「联系人」格点开的是名单，不是两个数字**：`序号 · 姓名或掩码号码` → `条数 · 时长 · 金额`，标题带总人数。人数优先取后端总数（all 视图 `total.party_count`、历史今日视图排行的 `total_keys`）—— **但微信不走 `party_count`**（它按 `party_number` 去重，而微信那批记录的号码全是空串：实测给出 1、实际 2 人），改用排行行数。**流量没有方向**，四格改成「上网会话概览 / 各地点的流量 / （金额不可点）/ 地点活跃度」—— 数据来自 `crosstab&rows=location`（只在该渠道取），**第 4 格标签是「地点」而不是「联系人」** |
+| 联系排行 | 主数据用 **`type=ranking&dimension=party_name`**（后端**按人聚合**，同一个人的多个号码算一个人），再配一份 **全量 `parties`** 建「姓名 → 号码」映射 + 补上**没有姓名**的那批独立联系人。行尾提示 `N 个号码`。<br>**为什么不能只用 `parties`**：它按号码聚合，而微信记录的 `party_number` 是**空串** —— 同一个「T」在档案里 8232 条、用 `parties` 只有 2815 条（差的 5417 正好是微信）。**为什么不能只用按姓名**：库里 2073 个号码中 1806 个没有姓名，纯按姓名会整段消失。两者都要。<br>显示时姓名三级回落：行内姓名 → 明细里的同号姓名 → **掩码号码**。**姓名本身也过掩码**（与号码同一个开关）：1 字 → `*`、2 字 → 留第 1 个、≥3 字 → 留前面的 n-2 个（`宋平` → `宋*`、`宋平平` → `宋**`、`欧阳娜娜` → `欧阳**`）。<br>**统一出口是 `_commPeerText(value, card)`**：`rank.key` / `party_name` / `peer.label` 里存的东西**不一定真是姓名**（实测有整段是号码的），所以它**按值的形态分流** —— 只有数字 / 空格 / `-` / `+` 走号码规则（`133****2861`），其余走姓名规则。直接把号码交给姓名规则会得到 `133639028**`（看着像号码、星号位置全错），这个坑踩过一次。**只有语音渠道**的标题右端有**榜长档位 `Top5 / Top10 / Top20 / 全部`（默认 Top5，无 Top3 —— 五个档位会把标题挤到换行）**（与第二页通话榜**共用** `card._commRankN`，设一次两边都变；标题带总数 `联系排行 Top3 · 共 2026 人`）。**「按条数 / 按时长」切换键**（短信 / 微信的 `duration` 恒为 0、流量压根没有排行榜，都不给这个键；流量那一块整块不渲染、请求也省掉）。切换键的排序依据交给后端 `by=count|duration`：排序交给后端 `by=count|duration`（`sort` / `order_by` 会被忽略），值里把**排序依据放最前**（`267 小时 19 分 · 2846 条`）。<br>**整行点击 = 筛选到这个人**（等价于「查某人」，时间范围回到全部）；档案气泡挪到**行尾小图标**（`mdi:information-outline`）上：总量 / 首末 / 距今 / 平均间隔 / 跨度 / 渠道分布 / 最常联系时段。号码位只接受**号码形态**的值 —— 微信那批 `party_number` 为空、`key` 就是姓名，当号码传会拿 `party_numbers=宋平平` 去查（必然 0 行）。全部数据视图用 `type=parties`（按号码聚合且带姓名），历史今日视图用 `onthisday&mode=ranking&dimension=party_number`（保住"月日相同"语义）。<br>**微信例外**：那批记录的 `party_number` 是空串（只有 `party_name`），按号码聚合得到 **0 行** —— 所以该渠道的对端维度改用 `party_name`（today 视图 `dimension=party_name`、all 视图 `type=ranking&dimension=party_name`），代价是**同名会被合并**（微信数据里没有更强的标识可用）。`type=parties` 写死按号码聚合、传 `dimension` 会被忽略，但它**带姓名**，所以号码维度仍优先用它 |
+| 通话地图 | **右上角有「全屏」按钮**（第二页迁徙图同款：卡片内 `fixed` 铺满，不用原生 `requestFullscreen` —— Shadow DOM 里那个会被拒；Esc / 再点退出，全屏时图例一起进去）。复用第二页迁徙图的底层件（纯 option / 中国地图 / 省份判定），数据来自后端 **`type=geoflows`**（**聚合好的"地点 + 有向边"**，不再拉明细自己算 —— 明细有 `limit` 上限，记录一多地图就明显不全，这是数据不全的根因）。`geoflows` 吃全部通用过滤，所以"指定人 / 指定号码 / 指定时段 / 指定渠道"直接叠参数；「历史今日」用它的 `md`（`MM-DD`）取"历年同一天"。前端只做形状搬运（`_commGeoGraphFromApi`），**点城市 / 点省份即筛选明细**，口径自动选（只在对方归属地出现过就用 `party_places`） |
+| 列表区 | **两种形态**。**「历史今日」= 逐条明细**；**「全部数据」= 跟随图表下钻层级的汇总** —— 每行一个时间桶，渲染成**表格**：表头随渠道与粒度变（`年份 / 呼叫 / 接听 / 合计`、`月份 / 发送 / 接收 / 合计`、`年份 / 合计 / 流量`…），**除第一列外一律右对齐 + 等宽数字**，一列数字上下对齐才能比大小。**语音的呼叫 / 接听 / 合计三格各带一行时长副行**（小字，主值是条数）：`2026 年 呼叫 461 / 9 小时 7 分`、`接听 548 / 7 小时 57 分`、`合计 1009 / 17 小时 5 分` —— 合计时长也是全量口径（比两方向之和大 1 分钟，差的就是「呼转」）。短信 / 微信 `duration` 恒为 0、流量的 `duration` 是"上网时长"另属一个口径 → 都不铺副行。表格**底部有一行「总计」**（逐行累加而非取 `list.total` —— 行的筛选口径与 `chart` / `down` 不一致，累加才能让三列说同一批数据；流量累加后再换算，不逐桶换算相加），一条贯通上边线 + 加粗与数据行区分，**不可点击**（不是桶）；只有 1 行时不显示。合计取**不带 `msg_types` 的全量**而非两方向相加 —— 库里还有「呼转」这类别的方向与没写 `msg_type` 的记录（实测 2008 年 `呼叫 930 + 接听 800 + 呼转 1 = 合计 1731`）；流量无方向，只给合计。列宽模板由 `--comm-sum-cols` 下发，行用 `display: contents` 让"整行可点"与"列对齐"并存。**点行即下钻一层**（与点柱子同一入口，下钻键与终点一致），空桶不显示、倒序、小时层为终点（不再给点击光标）。数据与 `years` **同参** → **零额外请求**（刻意不带 `limit`，否则查询串不一致、缓存失效）。右侧主指标同为渠道口径：流量给数据量、语音给时长、短信 / 微信恒无时长 → 只给条数。**年份 chips 在汇总模式下不出现**（这一层的行本身就是年份，点行即下钻）；切到该视图时会清掉残留的年份筛选（在汇总层没有落点）。地点筛选（地图点击）继续生效。<br>**下钻到「日」时，表格下面还会接一份该日的逐条记录**（不限是否指定人）：这一层的汇总粒度是"按小时"，看得出几点聊了几条、看不出聊了什么 —— 所以那一层多发一条 `type=records&date=<那天>`（带渠道，指定人时再带对端过滤），行复用明细区的渲染。其它层级不请求也不渲染。<br>**明细行尾的内容标签是「正文预览」而不是固定两字**：跟随**号码隐藏**开关 —— 隐藏态 `前2个字***`、显示态 `前10个字…`（`_commContentPreview`，与 `_commPhoneText` 同一个出口，`***` 固定三个不按长度铺）；换行 / 制表符先压成空格。点它仍是打开聊天窗口。<br>**明细形态**：当前范围的逐条记录（时间 · 类型徽标 · 对端 · 时长或金额），号码走整卡统一的掩码出口。**类型徽标按方向着色**：发送 / 呼叫（我打出去）蓝、接收 / 接听（别人打来）绿、流量等无方向的中性灰 —— 判据与第二页明细同源。**跨年时按年分段**（左色条 + `2025 年` + 右淡线），同年范围内不插（纯噪音）。**标题栏右侧是年份 chips，点一下只看那一年**（再点取消），筛选行显示 `2025 年 · 15 / 共 40 条` + 「清除筛选」。筛选**只作用于明细**（主图 / KPI / 排行 / 地图始终全量），且只有 `list` 的查询串变 → 其余请求全部命中缓存，切换实测只发一个请求。<br>**`content` 非空的行，行尾多一个「内容」小标签**（描边胶囊，与实心方向徽标区分），点开是**聊天窗口（仿微信）**：微信绿气泡靠右（我）、白底气泡靠左（对方），圆角方块头像，跨天插「今天 / 昨天 / 日期」分隔。数据走 `type=chat&mode=detail`（不跑汇总 SQL，`fields` 裁到 6 列），**渠道可在标题下的 chips 里换**（`全部` + 各渠道带条数，取自 `by_channel`；`channels` 必须显式传，不传就是"该对端的所有渠道"），**每条消息都带「渠道 · 时间」标记**（切「全部」时靠它分辨短信 / 微信 / 语音）。`empty_content` 按渠道定：微信 97.8% 有正文→滤空壳，语音 0%、短信 22.8%→不滤（滤了会整段空掉）。<br>**标题栏右侧有日期选择器**：走宿主的**通用日历**（`showCalendarPopup`，与时间线 / 设备用量 / 桑基图同一套，`--room-calendar-*` 主题配色），开启时会把**有记录的日期**打上点（通过它新开的 `apiOptions.fetchDates` 出口，调 `type=dates&month=YYYY-MM&party_names=…` 并按 `月|渠道` 缓存）。选某天是**跳过去**（不是筛选）—— 列表定位到那天，前后仍可自由滑动：**上滑看更早、下滑看更晚**。实现上日期只作"往更早方向翻"的右边界（`end=D 23:59:59`），"更晚"方向从**次日零点**起（`start` 是包含语义，用当天 `23:59:59` 会把锚点最后一条重复取回）。首屏定位：无锚点滚到底部（最新）、有锚点滚到顶部（第一条就是那天）。**渠道计数不受它影响**（恒为全量）。按钮可一键「回到最新」。<br>**从明细行的「内容」标签进来时，会定位并高亮那一条**：拿它的时间戳当首屏右边界（`end=<那条时间>`），于是它必然落在首屏，再滚到它并加 `.focus` 高亮（`outline` 画圈 —— 不占布局，气泡宽度不会因标记而跳动）；按「时间 + 正文」唯一匹配（同一秒可能有多条）。定位之后**仍可双向滑动**，不会被锁死。<br>**日历锚点优先于明细定位**：从明细进来后再用日期选择器，照样能跳（锚点是用户后来的动作，覆盖前者）；点「回到最新」会把两者一起清掉。<br>跳转时**用 `start`/`end` 圈定范围 + `limit=0` 取全量**（`chat` 原生支持，`limit=0` = 不限条数），范围取**目标日前后各一天**：只圈当天的话，那天若只有三五条，屏幕都填不满、滚动条不出现，上下滑动触发不了翻页，相邻日期就够不着了。若范围内容仍撑不满一屏（数据稀疏），**自动补一页更早的**兜底。首屏滚到**目标日期的日期头**上，补载完成后再定位一次（补载会往上方插内容）。**渠道计数也跟着日期收窄**（`by_channel` 吃 `date`，所以换日期时清单会重拉）；限了日期而那天没数据时页脚直说 `${date} 没有记录`。日期与渠道正交，可自由组合。窗口是 `showPopup` 的居中模态（不是锚定气泡），**滚到顶部自动加载更早 30 条**并保持视口位置；发送 / 呼叫靠右、接收 / 接听靠左，跨天插日期分隔。正文 `pre-wrap` 原样保留换行与制表符（最长的一条 1460 字 / 22 个换行）；附件路径（`./file/xxx.pdf`）渲染成"图标 + 文件名"；没有正文的记录用「类型 · 时长 / 金额」占位。**`content` 不是只有微信有** —— 实测微信 973/1000、短信 346/1000、语音 1/1000（一条备忘混进了语音）、流量 0。对端按 `party_number` → `party_name` 回落（微信记录的 `party_number` 是空的）。第二页短信明细共用同一套标签与窗口。
+
+> **明细只覆盖到哪些年份，标题会写明**：明细是"最近 N 条"，流量这种密集渠道（库里 28415 条）的最近 60 条可能全在一年内 —— 于是标题写成 `显示最近 60 / 共 28415 条 · 仅 2026 年`，精确查看交给年份 chips。「历史今日」的数据量小，明细上限给到 **200**（该渠道当日全部），所以那里能看到真实的跨年分段。 |
+
+**下钻粒度是自动的**：全部 →（按年）年 →（按月）月 →（按日）日 →（按小时）小时；到小时后不再下钻，再点即滚到下方明细。
+
+> **为什么必须分渠道看**：`duration` 在不同渠道里含义不同 —— 语音是**通话秒数**、流量是**上网时长**、短信 / 微信恒为 0。把全表 `duration` 加起来会得到"9339 小时"这种没有意义的数字，所以渠道是第三页的第一层维度。
+
+**几个实现取舍**（读代码时会用到）：
+
+- **状态挂在卡片上**（`card._commAna`）：面板重建（换号 / 数据刷新）后原样恢复；查询结果**按查询串缓存**，所以重建不产生请求、视觉上完全静止。
+- **并发保护**：连点柱子 / 连切渠道时，先到的旧响应会被丢弃（`reqId` 比对），不会覆盖新状态。
+- **失败不等于空白**：错 key / 表不存在 / 网络异常都转成面板内一行提示，且**失败的查询不进缓存**（下次进入可重试）。
+- **`fill=1` 只在有显式范围时生效**：传了 `year` / `month` / `date` 时后端补全空缺时间桶（横轴连续）；「全部数据」的年度视图没有边界可补，横轴只画**有数据的年份**。
+- 图表实例在面板重建时显式 dispose（与环形图同一处理），不会泄漏。
+- 「历史上的今日」排行走 `dimension=party_name`，返回的 `key` 是**姓名**而非号码 —— 查档案时按值的形态选 `party_name` / `party_number`。
+- **明细标题写清范围与总数**（`明细 · 历年今日（10-01） · 共 40 条`），时间**始终显示完整年份**（`2026-10-01 12:04`）—— 第三页的范围可能横跨十几年，缩写或省掉年份都得靠猜。
+- **主图的「正向 / 反向」是两个请求**：`stats` / `onthisday` 都只按时间分桶、给不出 `msg_type` 维度，所以「呼叫 / 接听」「发送 / 接收」各发一次（并发）；「流量」渠道只有一个方向，不发多余请求。**KPI 的合计要把两者相加**（联系人数取较大值，不能相加 —— 同一个人可能同时在两侧）。
+- **第三页与「记录」面板共用「绝对定位、不参与容器高度」**（`.comm-panel[data-panel="records"], [data-panel="analysis"]`）：三个面板占同一个 grid 格子，容器高度取最大值，所以内容长的面板必须脱离高度计算，否则会把卡片撑高、切页时高度还会跳。**账户面板是唯一的定高基准**。
+
+**下部「通话明细 · N 条」**：本月通话流水清单（取自「通话记录」节点的 `通话流水清单`，默认**按时间倒序**）。标题栏右侧是**视图切换**：**列表**（默认）/ **地图** —— 两者共用同一份（已筛选的）流水，切换只重建通讯记录面板。**列表视图**上方是**排序条**：左侧「排序」说明，右侧四个字段胶囊 —— **时间 / 时长 / 类型 / 地点**。每条记录两行：
+
+- 主行：类型徽标（**呼叫 = 蓝、接听 = 绿**）+ 号码（与正文同字体，仅靠 `tabular-nums` 让数字等宽对齐）+ 时长
+- 次行：**时间**（`09-28 10:39`，当年数据省略年份）+ **通话类型标签**（按类别分色）+ **地点标签**（定位图标 + 两个地名，格式见下）+ 费用（0 元保持次要色，真计费的记录标橙加粗）
+
+> **地点标签的格式 = `我的地点 箭头 对方地点`**：**接听**（别人打给我）用 `←`，如 `西安←上海`（对方在上海、我在西安）；**呼叫**（我打出去）用 `→`，如 `西安→上海`。箭头判据与主行类型徽标同源（接听 / 被叫 / 呼入 / 来电 ↔ 呼叫 / 主叫 / 呼出 / 去电），其它取值（未接等）用中性 `·` 不编造方向。两个地名**各自按地名取色**（与统计区同色板），箭头为次要色；**两侧都有值时一律出两段**，哪怕两边同名 —— 本地通话就是 `西安→西安`（曾按"相同就合并成一个"处理，结果本地通话只剩一个地名，看起来像"这条没有对方归属地信息"，反而丢信息）；**只有一侧有值**时只显示该侧、不带箭头。
+- **今日标记**：`call_time` 的日期等于今天的记录，在条目**右下角**显示绿色 `今日` 胶囊（次行已为其预留右侧空间，长文本不会压上去）
+
+> **次行的标签配色**：通话类型按关键词分四档 —— **漫游通话**（橙，易产生额外费用）、**国际 / 境外 / 港澳台**（紫）、**视频通话**（青）、其余（如**国内通话**）为中性蓝灰兜底；**地点标签**带 `mdi:map-marker-outline` 图标，**两个地名各按地名从 8 色板里取文字色**（`_commPlaceToneMap`；标签底色保持中性，因为一行里要放两个地点）—— **同一地名恒同色、不同地名不同色**，颜色按「全部流水里 `location` 与 `number_location` 的**并集** + 拼音序」分配，因此切换筛选 / 排序 / 两种口径时同一地名都不会换色；费用为 `0元` 时保持次要色，只有真的计费（如 `0.2元`）才标橙加粗 —— 否则"全标红"反而看不出哪几通真的花了钱。通话类型的判据只看 `call_type` 文案关键词（各运营商取值不统一，关键词比对最稳）。次行现在是可换行的弹性行，窄屏下标签会自动折行。
+
+> **排序交互**：点胶囊 = 按该字段排序（**时间 / 时长默认降序**，**类型 / 地点默认升序**）；**再点同一个胶囊 = 反转升降序**（激活项带 ↑ / ↓ 箭头）。未点过时把「时间 ↓」显示为激活态 —— 流水清单本身就是时间倒序，这样列表当前顺序一目了然。排序与筛选**可叠加**（先筛选、再排序），切换号码会把排序重置回时间降序。
+>
+> **排序口径**：时长解析不出的记录按 0 秒计（与「总时长」统计口径一致）；**时长 / 类型 / 地点相同的记录统一回落到时间倒序**做次序键，否则同值行会随刷新抖动、看起来像"排序乱跳"。**「地点」排序按统计区当前口径**（选「对方地点」时按 `number_location` 排）。
+
+**地图视图（中国地图）**：把通话画成流向线 —— **点** = 通话地点（大小按通话次数、颜色与列表里的地点色板一致）、**线** = 通话方向（带流光动画，粗细按该流向的累计时长）。悬停某条线可看「从哪到哪 · 通话几次 · 累计多久」，悬停某点可看它作为"我的地点 / 对方地点"各几次。
+
+**点击行为**：**点圆点** → 按该地点筛选明细（再点一次取消）；**点省份** → 一次筛出坐标落在该省内的所有地点；**点线** → 弹出**「流向详情」气泡**（**箭头指向点中的那一处**；触摸端**点地图本身不会关掉它** —— 关闭方式是点气泡外或点另一条线，这是为了避开"移动端浏览器在触摸后补发一次原生 click、把刚弹出的气泡关掉"的问题）—— 类型徽标（与线同色：呼叫橙 / 接听紫）+ `起点 → 终点`、通话次数 / 累计时长 / 平均时长、**这条线上的原始流水**（最近 12 条，号码跟随「号码已隐藏」开关），底部一个「筛选该流向」按钮。筛选从"点线的副作用"变成了气泡里的显式动作，避免线细误触一次就把列表筛没。
+
+> **地图视图的四个要点**：
+> 1. **方向 = 真实通话方向，且按类型分色**：**呼叫**（我打出去）为 `我的地点→对方地点`、**接听**（别人打来）为 `对方地点→我的地点`（判据与明细标签的箭头同源）。**呼叫画橙线（`#fb8c00`）、接听画紫线（`#7e57c2`）** —— 刻意**不沿用**列表徽标的蓝 / 绿：地图底图是淡蓝系（区域填充与省界都是蓝），蓝线会糊在图上；橙 / 紫这组互补色与底图对比最强、彼此也一眼可分。**线宽按该流向的累计通话时长**（`0.8 + 2.2 × √(时长 ÷ 最长时长)`，0.8~3.0px）而**不是次数** —— 打 5 通 30 秒与打 5 通 20 分钟在"通话量"上不是一回事。悬停可见该线的类型、次数与累计时长。同城通话不画线，只计入该地点的次数；方向判不出的类型（如未接）按"我的地点→对方地点"兜底。万一出现"方向相同、类型不同"的两条线（漫游时可能出现），两者曲率略有差异，不会完全糊在一起。
+> 2. **地图数据运行时读取**，不进 bundle：首选 `/local/pobaby_package/js/china.json`（53KB，**省界简化、留岛少**），缺失时退化到同目录的 `china.geo.json`（590KB，省界精细），再退化到 CDN；加载一次后全局缓存，失败有提示且可切回列表查看。**用简化版不是因为体积** —— 精细数据的离岛与碎边界会把 geoJSON 包围盒撑大，ECharts 按包围盒适配容器，同样缩放级别下地图主体反而更小。**坐标**取自流水的 `location_coordinate` / `number_location_coordinate`（`经度,纬度`），解析不出或越界的记录跳过，图下方会注明"另有 N 条记录缺坐标"。
+> 3. **筛选双向联动**：地图只用**筛选后**的流水作图。**点圆点**筛该地点、**点省份（面）**一次筛出坐标落在该省内的**所有地点**（按"点在多边形内"判定，不依赖"城市→省"的硬编码表；精细省界数据的顶点更密，判定也更准）；两者在该地点只作为"对方地点"出现时都会自动改用 `number_location` 口径，避免筛出空结果。同一圆点 / 同一省份**再点一次即取消**筛选。
+> 4. **地图可拖动、可缩放，视野会被记住**：单指拖动平移、双指捏合或滚轮缩放（`roam`，限制在 0.9~8 倍）；**双击地图复位**到默认全景。拖动 / 缩放后的视野存在 `card._commMapView` —— **点圆点 / 点省份筛选、换号、定时刷新都不会把它推回全图**（这些操作都会重建地图，没有它每次都得重新放大）。地图区域**不参与左右滑动切选项卡**（手势起点落在地图上时翻页逻辑直接跳过），代价是地图内的纵向滚动也归地图，滚页面请在地图外的区域操作。**地图高度随容器宽度等比**（`aspect-ratio: 1.8 / 1`，下限 340px / 上限 480px，窄屏下限 300px）—— 宽屏弹窗下地图跟着长高、把宽度铺满，不会缩在中间留白；容器尺寸变化由 `ResizeObserver` 触发 `chart.resize()` 重绘。
+
+> 流水清单目前直接读集成节点；**将来改由后端 API 拉取时只需替换 `_commCallView()` 的数据来源**，渲染层不用动。清单条数由集成的 `overview_call_limit` 选项控制（0 = 全部，实测 118 条）；面板本身是滚动容器，列表不再套内部滚动（避免双滚动条）。详单授权失效时集成只保留本地缓存，重新认证后可拉取最新明细。
+
+#### 独立卡片模式（standalone_type）
+
+不弹窗，直接把通讯模块当作**常显卡片**使用：
+
+```yaml
+type: custom:room-elves-card
+standalone_type: comm
+entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+name: 通讯
+```
+
+顶层写法与 `card:` 内的配置**完全一致**（`entity` / `entities` / `fields` / `name` / `icon` / `initial_tab` / `button` / `code` / `date` 等都会原样透传给 `createCommCard`）：
+
+```yaml
+type: custom:room-elves-card
+standalone_type: comm
+entities:
+  - entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+  - entity: sensor.zhong_guo_lian_tong_xxxxxxxxxxx_shu_ju_zong_lan
+    name: 联通
+fields:
+  balance: 我的话费
+```
+
+- **高度与外观**：不套用弹窗的 `88vh` 上限；背景用主题的**卡片底色** `--room-card-bg`（浅色半透白 / 深色深底，随主题变化，不是透明），圆角用 `--room-card-border-radius`。面板高度仍锁在「账户」选项卡高度上，流水在面板内部滚动。翻页手势、圆点切换、号码显示开关等交互与弹窗内完全一致。
+- **刷新不依赖独立模式的 1 秒轮询**：注册表里该类型登记为 `standalonePoll: false`（数据本身是 30 分钟级），由卡片自身的 **60 秒低频任务**驱动。
+- **卸载自清理**：独立模式没有弹窗的 `onClose` / `onDestroy` 回调，卡片从页面移除后由低频任务检测到 `isConnected` 为假、补跑一遍完整清理（关气泡 / 注销任务 / 解除视口观察 / 销毁环形 ECharts 实例）—— 低频调度器自己只会摘掉调度项，这些资源的解绑都在清理流程里。
+
+#### 说明与已知边界
+
+- **刷新机制（两级）**：数据总览实体本身为 30 分钟级轮询数据，卡片以 60 秒低频任务刷新（走宿主共享 tick，带视口门控），并按两个签名分别判断要做哪种刷新：
+  | 签名 | 覆盖范围 | 命中时的动作 |
+  |------|----------|--------------|
+  | `dataSignature` | 「数据总览」的**内容指纹**（全部节点的属性值，但剔除认证易变字段） | **整体重建面板**（含环形图重挂） |
+  | `signature` | 数据指纹 + 认证实体（详单按钮 / 验证码 / 日期）的时间戳 | 若非数据变化 → **只刷新"认证表面"**：hero 的授权标签文案与配色 + 四个气泡的内容，面板 DOM 一律不动 |
+
+  > **为什么 `dataSignature` 取内容指纹而不是实体的 `last_updated`**：集成会把认证状态也镜像进总览的「通话记录」节点（`详单授权状态` / `授权剩余有效时长` 等），等待验证码窗口与倒计时期间这些字段**每秒被重写一次** → 实体时间戳每秒变。用时间戳做签名就会每秒整体重建面板：环形 ECharts 实例被反复 dispose、柱状图浮层被反复关闭 —— 用户看到的就是「图表标签/提示闪一下（约 1 秒）就消失」。
+  >
+  > 指纹里被剔除的字段（`COMM_AUTH_VOLATILE_KEYS`）：`详单授权状态` / `授权剩余有效时长` / `自动提交等待中` / `最近下发验证码时间` / `验证码填写时间` / `验证码状态` / `最近执行时间` / `最近执行结果` —— 它们只影响 hero 标签与认证气泡，走轻量刷新。而 `数据最近更新` / `数据来源` / `缓存说明` **不剔除**（集成本轮拉取数据时才写，变化即代表数据更新，理应重建）。流水清单只取"长度 + 首尾时间"参与指纹（整份 JSON 化在高频路径上代价过高）。
+  >
+  > **柱状图浮层还有一层兜底**：悬停的天号记在 `card._commDailyHover` 上，面板若仍被重建（数据刷新 / 换号等），新面板会在下一帧检测到指针仍停在图表上并把浮层恢复回来 —— 即使重建来源超出预期，用户也不会看到"闪一下就没"。
+- **环形图**：走统一 ECharts 加载入口，中心数值由 DOM 渲染（ECharts 加载失败时数值仍可读）；切换号码或数据刷新时旧实例会被显式 dispose。
+- **未配置 `entity` / `entities`**、或传入的实体不是「数据总览」实体时，弹窗内显示明确提示，不会静默空白。
+- **区块小标题带虚线分割**：`.comm-sub-title`（每日通话时长 / 通话时长 Top3 / 通话地点）底部是一条横贯整宽的虚线，把标题栏与下方内容分开；「通话地点」那行的右侧额外的口径切换按钮也在这条线上。间距由 `.comm-section-body` 的 `gap` 提供。
+- **卡片高度固定为「账户」选项卡的高度**：两个面板虽然共用同一个 grid 格子（用 `visibility` 切换，不是 `display: none`），但**「通讯记录」面板被设为 `position: absolute; inset: 0`**，从而不参与容器的高度计算 —— 否则容器高度会取两面板的较高者（= 长长的流水清单），卡片被撑高、切选项卡时高度还会跳。滚动因此下沉到各面板自身（`.comm-panel` 的 `overflow-y: auto`），流水再长也在面板内部滚；账户内容超过视口上限（88vh）时同样由面板自身滚动。
+- **气泡一律向下展开**：hero 上的四个入口（话费明细 / 主卡信息 / 套餐与权益 / 详单认证）以及触摸端点击环形段弹出的小气泡，统一用 `placement: 'bottom'`。原先 `auto` 会按锚点上下空间自动翻向 —— 标签在卡片上部时反而容易翻到上方遮住 hero。向下的空间不够时由 `_showBubble` 自动收窄最大高度并内部滚动，不会跑出视口。
+- **气泡/浮层在触摸端不因"抬手"关闭**：触摸端有两个陷阱会让"点出来"的气泡在同一个动作里被关掉 ——
+  ① `pointerleave` 在**手指抬起时同样会被派发**（不是只有鼠标移出才触发）；
+  ② `_showBubble` 的 `closeOnTargetClick`（默认 `true`）监听 target 的 `click`，而触摸端事件顺序是 `pointerdown`（打开）→ `pointerup` → **`click`（关掉）**。
+  因此柱状图浮层在 `pointerleave` 里直接忽略 `pointerType === 'touch'`，环形段气泡把 `closeOnTargetClick` 设为 `false`；触摸端的关闭统一交给"点外部"（`closeOnClickAway`）或"再点同一项"（两处都实现了 toggle）。
+- **气泡内的文字色**：hero 的三个气泡挂在 `shadowRoot` 下（**不在 `.room-card` 子树内**），而 `--room-*` 动态变量写在 `.room-card` 上，气泡里不一定取得到 → 气泡内所有文字色一律**显式声明**（`var(--room-xxx, 兜底色)`）而不依赖继承，否则深色主题下会继承宿主的白字、配上气泡的白底兜底变成"看不清"。
+
+---
+
+### 6.44 ESXi 虚拟化卡片 (type: esxi)
+
+> **只配一个聚合实体，就能展示与控制 ESXi 主机 + 全部虚拟机 + 屏幕画面。**
+>
+> ⚠️ **前置条件：必须先安装自定义集成 [`esxi_control`](https://github.com/chjspp520/esxi_control)（必需）**
+> —— 卡片自身不采集任何数据，全部内容都来自该集成生成的实体与聚合实体。
+> **没装 / 没配置集成时，这张卡没有数据可显示**（只会给一句提示，不是卡片坏了）。
+
+数据全部来自集成（`esxi_control`）的**聚合实体**（默认 `sensor.esxi_all_entities`，不存在时回退 `sensor.entities`）：`attributes.devices[]` 里主机与虚拟机各是一个设备节点，节点内是该对象的全部实体。卡片按「设备名 + 实体短名」自动识别角色（电源 / CPU / 内存 / 快照 / 画面 / 截图…），**不需要逐个配置实体**。
+
+> ⚠️ **中文名虚拟机按「中文短名」匹配，不是 entity_id 后缀**：集成对中文名虚拟机生成的实体 ID 是**拼音化**的（如 `sensor.xu_ni_ji_windows10_down_cpushi_yong_lu`），靠后缀识别会落空。
+
+#### 依赖集成：`esxi_control`（必需）
+
+本卡片**不能独立工作**，它的全部数据都来自自定义集成 **`esxi_control`**：
+
+- **仓库地址**：https://github.com/chjspp520/esxi_control （下载 / 更新都从这里取）
+- **安装位置**：`<配置目录>/custom_components/esxi_control`（开发机映射盘 `Z:\custom_components\esxi_control`）
+- **集成信息**：domain `esxi_control`，名称「ESXi Control」，当前 `version 0.12.0`，`iot_class: local_polling`，依赖 `pyvmomi==8.0.3.0.1` / `pycdlib==1.21.0` / `asyncssh>=2.14.0`（配置里 requirements 会自动安装）
+- **安装步骤**：
+  1. 从上面仓库下载，把整个 `esxi_control` 目录放进 HA 配置目录的 `custom_components/`；
+  2. 重启 Home Assistant（首次启动会自动安装上面那几个 Python 包）；
+  3. 「设置 → 设备与服务 → 添加集成」，搜索 **ESXi Control**，填 vCenter / ESXi 地址与账号密码。
+  支持多个条目（多台主机 / 多个 vCenter）。
+- **旧名迁移**：本集成原名 `esxi_stats`（目录 `custom_components/esxi_stats`），已整体改名为 `esxi_control`。**旧的 `esxi_stats.refresh` / `esxi_stats.sync` 服务已不存在**，外面若还写着旧域名，HA 会报「未找到 esxi_stats.refresh 动作」——自动化 / 脚本 / 前端里的旧域名都要一并改成 `esxi_control`。
+- **它提供什么**：为每台主机 / 每台虚拟机 / 数据存储 / 许可证建实体（电源开关、CPU、内存、快照按钮、`image.*` 画面、以及可调的 `number` / `text` 参数），并生成**聚合实体 `sensor.esxi_all_entities`**（旧环境回退 `sensor.entities`）—— 卡片就是靠它"一次拿到全部设备与实体"，所以配置里只需写一个实体。
+- **卡片会调用的服务**（都是集成注册的，不需要你手工调用）：
+
+  | 服务 | 用途 | 卡片入口 |
+  |------|------|----------|
+  | `esxi_control.refresh` | 立即向 ESXi 拉一次最新数据。集成默认有节流（服务说明里写的是**约 45 秒**才真正拉一次），所以实时值想立刻更新就点它 | 头部「立即刷新数据」 |
+  | `esxi_control.sync` | 重新扫描主机 / 虚拟机 / 数据存储 / 许可证，**对齐 HA 的实体清单**：为新增对象建实体、把已消失对象的实体移除（安全约束：只有本次刷新成功时才删，ESXi 不可达时只新增） | 「主机配置」里的「同步（重载集成）」 |
+
+> ⚠️ **没有安装该集成时**，卡片不会报错崩掉，而是显示一句明确提示：`ESXi 聚合实体不存在或未加载：sensor.esxi_all_entities（或 sensor.entities）` —— 看到它就说明集成没装、没配置，或聚合实体还没生成。
+
+#### 配置项
+
+| 参数 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `entity` | ❌ | `string` | 聚合实体，默认 `sensor.esxi_all_entities`（不存在时回退 `sensor.entities`） |
+| `name` | ❌ | `string` | 卡片标题，默认「ESXi 虚拟化」 |
+| `icon` | ❌ | `string` | 头部图标，默认 `mdi:server` |
+| `hosts` | ❌ | `string` / `array` | 只保留这些**主机**（按设备名；不配 = 全部） |
+| `vms` | ❌ | `string` / `array` | 只保留这些**虚拟机**（不配 = 全部） |
+| `exclude` | ❌ | `string` / `array` | 排除这些设备（与上面两项叠加；适合排掉集成的兜底设备，如「ESXi 统计」） |
+| `default_vm` | ❌ | `string` | 「屏幕」页默认上墙的虚拟机（不配 = 自动优先挑一台**运行中**的） |
+| `show_screen` | ❌ | `boolean` | `false` 时不生成「屏幕」选项卡（默认 `true`；且**必须有虚拟机**才生成） |
+| `show_refresh` | ❌ | `boolean` | `false` 隐藏头部「立即刷新数据」按钮 |
+| `show_sync` | ❌ | `boolean` | `false` 隐藏「主机配置」里的「同步（重载集成）」行 |
+| `confirm_power_off` | ❌ | `boolean` | `false` 时**关机不再二次确认**（默认每次确认） |
+| `width` / `popup_width` | ❌ | `string` | 卡片宽度 / 独立弹窗宽度（默认 `760px`；`popup_width` 优先） |
+| `popup_position` | ❌ | `string` | 弹窗位置（默认 `center`） |
+
+#### 三种入口
+
+| 入口 | 配置方式 | 形态 |
+|------|----------|------|
+| 独立弹窗 | `tap_action: { action: card, card: { type: esxi } }` | 弹出的独立面板（默认为 `760px` 宽） |
+| 内嵌弹窗 | `tap_action: { action: popup_card, card: { type: esxi } }` | 通用弹窗里嵌一张卡片 |
+| 常显卡片 | `type: custom:room-elves-card` + `standalone_type: esxi` | 直接把面板当卡片用（高度由内容决定） |
+
+```yaml
+# 最省事：只给聚合实体
+type: custom:room-elves-card
+standalone_type: esxi
+entity: sensor.esxi_all_entities
+name: 虚拟化
+```
+
+```yaml
+# 独立弹窗 + 只显示指定设备
+tap_action:
+  action: card
+  card:
+    type: esxi
+    name: ESXi 主机
+    hosts: 主机                # 只保留这台主机
+    exclude: ESXi 统计         # 排掉集成的兜底设备
+    show_screen: true
+    confirm_power_off: false   # 关机不二次确认
+```
+
+#### 选项卡 1：主机
+
+- **主机状态**：`CPU` / `内存` 两条进度条（数值 + 百分比条，**点它**可看这台主机近期的 CPU / 内存曲线气泡）；下方信息网格固定**两行两列** —— 运行时长 / 构建版本 / 维护模式 / 数据存储；许可证状态显示在区块右上角。
+  > 信息网格**窄屏也不压成单列**（与桌面端保持同一套布局），长值由省略号收尾。
+- **整机批量控制**：对全部虚拟机一键 **开机 / 关机 / 重启 / 强制重启 / 截图 / 快照**。
+- **主机配置**：数据刷新间隔 / 聚合刷新间隔 / 截图间隔 / 批量分组四个参数，直接读写集成对应的 `number` / `text` 实体；末尾是「同步（重载集成）」。
+  > 「同步」调集成服务 `esxi_control.sync`：重新扫描 ESXi，为新增对象建实体、把已消失对象的实体从注册表移除 —— **不重载集成、实体不中断、已存在虚拟机的 `entity_id` 保持不变**。它是低频操作（只在 ESXi 里新增 / 删除 / 改名虚拟机之后才需要），最长等 60 秒，超时只提示、不反复重试。
+  > 另有头部「立即刷新数据」按钮：只把数据拉新（`esxi_control.refresh`），**不增删任何实体**，纯读、可随时点。
+
+#### 选项卡 2：虚拟机
+
+本选项卡内部再分**两个子选项卡**（位置在过滤胶囊那一行上面）：
+
+| 子选项卡 | 内容 |
+|----------|------|
+| **管理主机** | 就是下面这套虚拟机列表（过滤胶囊 + 搜索 + 每台一张卡） |
+| **新建虚拟机** | 嵌集成提供的**虚拟机管理页**：`sensor.<主机>_vm_manager`（显示名「虚拟机管理」）的地址，新建 / 克隆 / 改配置都在那个页面里做 |
+
+> 这两个子选项卡**外观与头部主选项卡（`.esxi-tabs`）完全一致**（淡色圆角容器 + 激活项实心渐变），但类名不叫 `.esxi-tab` —— 翻页模块认的就是 `.esxi-tab` / `data-esxi-tab`，复用会把子选项卡当成主选项卡、打乱页序与高亮。
+> 管理页地址取实体的 `attributes.url`（带 `authSig` 的完整地址；`state` 是不带签名的版本，因为带签名的约 400 字符、超过 HA 状态值 255 上限）。卡片**只保留 path + query、丢掉域名**再嵌 iframe：卡片可能经内网 IP / 域名 / 反代 / https 打开，照搬实体里的 host 会撞混合内容或跨域。
+> 页面**懒加载**：只有切到「新建虚拟机」才创建 iframe，切走不销毁（回来还是原来那页、不丢表单）；地址没变就不会重设 `src`（否则 3 秒一次的值级刷新会把整页反复重载）。右上角有「重新加载」按钮，`authSig` 过期或页面卡住时用。
+> 主机上的「远程桌面」总开关关掉时，集成不再签发地址（实体变成「已停用」），这一页会显示原因提示而不是空白页。
+
+每台虚拟机一张卡：
+
+- **标题行**：电源状态徽标 + IP；关机机器默认折叠成一行，点标题行展开（运行中的机器不折叠）。
+- **指标**：`CPU`（名称里带 vCPU 核数）/ `内存`（优先用**活跃内存** —— ESXi 实际分配给它的物理内存；没有该实体时才回退「已用内存」）。点指标区看近期曲线气泡。
+- **元信息（三列六项）**：系统 / 磁盘 / 快照 / 运行时长 / Tools / 状态。点它开**详细信息气泡**（配置 + 运行两组，列全 CPU 使用率、活跃内存、已用内存、所在主机、IP、快照数等）。
+- **操作（三列）**：开机 / 关机 / 重启 / 强制重启 / 截图 / 快照 / 画面。
+  - 「快照」弹菜单：**创建快照 / 删全部 / 删第一个（最早）/ 删最后一个（最新）**，每项都带二次确认（删除不可恢复）。
+  - 「画面」弹**居中画面窗**：顶部是一条 teal 底色标题栏（虚拟机名 / 截图时刻 / 「全屏」按钮），画面在下方；标题栏是 sticky 的，画面比窗口高时也不跟着滚走。⚠️ 刻意不用气泡 —— 气泡锚在这台机器的那颗小按钮上，而每台虚拟机在列表里的位置都不同，定位（含箭头）会跟着飘。
+- 顶部有**过滤胶囊**（全部 / 运行中 / 已停止）+ **名称搜索框**，两者叠加生效。
+
+#### 选项卡 3：屏幕（屏幕墙）
+
+- **墙面**：一行两列、最多 8 格；虚拟机超过 20 台时自动换「一行 4 个」。每格 = 画面（点开全屏）+ 状态条（状态点 / 名称 / 截图时刻 / 截图开关 / 全屏）。
+- **工具栏**：「选择上墙的虚拟机」（气泡里多选，按钮上显示已选台数）+ 截图间隔 + 刷新。
+- 画面不可用时给出明确原因：`虚拟机已关机` / `自动截图已关闭` / `暂无画面（等待截图）`。
+- **取图走「实体聚合」给出的 `image.*` 实体**（HA 的 image 代理）：不自造缓存参数、不额外轮询 —— 只有换了新截图才重新指向一次（实现见 `modules/infra/image-entity.js`：画面地址算法 / 地址没变不发请求 / 加载三态类 / 画面时刻文案；屏幕墙、画面窗、全屏共用同一份）。
+
+#### 刷新机制
+
+- **自带 3 秒值级刷新**：只写文本 / 进度条宽度 / 类名，逐项脏检查（成本远低于整卡重建）；**只有结构签名变化才重建 DOM**（签名 = 聚合里的设备与实体清单）。
+- **订阅刻意排除 `image.*`**：这类实体的 `state` 就是「最后截图时刻」，最短 2 秒一变 —— 订阅它等于每个 tick 重画一遍画面。
+- 实时值一律从 `hass.states` 读，**不等聚合实体的刷新周期**（聚合实体的更新是分钟级的，集成侧对拉数据另有节流 —— 见上面「依赖集成」）⇒ 点了开关，界面立刻动，不用等下一次推送。
+
+> **卡片里的实体操作都走宿主的统一动作系统**（`core/actions.js` → `handleCallServiceAction`），与通讯卡片同一套做法：操作记录埋点、本地服务分发与远程服务走同一条路径，埋点还能拿到"操作前"的状态快照（返回 `state` 值即 `state_log(from→to)` 的 from）。卡片内唯一的服务出口是 `_esxiCallService()`。⚠️ 埋点对象必须带**可记录的 `action`**（用 `core/action-log.js` 导出的 `actionLabelForService()` 映射：`button.press`→`press`、开关类→`toggle`、其余→`set_value`）—— 只写 `service` 会被埋点判成 `more-info` **静默丢弃**（既不记录、也不打印）。（`esxi_control.refresh / sync` 是卡片自身的服务调用、要拿返回的 Promise 做超时与结果反馈，故仍直连 —— 统一执行器不返回 Promise。）
+
+#### 左右滑动切页 & 卡片高度
+
+- 三个选项卡之间支持**鼠标拖动 / 触摸左右滑**切页：跟手拖动 + 松手吸附 + 首尾阻尼（与通讯卡片、以及其它所有分页处**同一套实现**，见 `modules/infra/swipe-tabs.js` 与「八-A、左右滑动」）；滑到两端就停，不循环。
+- **选项卡高亮会跟着滑动走**：拖动中越过半屏就切到下一页的选项卡，松手那一刻即定在目标页（不会"滑完才闪过去"）。
+- **卡片高度只由「主机」页决定**：另两页是绝对定位、不参与高度计算，内容超出时在**面板内部**滚动 —— 所以切到「虚拟机 / 屏幕」时卡片高度不会跳，屏幕墙也不会把卡片拉长。
+- **弹窗高度上限 84vh**（带 `dvh` 兜底）：弹窗居中，上限有多高、可点的遮罩就只剩 `(100−上限)/2` —— 92vh 时手机上只剩上下各 4vh，**点不到遮罩（关不掉窗）**；现在上下各留 8vh。内容更高时在弹窗内滚动，底部的操作入口不会被挤掉（全屏查看那个弹窗与主弹窗同一上限，它没有关闭按钮、退出全靠点遮罩）。
+
+#### 说明与已知边界
+
+- 「虚拟机 / 屏幕」两页在**静止态不生成盒子**（`display: none`）：换来的是"翻页落地绝不会闪出旁边那一页"；代价是**切走再切回时，这两页的内部滚动位置会回到顶部**。
+- 集成的兜底设备（如承载 vCenter 许可证的「ESXi 统计」）可能只有零散实体，用 `exclude` 排掉更清爽。
+- 画面是否更新取决于集成侧是否产出了新截图（`image` 实体本身给出新地址）；这与 HA 内置 `picture` 卡片同源，也受同一限制。
+
+### 6.45 个人账单卡片 (type: bill)
+
+> **把 ha_data_store 里的个人账单画成一张卡：五个选项卡 + "一个窗口内一路下钻"的图表。**
+>
+> ⚠️ **前置条件：必须先安装自定义集成 [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，必需）**
+> 并配好 `api_base_url` + `key`；**没装 / key 不对时卡片没有数据**（会提示「接口不可用」）。
+>
+> 📌 **本节对应版本：v6.1.0**（2026-10-11）—— 个人账单卡片相关的内容都记在这一版下。
+> 这张卡自 **v6.0.3**（2026-10-10，"五个页签 + 一路下钻"）起步，本节描述的是 **v6.1.0** 的形态：
+> 五个页签 · 窗口内一路下钻 · 日历页「历年热力」· 查询页「结果热力」· 分析页「资金流向」（纯 SVG 桑基图）·
+> 十余处本块来源筛选与四处口径切换。逐条改动见 `CHANGELOG.md` 的 **v6.1.0** 段（第 155~218 节）。
+
+数据来自自定义集成 **[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)** 的账单接口。卡片基本只读，只有「新增账单」与「写备注」两处会写入。**没有轮询**：只在「卡片打开」「切到还没取过数的页」「点头部刷新（↻）」「点查询 / 换条件」这四个时机请求。
+
+#### 依赖集成：`ha_data_store`（必需）
+
+- **仓库地址**：https://github.com/chjspp520/ha_data_store （需 **v5.0.0** 及以上：旧版账单接口字段不全）
+- **安装位置**：`<配置目录>/custom_components/ha_data_store`（开发机映射盘 `Y:\custom_components\ha_data_store`）
+- **安装步骤**：把整个 `ha_data_store` 目录放进 `custom_components/` → 重启 HA → 「添加集成」里添加它 → 开好账单接口并生成 **API Key**
+- **必需配置**：`api_base_url` + `key`（见下方「配置项」；不配 `api_base_url` 时回退同源 `/api/ha_data_store/`）
+- **它提供什么**：`personal_bill` 模块的账单表（交易时间 / 收支方向 / 金额 / 类型 / 对方 / 商品说明 / 支付方式 / 数据来源 / 交易状态 / 备注…），以及一组查询与聚合接口（卡片用到的见下方「接口一览」）
+- 请求地址：`<api_base_url>/bill?type=…&key=…`（独立路径，不占 HA 的历史接口）
+
+> ⚠️ 没装 / 没配 / key 不对时，卡片不会崩，而是显示「接口不可用（检查 api_base_url / key）」。
+
+#### 五个选项卡
+
+| 选项卡 | 内容 |
+|--------|------|
+| **概览** | 总计（环形图 + 环外拉线标注，右侧竖排 总收入 / 总支出 / 笔数 —— **每行"标签在左、数值在右"**，几行金额对得齐）· 各来源占比堆叠条（点某段 = 只看该来源，点条外 = 回到全部）· **年度收支** · **月度收支** · 最近 N 日收支（三块标题行右插槽各有一次**本块来源筛选** `来源 ▾`，互不影响；合计行**有哪个显示哪个**：收入 / 支出 / 净额 / 不计收支 / 笔数 —— 笔数是**服务端口径**，不随「加载更多」变；**收入 / 支出 / 不计收支 那三格可点 = 明细只看那一类**，再点一次或点提示条取消）+ 柱图 + 同窗口明细，**联动且可下钻到「时」**：点某天的柱子 → 柱图换成那天的 24 小时、明细列那天；点某个小时 → 明细再收窄到那一小时；面包屑 `全部 › 8/14 › 12时` 逐段可点返回。日层不取数，进「时」取一次并按天缓存；明细默认先列前 `10` 条，底部「加载更多」每次再放 `20` 条（数据已在手上，纯展开、不再请求；手上最多 `60` 条） |
+| **分析** | 支出构成 / 收入构成（按类型）· 支出按支付方式 · 支出按来源（四张环形图，**每张卡标题行各有一次本卡来源筛选**）· 月度趋势柱图 · 支付时刻（24 小时柱图，次数 / 金额可切）· 对方排行 · **资金流向**（`bill_flow` → **纯 SVG 桑基图**：两维度之间的流量，起 / 终维度在标题行换；点节点 / 连线开范围窗口）—— **每块都能单独按来源筛**（标题行那颗 `来源 ▾`，互不影响）；**图例 / 柱子 / 排行的行 / 节点 / 连线点开都是「范围窗口」**（图上表下、一路下钻，见交互要点 ①） |
+| **日历** | 账单日历（格子分两行写"收 / 支"，**底色按当天支出分 5 档 = 一张日热力图** —— GitHub 那种色阶，下面带 `少 → 多` 图例；**本月汇总的格子可点 = 本月明细只看那一类**）+ 本月明细分页 + **历年热力**（页面最下面，**默认收起、展开才取数**：ECharts 那种日历热力图 —— **一年一条、年与年竖着叠**（最近的年度在最上面），一条 = 7 行 × 53/54 列（周）、**连续铺满全年**，**整块只有一份月份标签**摆在最上面、**年份标签竖排**、左边标星期，底色按所选口径分 5 档但**全历史**分档；标题行 `来源 ▾` + 四个口径胶囊 `支出 / 收入 / 净额 / 笔数`（**底色跟着口径换色相**：支出红 / 收入绿 / 净额正绿负红 / 笔数主色；切口径**不重取数**）；点某天 = 范围窗口起手在那一天）；右插槽 `来源 ▾ ◀ [年月] ▶`（来源管整页，历年热力**跟着它**） |
+| **查询** | 查询条件（**默认展开、可折叠**）+ 查询结果（**条件胶囊 + 时间路径条同一行**（`关键词 spp ✕ 全部 › 2020年 › 5月 › 26日`）/ 汇总（有哪个显示哪个、**可点筛方向**）/ **趋势柱图（点柱子往下一层钻）** / **结果热力**（日历热力图，**默认收起、展开才取数**；**不含时间路径** = 这批条件的全时间全景，点某天 = 把路径压到那天）/ 排序条 / 分页；标题行右插槽：**「来源 ▾」筛选**（只管这次查询）+ 「清除」） |
+| **历史** | 历史今日（往年某个基准日的账 —— **基准日默认今天，可用标题行 `日期 ▾` 换**：`月日`（历年同月同日，点柱子就地钻到那天的小时）/ `几号`（历年每月那一天，点柱子开范围窗口）；上面一张**按年柱图** + 下面按年明细）· 历史本月（**同比块** —— 按年柱图 + 图下一排同比胶囊 `2019年 ↑12%`，今年还在过的月份标"进行中"；标题行 `◀ 9月 ▶` 可换月份）；两块标题行各有一次**本块来源筛选** |
+
+明细行点开是「账单详情」气泡（全部字段 + 底部可写备注、可从"常用备注"点选）；「新增账单」是常驻右下角的**浮动小圆钮**，点开居中表单 → `POST bill/add`。
+
+> 🏷 **来源标签**：每条明细的**时间下面**挂一枚小胶囊写 `source` —— 支付宝走**支付宝蓝**（`#1677ff`）、
+> 微信走**微信绿**（`#07c160`），实底白字；其它来源（银行卡 / 云闪付 / 手动录入…）走中性灰，不抢眼。
+> 颜色是**品牌色写死**的（不跟卡片主色 `--re-accent` 与明暗主题走 —— 它标的是"这条账从哪个渠道来"，
+> 换个主题也不该变成别的颜色）。一列扫下来就能分出哪几条是微信、哪几条是支付宝。
+> 没有 `source` 的行不出标签；超长由 CSS 省略（悬停有完整值的 tooltip）。
+
+> 💡 **「不计收支」怎么显示（合计行"有哪个显示哪个"）**：微信 / 支付宝的原始账单里 `direction`
+> 不只有 收入 / 支出 —— 还有**零钱充值 / 提现 / 转账**这类"钱在自己账户里倒"的账（原始值可能是
+> `其他`）。后端口径下它们**既不算收入也不算支出**，但 `amount_sum` 是含它们的。所以卡片各处
+> 的**合计**（概览总计、最近 N 日、年度 / 月度下钻窗口、日历本月、当日明细、范围明细弹窗、
+> 查询结果、区间汇总行）统一改成 **"有哪个显示哪个"**：
+> 有收入才摆「收入」、有支出才摆「支出」，两者全 0 时不摆「净额」（净额恒 0 没信息量）；
+> 另有一段这类流水就补一格「**不计收支**」，金额 = `amount_sum − 收入 − 支出`。
+> 格子名**跟着原始 `direction` 走**：`其他` → 显示成「不计收支」（表单 / 查询里那一项也叫这个），
+> `转账` 等其他取值照原样写。于是"全是这类账"的一段（典型：对方是自己那张银行卡）
+> 从「收入 ¥0.00 ｜ 支出 ¥0.00 ｜ 净额 ¥0.00」变成「**不计收支 ¥117,992.22 ｜ 笔数 65**」。
+> 明细行里这类账的金额**不带正负号**、走灰色（`.bill-item-amount.is-mute`），合计格里也是灰的。
+
+> 💡 **每一块图表都能各自按「来源」筛**（标题行右插槽那颗 `来源 ▾` 胶囊，`_billSrcPick`）
+>
+> - 落点：概览的**年度收支 / 月度收支 / 最近 N 日**三块，分析页的**四张环形图 / 月度趋势 /
+>   支付时刻 / 对方排行 / 资金流向**（分析页环形图那颗在**卡片自己的标题行**），共 11 颗，**互不影响**。
+> - 口径：**只影响这一块** —— 存 `state.blkSrc[<块>]`，只有那一块的取数参数带上 `source`
+>   （概览的年度/月度从 `bill_trend` 对应粒度另取一次、最近 N 日再取一次 `bill_dashboard`；
+>   分析页那几张各取自己那个接口）。没筛的块参数不变 → 命 URL 缓存，不会白跑。
+> - 与**全局来源筛选**（点头部副标题 / 概览来源条那颗）的关系：块级筛选**压过**全局；
+>   菜单第一项在设了全局时写「跟全局（<来源>）」= 撤掉本块筛选，没设则写「全部来源」。
+> - 范围窗口（弹出窗口）里也有一颗（时间路径条那一行）：那是**窗口内临时**的，关窗即忘；
+>   **入口自带来源时**（从来源条 / 来源环形图点进去）不摆 —— 那一颗就是它的身份，再筛没意义。
+>
+> 💡 **合计格可点 = 只看这一类**（**收入 / 支出 / 不计收支** 三格能点；「净额」「笔数」不是
+> "某一类明细"，不可点）。几处的落法不同（因为数据来源不同）：
+>
+> · **概览「最近 N 日」**：数据本来就在手上 → **只筛明细列表**（客户端过滤，不发请求）。
+>   点「合计支出」→ 明细只列支出，那一格高亮、明细上方出现 `只看支出 · 25 笔 ✕`；
+>   **合计本身不跟着筛**（它仍是服务端口径的全量：笔数 / 收入 / 支出 / 净额都不变）——
+>   合计是"这一段有多少"、明细是"给你看哪一类"。「加载更多」按**筛过之后**的条数算；
+>   换层（钻到某天 / 某小时）或刷新 / 换筛选会复位成"全部"。
+> · **日历页「本月汇总」**（`.bill-cal-summary`）：明细是**服务端分页**的 → 走接口 `direction`
+>   （写进 `state.calDir`），只作用在**下面那块「本月明细」**上；**合计与日历格子都不跟着筛**
+>   （它们是"这个月有多少 / 每天什么样"的全貌，与概览同一条口径）。高亮那一格 + 合计下面
+>   一颗 `只看支出 ✕`（可点取消，也是"筛没了"时的退路）；「本月明细」的标题也跟着写
+>   `本月明细 · 只看支出`（那颗是在上面那块点的，隔了区块要看得见）。换月**保留**筛选，
+>   换来源 / 刷新则复位。
+> · **范围窗口（弹出窗口）**：明细是**服务端分页**的，客户端筛只会筛到当前页（错的）→
+>   走接口 `direction`，**图 / 明细 / 合计一起**按那一类重取（也正因为一起收窄，"图与明细笔数
+>   必须相等"的口径自检才还成立）。提示那颗 `只看支出 ✕` 摆在**时间路径条那一行**，
+>   点它或再点那一格取消；这一格筛没了（0 条）合计行会隐藏，那颗就是退路。
+>   · 取值与查询页那颗「收支方向」下拉一致：`收入` / `支出` / `不计收支`（`BILL_DIR_PARAM`）
+>   · ⚠️ 导入的微信 / 支付宝数据里这类账原始值是 `其他`，若后端不认「不计收支」这个值，
+>     这一格会筛出 0 笔 —— 届时把 `BILL_DIR_PARAM.other` 换成后端认的值即可（一处）
+> · `other` 那一类是**排除法**（概览那处客户端过滤时用）：`其他` / `转账` / `冻结` / 方向为空
+>   都算（后端口径下都不计收支，见 `_billDirMatch`）—— 与「不计收支」那一格的金额同源。
+>
+> 📱 **窄屏（≤560px）「笔数」那一格不显示**（用户要求）：「笔数」多占一格，会把合计行挤成
+> 两行（日历那处是 3 列：`收入 / 支出 / 净额 / 笔数` 正好第四格掉到第二行；其它几处是
+> `auto-fit`，窄屏也常常差一格换行）。PC 端照常显示。实现：`_billStatCells` 给「笔数」那格带
+> `kind: 'count'`，`_billFillStats` 据此挂 `.is-cell-count`，窄屏那条媒体查询按
+> `.bill-recent-total .bill-stat.is-cell-count` / `.bill-cal-summary .bill-stat.is-cell-count`
+> 藏掉（两套容器类名都要写：日历那处只有前者、概览 / 窗口 / 历史今日只有后者）。
+> ⚠️ 兜底：整行只剩这一格时（这一段别的都凑不出来）用 `:only-child` 放回来，不然那一行成空虚线。
+
+#### 交互要点
+
+**① 范围窗口（图上表下 + 一路联动下钻）**
+
+卡片里"点某根柱子 / 某一行 / 某个格子"打开的**都是同一个窗口**（`_showBillScopePopup`）——
+不再各弹各的，全部在这一个窗口里就地换层：
+
+```
+星巴克 · 100 笔                            ← 抬头：入口范围 + 笔数（右侧搜索框）
+全部 › 2025 › 02月 › 05日 › 10时  [来源 ▾] [只看支出 ✕]
+                          ← 时间路径：每段可点，回到那一层。同一行还有两样东西：
+                            本窗口的「来源 ▾」（点了换 / 取消；**入口自带来源时不摆**）、
+                            方向筛选生效时的「只看支出 ✕」（点它或点合计那格取消）
+[收入] [支出] [净额] [笔数]                 ← 当前范围的合计（**有哪个显示哪个**；
+                                              全是"不计收支"的一段就摆 [不计收支] [笔数]）。
+                                              **收入 / 支出 / 不计收支 可点** = 这一段只看那一类
+                                              （图 / 明细 / 合计一起重取，再点一次取消）
+ ▁▂ █▁ ▂▃ …（**当前范围的下一层**：全部时间→按年 / 某年→按月 / 某月→按天 / 某天→按小时）
+ 点柱子往下钻 …………………… 第 1 ~ 20 条，共 427 条   ← 提示 + 区间说明**同一行**
+────────────────────────────────────────
+时间 | 对方 / 类型 / 方式 / 来源 | 金额    ← 排序条（点列名排序）
+ 明细行…（点一行照旧开「账单详情」气泡）
+[上一页] 第 [x ▾] / N 页 [下一页]           ← 页码是**下拉**（手机直接弹系统选择器）
+```
+
+- **哪些入口进来**：概览「年度收支 / 月度收支」的行 · 分析页四张环形图的图例 · 月度趋势的月柱 ·
+  支付时刻的小时柱 · 对方排行的行 · 日历格子。**起手层不同**：年度行落在"某年"、月度行与月柱落在
+  "某月"、日历格子落在"某天"（直接 24 小时柱）、其余落在"全部时间"（先看年）
+- **图 = 当前范围的下一层**，点柱子把那一格并进范围 ⇒ 图与明细**一起**收窄，所以"从年一路钻到时刻"
+  在每个入口都成立；**没有账单的时间桶不摆**（先按 年补齐首末年之间、月补齐 12 个月、日补齐当月天数、
+  时补齐 0~23 算出边界，再把空桶滤掉，见 `_billChartCols`）—— 整月只 3 天有账单就只画 3 列，
+  不再摆 31 列空档；刻度自带 `10月` / `12日` / `9时` 这类单位，跳过空档也读得出来是哪一格
+- **明细每一层都在**（不像旧版只有钻到「日」才有）：抬头 + **搜索**（走接口 `keyword`，命中整段、
+  不只是本页）+ **排序条** + **分页**（每页 `page_size`，默认 20，**页码是下拉选择**）——
+  "点进来就是要找某一笔账"的用法完全不受影响。翻页 / 换排序只重取明细，图不重取
+- **提示与区间说明同一行**：图下面那一行左边是"点柱子往下钻 / 再点收起 / 点柱子看那一格"这类短提示、
+  右边是 `第 x ~ y 条，共 N 条`（两行在移动端挤不下）；挤的时候先省略**提示**，数字不截
+- **收窄到某个小时**：图仍是那天的 24 小时柱、选中的那根标出来（`.is-picked`），再点同一根 = 收起
+- **方向筛选**（点合计那一格的 收入 / 支出 / 不计收支）：`direction` 进请求（`scopeParams`），
+  **图 / 明细 / 合计一起**按那一类重取 —— 只筛明细的话图上 30 笔、列表 8 笔，口径自检会当成
+  "接口没按范围聚合"直接不画图。取消：再点那一格，或点路径条尾巴那颗 `只看支出 ✕`。
+  翻页 / 换排序 / 上下钻都带着它（窗口内的临时状态，关窗即忘）
+- **来源筛选**（路径条那行的 `来源 ▾`）：同款做法，`source` 进 `scopeParams`，整窗一起收窄；
+  也是窗口内的临时状态。**入口自带来源时不摆**（从来源条 / 来源环形图点进来时，
+  `params.source` 就是那次进入的身份，再叠一颗没意义）
+- **"每天某小时"这类范围**（支付时刻的柱子）：最细到「天」，不再往下钻小时
+- ⚠️ 图取 `bill_trend`、明细取 `bill_history`，两者是同一范围、笔数必须相等；对不上说明接口的趋势
+  聚合没按这个范围过滤（例如不认 `counterparty`）→ **不画图**，只留明细并给一行说明（宁可不画，
+  也不能拿全库的趋势配这个范围的明细）
+- **没有账单的时间桶不摆（"不占位"）**：所有带时间轴的柱图都走 `_billChartCols` ——
+  概览「最近 N 日」，分析页「月度趋势」/「支付时刻」，以及范围窗口的下钻图（年 / 月 / 日 / 时四层）。
+  某月只 3 天有账单就 **3 列**（不再 31 列空档）、整天只 2 小时有就 2 列 —— 空列只会把有数据的列挤窄。
+  列少时那几列**均匀撒开**（`.bill-cols` 的 `justify-content: space-evenly`）并给列宽上限
+  （`.bill-col` 的 `max-width`，密排 / 极密档各收一档）—— 上限是前提：不封顶的话 `flex-grow`
+  会把每列拉满、根本没有空余宽度可分；封了顶才不会出现"柱子缩在列中间、刻度钉在列右缘"的错位
+- 柱上数值：`≥ 1 万` → `1.2万`（**一位小数**）；`1 万以下` → 取整、不带小数；`0` 不标。柱子够高时竖排画在柱内、柱矮则退到柱外按收支着色
+- **每格两根柱（收入绿 / 支出红）+ 可能有的第三根（「不计收支」中性灰 `#8a94a6`）**：
+  第三根**有才画、没有就不占位**（零钱充值 / 提现 / 内部划转那类账，大多数格子没有；
+  格子里有就多一根、没有就还是两根）。金额 = `amount_sum − 收入 − 支出`，跟着 `_billOtherAmount`；
+  与合计格里那格同源。tooltip 里会写 `不计收支 ¥…`。**所有双向柱图 / 条形图**都有：
+  范围窗口的下钻图、概览「最近 N 日」、分析页「月度趋势」，以及**年度收支 / 月度收支
+  那两处"收 / 支"进度行**（有这类流水就多一条灰色「不计收支」，同样是 `amount_sum` 推的；
+  历史本月已不用进度行，见 ③b 那条）；支付时刻是单值柱图，不涉及
+  ⚠️ 前提是**那一层的分桶带 `amount_sum`**（`bill_trend` 的分桶带，所以月度趋势 / 范围窗口 /
+  下钻都画得出来）；`bill_dashboard` 的 `days` / `years` / `months` 若没带，那几处就画不出来
+  —— 届时可改从 `bill_trend` 取那几天/那几年的序列（前端可做，不用动后端）
+- **X 轴刻度写明是什么、且斜排 45°**：`2015年` / `10月` / `12日` / `9时`（原来年是两位 `25`、月是 `02`，
+  列一多还会被列宽截成 `20…`，既看不出单位也读不出数）。斜排后文字沿对角线走，
+  水平足迹 ≈ (字宽+行高)×0.707，只要小于列距就不撞 —— 极密档（整月 31 天 / 整天 24 小时）
+  列距 ~18px，两三个字刚好放得下。日 / 时**不补零**（`9日` / `9时`，刻度这里宽度紧），
+  路径条与面包屑不受宽度约束，仍是补零的 `09日` / `09时`。
+  这一套是**所有柱图共用**的（范围窗口 / 概览「最近 N 日」/ 月度趋势 / 支付时刻）。
+  **锚点**（斜排的旋转中心）= 刻度盒的**右端·垂直居中**，再用负 margin 抵消 `.bill-col` 的列间距
+  ⇒ 锚点正好落在**柱底（X 轴）**上 —— 也就是"末字以中心压在轴线上"（`.bill-col-label`）
+
+**①b 分析页 · 资金流向**（`_buildBillFlow`，纯 SVG 桑基图 —— 本卡不引第三方图表库）
+
+- 取数：`bill_flow`（后端第 40 个接口：`from_dim` → `to_dim`，返回 `nodes` + `links`
+  `{source, target, count, income, expense, amount_sum}`，按 `amount_sum` 倒序、默认 `limit=500`）
+  · 起 / 终维度**在标题行换**（两颗胶囊 `从 来源 ▾ → 到 类型 ▾`，气泡里列
+  **来源 / 类型 / 方式 / 对方 / 收支方向 / 状态** —— 与后端 `BILL_DIMENSIONS` 同一套白名单，
+  **不含时间维度**：那是交叉汇总 `bill_crosstab` 的活儿，画成桑基图读不出"流向"）；
+  换一个 = `_billReload` + 重绘（只这一份 URL 变了，别的块命缓存）
+  · 默认 **来源 → 类型**（用户定的；⚠️ **不是**接口那个默认 `counterparty` ——
+    本卡的口径是"钱从哪个渠道走、花在哪类"，来源是一眼能对上明细行的维度）；
+    副标题写 `来源 → 类型　·　12 条流`，一眼看出在看哪两维；
+    ⚠️ 两颗维度胶囊带 `从 / 到` 前缀：起点默认就是「来源」，而这一块还有一颗**来源筛选**
+    （`来源 ▾`），不加前缀会出现两颗都写「来源」的胶囊、分不清哪颗是筛选
+  · 这一块也有**本块来源筛选**（`来源 ▾`，`_billSrcPick('flow')`）
+- 画法（`<path>` 三次贝塞尔 + `stroke-width` 当带宽）：
+  · **两侧各留金额最大的 7 个节点**，其余并成「其他 N 项」（聚合节点**不可点**，
+    与概览来源占比条「其他 N 项」同一套路）；节点上下顺序 = 金额从大到小
+  · **两侧共用一个比例尺**（桑基图的规矩：宽度可比）+ 节点间留缝；节点高 = 该侧总流量 × 比例尺
+  · **连线颜色跟起点节点**（与节点色块同色，顺着一条流读下去）；带宽 = 该条流的金额
+  · 文字：名称一行 + 金额一行（`_billCompact`），**贴着节点块的垂直中线**；行太矮（< 12）就只写名称，
+    免得压到下一行 —— SVG 没有省略号，按留出的宽度**截字**（完整值在 tooltip 里）
+  · 整块**等比缩放**（viewBox 宽 360 用户单位 + `height: auto`，与环形图 `.bill-donut-svg` 同一套）：
+    字号也是用户单位（8.4 / 7.2），桌面卡片渲染约 11px / 9.7px，窄卡片一起缩小
+- 交互：**点节点** → 这一维度值的账单；**点连线** → **两个维度都筛上**（`对方` 走精确匹配
+  `counterparty_exact=1`，与对方排行同一个口径）—— 都落在范围窗口（与环图 / 排行同一落点）；
+  tooltip 给全（`A → B`、金额、笔数、收 / 支 —— `bill_flow` 是按两个值分组、不区分方向）
+- ⚠️ 这一块也**不能让卡片被撑宽**：副标题 + 那排胶囊都会在 max-content 里出价 →
+  `.bill-analysis-flow-section { contain: inline-size }`（与热力图那条同一个道理）
+
+**② 日历页**
+
+- 格子分两行：上一行**收入**（绿、`+` 号）、下一行**支出**（红、`-` 号）；金额单位同上（不保留小数 / `x.xx万` / `x.x百万`）
+- **日格子是一张「热力图」**（GitHub 那种色阶，纯 CSS 底色、不引图表库）：底色越红 = 那天花得越多。
+  档位**按这个月"有支出的那些天"的 20/40/60/80 分位分 5 档**（`_billHeatThresholds` /
+  `_billHeatLevel`）—— 原来只有 3 档、按**最大值等比**，一个月里只要有一笔大额，其余格子全会掉到
+  最浅、整月看着一片淡。有支出的天**少于 5 天**时退回按最大值等比（否则阈值全挤在一个值上）。
+  **没花钱 / 没数据的那天不给档位类**（保持最浅底色）。最深的第 5 档只到 0.38 的 alpha：
+  格子里还有收 / 支两行金额（绿 / 红），做成实心红会盖没；深档同时把**日期数字**压深。
+  日历下面跟着一条**图例** `少 ▢▢▢▢▢ 多` + 一句口径说明（`_billHeatLegend` 建的 `.bill-cal-legend`，
+  色块与格子**共用同一组色值**；下面「历年热力」那张图例也是同一个函数，只是口径说明换成"全历史分档"）
+- 点格子 → **范围窗口起手在那一天**（时间路径 `全部 › 2026 › 10月 › 09日`）：图直接是那天的 **24 小时柱**，下面列当天的账（合计 / 搜索 / 排序 / 分页都在，见 ①）
+- 右插槽 `[来源 ▾] ◀ [年月] ▶`：**本块来源筛选**（这颗管**整页** —— 日历格子 / 合计 / 本月明细是同一次取数）；
+  中间那颗点开是通用「选择年月」面板（左年右月，没有数据的月份置灰），也可以直接左右切月
+- **本月汇总的格子可点 = 「本月明细」只看那一类**（走接口 `direction`；合计与格子不跟着筛，
+  见上面那条 💡）+ 合计下面一颗可点取消的 `只看支出 ✕`
+- **页面最下面还有一张「历年热力」**（`_buildBillYearHeat` —— ECharts 那种日历热力图）：
+  · **默认收起**（`state.yheatOpen`），副标题写「点标题展开（展开才取数）」；
+    **展开才建内容、才发那一次取数**（框架的惰性建体 + `_billYheatFill`）——
+    16 年 ≈ 5600 行，不该跟着每次进这一页 / 点合计格一起拉。展开状态在同一次会话里保留
+    （重绘 / 换来源后仍是展开的，数据缓存作废会重取一次）
+  · **一年一条、年与年竖着叠**（**最近的年度在最上面**，与「年度收支」的阅读顺序一致）；
+    一条 = 7 行（日 → 六）× N 列（周，**全块统一的列数**：53 / 54，取各年最大）——
+    一列是一周、**连续铺满全年**（**不按月重置**，所以横着读就是"时间往前走"；
+    起点是 1 月 1 日所在那一周的**周日**）
+  · **「月」整块只有一份，摆在所有年带上面**（`.bill-yheat-top`，用户要求）：
+    左边是与年带**等宽的空壳**（同一个 `.bill-yheat-year-label` 类 + 同样的间距），
+    所以标签与下面的格子自动对齐（实测：左边界差 0、宽度差 0）；
+    label 落在"这个月第一天"所在那一列、前面一条浅竖线（ECharts 的 `monthLabel` + `splitLine`）。
+    ⚠️ 各年 1 月 1 日落在不同星期 → 月份列位置最多差 1 列，所以**精确的月边界**靠
+    **每条年带里"每月第一天那条浅竖线"**，顶上这份是刻度
+  · **年份标签竖排**（`writing-mode: vertical-rl` = 整体转 90°，用户要求）：宽度收成 14px、
+    垂直居中贴着年带（实测盒子 14 × 24.7）
+  · 左边只标星期 `一 / 三 / 五`（ECharts 的 `dayLabel`）
+  · **标题行右插槽** = **本块来源筛选**（`来源 ▾`，`_billSrcPick('yheat')`）**+ 四个口径胶囊**
+    `支出 / 收入 / 净额 / 笔数`（选中的走**实底**，与「支付时刻」的次数 / 金额同一套视觉）。
+    · 数据源**压过日历页那颗**（`records`）：设了就只看这个来源，两颗都没设 = 全局口径；
+    · 切口径**不发请求** —— 四个值都在同一次 `level=day` 里（`count` / `income` / `expense`），
+      只重画这一段（`state.yheatMetric` 记着，重绘 / 换页后仍是它；收起状态下切也行，展开时按新口径画）；
+    · 胶囊都带 `re-nostart`（点口径不会把这一块折叠起来）；窄到放不下时**右插槽折行**
+      （`.re-section-head .re-section-right` 默认 `flex: none`，这里放开收缩 + `flex-wrap`），
+      不把标题挤成省略号（实测 342px 宿主：不放开时标题只剩 43px 可用宽会截断，放开后 83.6px ✓）
+  · 底色 = **当天支出 / 收入 / 净额 / 笔数**的 5 档（跟着上面那颗口径走），档位是**全历史**
+    一次分数分出来的（`_billHeatThresholds`）—— 按月各分各的，各年深浅就不可比；
+    **没有账单的天完全不上色**（格子透明，实测 `rgba(0, 0, 0, 0)`）**没有账单的年份不占位**；
+    **有账单、但当前口径下是 0** 的那天（如"支出"口径里只进不出）给一层中性灰（`.is-zero`，
+    与档位类互斥）；
+    **色相跟着口径换**（色值抽成了 `--heat-rgb`，5 档只用写一遍）：支出 = 红（默认，与月历格子
+    共用同一组色值）、收入 = 绿、笔数 = 主色（teal）；**净额逐格按当天正负给色**（正绿 · 负红，
+    同一张图上红绿都有），值为 0 的那天不给档位、也不给色相。图例那 5 个色块跟着换口径换色
+  · 有账单的那天可点 = **范围窗口起手在那一天**（与上面月历的格子同一落点），有账单的天才有 tooltip
+  · 数据 = `bill_periods level=day&mode=normal`（**全历史逐日、后端不截断**），与格子 / 合计 / 明细
+    **同一份筛选口径** → 所以它**跟着页面那颗来源**（`来源 ▾` 管整页），自己不另摆一颗
+  · ⚠️ 量级：16 年 ≈ 6000 个格子 —— 每条年带都挂了 `content-visibility: auto`（只渲染看得见的），
+    点击是 `.bill-yheat` 上的**一个事件委托**（不给每格挂监听）；格子尺寸**随容器自适应**
+    （列宽 `1fr` + `aspect-ratio: 1`：实测桌面 722px 宿主 → 每格 **10.11px**、年带高 82.9；
+    342px 宿主 → 每格 2.94px；**不横向滚**，月份标签零重叠）
+  · ⚠️ **宽度完全由父级给**（`.bill-heat-section { contain: inline-size }` ——
+    两处落点共用这一个类，见下面 ③ 查询页那条）—— 与上面历史页那条同一个坑
+    （见 ③b 前的说明）：`repeat(N, minmax(0,1fr))` 的 **max 是内容**，而 12 个月份标签是
+    `nowrap` 文字；**标题行也会出价**（副标题 `nowrap` + 一排胶囊）——
+    所以守卫挂**整块**而不是只挂 body。宿主里有"按内容定宽"的一类（未配 `width` 的
+    `popup_card` 是 shrink-to-fit）→ 窄宿主会被**顶宽**。
+    实测（headless Chrome，本该 342px）：只挂 body → 格子那部分被顶到 **483px**、
+    加了胶囊与长副标题后整块 **491.94px**；挂整块 → **342px** ✓（两处落点都对）
+    固定 360px 宽时**横向溢出 0** ✓（"不要改变宽度"指的就是这个）
+
+**③ 查询页**
+
+- 条件七个字段（关键词 / 对方 / 开始日期 / 结束日期 / 最小金额 / 最大金额 / 收支方向），**默认展开**；点标题行可折叠（折叠状态在这一会话里保留），**点「查询」后自动折叠**把高度让给结果，**点「清除」自动展开**
+- 结果区从上到下：**条件胶囊 + 时间路径条（同一行）** → **汇总**（收入 / 支出 / 净额 / 不计收支 / 笔数 —— **有哪个显示哪个**；口径是**整段条件的全量**，不只是本页；**收入 / 支出 / 不计收支 三格可点 = 结果只看那一类**，写进 `direction`、再点一次取消）→ **趋势柱图** → **排序条**（时间 / 对方 / 类型 / 方式 / 来源 / 金额：点列名排序、再点同一列反向）→ 结果列表 + 分页。
+  标题行右插槽是 **「来源 ▾」筛选**（只作用于这次查询：写进 `state.query.source`，与条件胶囊同一套，
+  所以它会以 `来源 xxx` 一颗出现在那排胶囊里、点一下去掉）+ 「清除」
+- **趋势柱图**（与范围窗口同一张图：两根柱 + 可能有的「不计收支」灰柱、**没账单的时间桶不占位**）：
+  取 `bill_trend`、**与明细同一套条件**（两者笔数必须相等，对不上就**不画**并给一行说明 ——
+  接口的趋势聚合可能不认 `keyword` 这类条件）：图看的是**时间路径的下一层**
+  （0 段 → 按年；1 段"某年" → 按月；2 段"某月" → 按天；3 段"某天" → 按小时）。
+- **结果热力**（`_buildBillQueryHeat` —— 与日历页「历年热力」**同一套渲染**，见 ② 那句：
+  两处共用 `_buildBillHeatSection` / `_billYheatDraw` / `_billYheatYear` / 四口径与色相 / 图例）：
+  · 位置：**趋势柱图下面、排序条上面**（独立一块，默认收起 + **展开才取数**）；
+  · ⚠️ **不吃时间路径**（用户定的）：只吃**条件**（`state.query` + 全局维度）——
+    于是无论钻到哪一层，它都是"**这批条件的全时间全景**"；副标题写明
+    「全部时间（不含时间路径）· N 个年份 · M 天有账单」（这条口径**也是它的缓存键**：
+    只钻时间路径不重取，条件一变自动重取）；
+  · **点某天 = 把时间路径压到那一天**（`_billQueryGotoDay`：三段 `2026年 › 10月 › 9日`）——
+    明细 / 柱图随即收窄到那天（与"点柱子"同一手势，热力图是一步到位）；
+    顺手把表单里手填的 `start` / `end` 让位（两套时间条件并存会打架，与 `_billQueryDrill` 同一条规则）；
+  · 右插槽：**四个口径胶囊**（支出 / 收入 / 净额 / 笔数，切口径不重取数）——
+    **不摆来源筛选**（结果区那颗 `来源 ▾` 本身就是条件，这一块跟着它）；
+  · 边界：一条都没命中 → 「没有符合条件的账单」；**这个口径下一个正数都没有**
+    （条件筛"支出"、口径却停在"收入"）→ 补一行"换上面一个口径看看"，图照画不空白；
+  · 视觉：这块**套在「查询结果」那个大框里**，所以自己不再套框
+    （`.bill-query-heat-section` 去背景 / 边框 / 内边距，与 `.bill-hero-section` 同一套）
+- **时间下钻 = 一条路径**（与范围窗口同一条 `.bill-crumb`、同一套手势）：点年 / 月 / 天的柱子
+  往路径里压一段，攒出来的是 `state.queryPath`，**塞在条件胶囊那一行里**，读起来就是
+  **`关键词 spp ✕ 全部 › 2020年 › 5月 › 26日`**（根段「全部」点它 = 清掉时间、只留条件；
+  每段可点返回那一层）。已经在"某天"这一层（按小时）→ 点柱子打开**范围窗口**看那一小时
+  （查询条件的粒度到"天"为止，再往下交给它自带的搜索 / 排序 / 分页）。
+  · **不再往查询条件里写日期**（早期版本写 `start` / `end`，结果摊成
+    `开始 …` + `结束 …` 两颗胶囊，很难读 —— 用户提的）
+  · **不再有「涉及年」那排**：时间下钻已经有路径条 + 柱图，那排年份胶囊是重复的第二套入口
+    （连带 `bill_periods` 那一次请求也省了）
+  ⚠️ **日期字段的键名是 `start` / `end`**（查询表单那套，`BILL_QUERY_LABELS` 里就是
+  `start: '开始'`）—— 写成 `date_from` / `date_to` 后端**不认**，条件形同没填
+  （明细里会混着别的年份）；页面 `load` 会顺手自愈掉早期版本留下的错键。
+  ⚠️ **趋势接口另有一套时间口径** `year` / `month` / `date`（下钻窗口就是这么传的），
+  所以拼 `bill_trend` 参数时按路径补这套；手填区间（表单那两个日期框）则从区间反推
+  "最窄且完整"的那一级（同月 → 按天；同天 → 按小时）。
+- 当前生效的每一条条件都会在结果区顶部显示成**可点的胶囊**（点一下去掉这一条）—— 从详情气泡钻进来的条件也在这儿管理；**起止日期合成一颗**（`日期 2020-06-01 ~ 2020-06-30`，点它两个字段一起去掉）
+
+**③b 历史页**（两块都是"按年"柱图，`_billYearBars`）
+
+- **历史今日**：**默认**柱图按年（那几年这几天的收支）+ **一行合计**（`.bill-recent-total`，
+  与「最近 N 日」同一版式：`往年收入 / 往年支出 / 净额 / 不计收支 / 笔数`，"有哪个显示哪个"；
+  钻进某一年时换成**那一年的**合计）+ 下面按年列明细（**各年一律收起、不默认展开**）；
+  这一行**纯展示**（不接"点格子筛明细" —— 下面那排是**按年份**分的块，方向筛要另起一套）；
+  ⚠️ 它下面紧接的年份块**同色底**（都是 `--bill-surface`），基类没有下外边距 ⇒
+  这一处单独补 `margin-bottom: 9px`（`.bill-otd-section .bill-recent-total`），
+  与日历页 `.bill-cal-summary` 同因同法，否则两块灰底会连成一片；
+  **基准日默认「今天」，也可以指定** —— 标题行那颗 `日期 ▾`（`_billOtdPick`）：
+  · **月日口径**（`month_day=03-24`）：历年**同月同日** —— `otdYear` 一钻就出「那一天的小时」；
+  · **几号口径**（`day_of_month=24`）：历年**每月 24 号**（跨所有月）—— 一个年份 = 12 个日期，
+    所以点柱子**不开就地钻**，改成开**范围窗口**（参数钉住 `day_of_month`，在里面 年 → 月 → 日 → 时）
+  · 两个口径**互斥**（`state.otdMd` / `state.otdDom`），气泡里一排 `月日 / 几号` 切换，
+    下面分别是通用两列面板（`.rm-pick`）与 1~31 格子（`.rm-pick-right.cols-7`），
+    底部一颗 `回到今天` 清空；选定 → `_billOtdSet` 重取 + 重绘
+  · **标题跟着基准日变**（`_billOtdTitle`）：没指定 = `历史今日`（月日由副标题交代）；
+    月日口径 = `历史 03-24`；几号口径 = `历史 · 每月 24 日`。标题带了基准日，副标题就不再重复它
+  · **选「月日」会联动下面那块「历史本月」**：`state.tmMonth` 跟着变成同一个月 ——
+    两块说的就是同一个时点（`历史 03-24` + `历史 3 月`）。**选「几号」不联动**
+    （没有月份可言），`回到今天` 则是两块一起复位（历史本月回「当月」）
+  上面两种口径下：柱图都是**按年** + 下面按年列明细（**各年一律收起** —— 进来先看
+  "一张按年图 + 一排年份标题"，想看哪一年的明细点它自己展开；点柱子钻进去时那一块才展开）
+- **月日口径下点某年的柱子 = 就地钻到"这一年的这一天"** —— 月日相同 ⇒ **年 → 时一步到位**
+  （中间不摆"月 / 日"两层，在这里它们是同一个值）：柱图换成**那天的小时**
+  （`bill_trend granularity=hour` + `date`，**按日期缓存**、空小时不占位），
+  下面 `bill-otd-list` 只列**那一年**的明细，副标题也换成「2019 年 · 这一天按小时」；
+  上面多一条面包屑 `全部年份 › 2019 年`（点根段回各年概览）。标题行那颗「往年合计」照旧。
+  （年份条那个折叠入口还在 —— 各年概览时点年份条仍是展开 / 收起那一年。）
+- **历史本月 = 一块讲「同比」的地方**（`bill_yoy` + `month_of_year`）：
+  · 柱图**按年**（这个月历年的收支），**年份由早到晚**（趋势的正序 —— 同比"从去年指向今年"才对得上）；
+    **点柱子 = 开该年该月的范围窗口**（与「年度收支」的行同一落点）
+  · 图下一排**同比胶囊**（`2019年 ↑12%`）：**只跟"去年同月"比**（`year-1` 真在数据里才算），
+    缺去年（或去年是 0）→ `—` 灰 —— 原来那个"较相邻那一年"的算法在缺年时会跨年比、语义飘。
+    **↑ 红 = 比去年同月花得多** / ↓ 绿 = 少 / 0% 无箭头；今年这个月还在过 → 描一下边 + tooltip 写"进行中"；
+    tooltip 给全（两个绝对值 + 笔数 / 净额）。「收入同比」没做（`bill_yoy` 只给支出同比，口径以接口为准）
+  · **月份可换**：标题行 `◀ 9月 ▶`（按 1~12 环绕），换月重取一次 `bill_yoy(month_of_year=X)`；
+    看的是当月时副标题补一句「（当月）」；不在当月时**月份标签自己可点 = 回本月**（省一颗按钮）
+  · **标题跟着月份变**：当月（默认）= `历史本月`、副标题 `9 月 · 5 个年份（当月）`；
+    指定了月份 = `历史 3 月`、副标题只报 `5 个年份`（换月、或被「历史今日」的月日联动都走这里）
+  · ⚠️ 原来"柱图 + 同一份数据的进度行"是**同一份数字看两遍**（柱子只当"点开窗口"的入口）——
+    这块的进度行已撤掉，换成同比那一排：重复没了，块真正想说的那件事上了台面
+- 两张图与其它柱图同一套：两根柱 + 可能有的「不计收支」灰柱、**没账单的年份不占位**、
+  带 X 轴与柱顶数值；标题行各有一颗**本块来源筛选**（`bill_onthisday` / `bill_yoy` 各取各的 `source`）。
+- ⚠️ **历史页的区块 body 声明了 `contain: inline-size`**（`[data-bill-page="history"]`）——
+  这一页的内容**不能反过来把卡片撑宽**。原因与 `.bill-cols` 那条同一个：宿主里有"按内容定宽"
+  的（未配 `width` 的 `popup_card`），而**五档面板是同格叠放的**（`visibility` 藏），
+  任何一档有多宽、卡片就多宽；历史页最容易出事的是「历史本月」那排同比胶囊
+  （`flex-wrap` 在 max-content 计算里不换行）。只加这一页：别的页的宽度就是卡片本该有的宽度。
+- ⚠️ 历史今日那块：接口**若只回净额**（不回收 / 支），柱图自动退成**单值柱**
+  （`|净额|`，按正负着色），提示行也写明"按年看净额" —— 不会因为缺字段就没图。
+
+**④ 明细行 → 详情气泡 → 一键去查询**
+
+「账单详情」气泡里的 **数据来源 / 交易类型 / 收·支方式 / 对方 / 对方单号 / 商品说明 / 交易状态 / 交易单号** 这些字段**可以点**：点一下直接切到「查询」页、按这一个字段重查（**所有选项卡**的明细行都生效，因为它们开的是同一颗气泡）。`对方账号 / 导入备注 / 记录 ID` 在后端没有对应过滤口径，保持"只能看"。
+
+#### 三种入口
+
+| 入口 | 配置方式 | 形态 |
+|------|----------|------|
+| 独立弹窗 | `tap_action: { action: card, card: { type: bill } }` | 弹出的独立面板（默认 `720px` 宽，见配置项 `popup_width`） |
+| 内嵌弹窗 | `tap_action: { action: popup_card, card: { type: bill } }` | 通用弹窗里嵌一张账单卡（宽度用 `tap_action.width`） |
+| 常显卡片 | `type: custom:room-elves-card` + `standalone_type: bill` | 直接把整卡当一张卡片用 |
+
+```yaml
+# 最常见：挂在某颗按钮上，点开是独立弹窗
+type: custom:room-elves-card
+room_name: 客厅
+buttons:
+  - entity: sensor.wen_du          # 挂哪颗按钮上就点哪颗
+    name: 账单
+    icon: mdi:receipt-text-outline
+    tap_action:
+      action: card
+      card:
+        type: bill
+        name: 个人账单
+        api_base_url: http://192.168.1.100:8123/api/ha_data_store/
+        key: 你的KEY
+        popup_width: 760px
+        popup_position: center
+```
+
+```yaml
+# 常显：直接作为一张卡片
+type: custom:room-elves-card
+standalone_type: bill
+name: 个人账单
+api_base_url: http://192.168.1.100:8123/api/ha_data_store/
+key: 你的KEY
+page_size: 20
+recent_days: 7
+```
+
+#### 配置项
+
+| 参数 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `api_base_url` | ❌ | `string` | ha_data_store 地址（不配时回退同源 `/api/ha_data_store/`；作为弹窗子卡时会**继承宿主卡**的同名值） |
+| `key` | ❌ | `string` | API Key（同上，可继承） |
+| `name` | ❌ | `string` | 标题，默认「个人账单」 |
+| `icon` | ❌ | `string` | 标题图标，默认 `mdi:receipt-text-outline` |
+| `subtitle` | ❌ | `string` | **未选数据来源时**的副标题文案（选了来源就显示来源名） |
+| `accent` | ❌ | `string` | 外壳主色，默认 teal `#26a69a` |
+| `page_size` | ❌ | `number` | 明细分页每页条数，默认 `20`（最小 5） |
+| `recent_days` | ❌ | `number` | 概览「最近 N 日」天数，默认 `7`（明细默认先列前 `10` 条、可「加载更多」每次 +`20`；手上最多该窗口接口能给的最近 `60` 条。两者都不可配） |
+| `source` / `direction` | ❌ | `string` | 初始维度筛选（数据来源 / 收支方向） |
+| `width` / `popup_width` | ❌ | `string` | 卡片宽度 / 独立弹窗宽度（默认 `720px`；两者都给时 `width` 优先） |
+| `popup_position` | ❌ | `string` | 弹窗位置，默认 `center` |
+
+#### 接口一览（卡片实际调用的）
+
+| 接口 | 用途 | 用在哪 |
+|------|------|--------|
+| `bill_dashboard` | 概览一次取全（总计 + 来源 + 年度 + 最近 N 日） | 概览 |
+| `bill_trend` | 趋势序列（`granularity=year/month/day/hour`） | 分析「月度趋势」、概览「月度收支」「年度收支（带本块来源筛选时）」、下钻窗口、**查询结果区那张柱图** |
+| `bill_group` | 分组汇总（`category` / `source` / `pay_method`） | 分析四张环形图 |
+| `bill_ranking` | 排行榜（`dimension=counterparty`） | 分析「对方排行」 |
+| `bill_hour_dist` | 按小时分布 | 分析「支付时刻」 |
+| `bill_flow` | 资金流向（`from_dim` → `to_dim`，`nodes` + `links`） | 分析「资金流向」（纯 SVG 桑基图；起 / 终维度在标题行换，**默认 `source → category`**、`limit=500`） |
+| `bill_calendar` | 活跃日历（`month=YYYY-MM&fill=1`） | 日历页格子 |
+| `bill_history` | 明细（分页 + 子串过滤 + `order_by`） | 日历页本月明细、查询页结果、**范围窗口的明细 + 合计**（`summary` 是整段全量算的） |
+| `bill_periods` | 有数据的年月 / 年份（`level=year|month&mode=minimal`）/ **全历史逐日**（`level=day&mode=normal`，后端不截断） | 日历页年月面板、**日历页「历年热力」**、**查询页「结果热力」**（后两处都是 `level=day` 那一次：16 年 ≈ 6000 行，`mode=normal` 已含收 / 支；**展开那一块时才发**，都不进页面的 `load`；查询页那份**只带条件、不带时间路径**） |
+| `bill_yoy` | 逐年同月（`month_of_year`） | 历史页「历史本月」 |
+| `bill_onthisday` | 历史今日（`month_day=MM-DD` 历年同月同日 / `day_of_month=DD` 历年每月那一天；都不传 = 今天） | 历史页「历史今日」 |
+| `bill_notes` | 备注候选（去重 + 次数） | 详情气泡的"常用备注" |
+| `bill/add` · `bill/remark` | 新增一条账单 / 单写备注（**仅这两处写入**） | 浮动「新增」按钮、详情气泡 |
+
+#### 说明与已知边界
+
+- **无轮询**：数据只在四个时机取（打开卡片 / 切到没取过数的页 / 点头部刷新 / 查询与换条件）；`hass` 推送只重算外壳（页签、副标题、高度），**不会重新取数**。
+- **月度序列后端是 `ORDER BY bucket ASC LIMIT n`**（截的是"最早的那一批"）：卡片为此留够条数（240）再取尾部 12 个月 —— 自己写调用时别直接 `limit: 12`，否则会拿到十几年前的那 12 个月。
+- 「月度收支」默认只显示最近一个月（与「年度收支」同款折叠），点右上角「更多月份」展开其余。
+- 卡片与它所有弹窗**不引第三方图表库**：环形图是 SVG（`stroke-dasharray`）、柱图是 flex 高度百分比。
+- 明细行的「数据来源 / 类型 / 方式…」点击查询、以及查询页的「来源 ▾」筛选 / 「排序条」，口径都以**后端接口的过滤字段名**为准（`source` / `category` / `pay_method` / `status` / `bill_no` / `keyword` / `start` / `end` / `direction` …）。
+
+### 6.46 iKuai 全实体卡片 (type: ikuai_card)
+
+> **一张卡看全一台爱快：只配一个聚合实体，卡片自己认设备、认角色。**
+>
+> ⚠️ **前置条件：必须先安装自定义集成 [`ikuai`](https://github.com/chjspp520/ikuai)（必需）**
+> —— 卡片自身不采集数据，全部内容都来自该集成的聚合实体 `sensor.ikuai_all_entities`。
+> **没装 / 没配置集成时，这张卡没有数据可显示**（只会给一句提示，不是卡片坏了）。
+>
+> 📌 **本节对应版本：v6.3.0（2026-10-14，后续小版本微调）** —— 这张卡在 **v6.2.0**（2026-10-12）入库
+> （四个页签进头部 + "数据驱动、不写死实体 id"这两条口径）。**v6.3.0** 定下的形态：
+> 虚拟机画面「叫醒」时序修正 · IM 聊天记录只留重要信息 · 「路由」页新增 **DHCP 子页签** ·
+> 硬件信息的「复制」按钮与查询时间并成页脚一行。**v6.3.4** 又加了一条：查询 API 开着时，
+> 头部那条分割线变成「API 密钥剩余时长」进度条（见本节末段）。**v6.3.5** 再加两条：
+> ① 头部副标题只在前三个页签及以内显示（页签数 >3 就隐藏）；② 副标题里那对总上传/总下载
+> 挪进「网络」左栏 —— 紧跟实时速率行下面当第二行（第一行速度、第二行流量，↑ 绿 / ↓ 蓝）。
+> 逐条改动见 `CHANGELOG.md` 的 **v6.3.5** 段（第 232 节）、**v6.3.4** 段（第 231 节）与
+> **v6.3.0** 段（第 226~229 节），布局由来见 **v6.2.0** 段（第 219~225 节）。
+>
+> ⚠️ 旧的 `type: ikuai`（依赖旧集成 `ikuai_router`）**已在 v6.4.x 整卡移除**（`CHANGELOG.md` 第 242 节），
+> 现在爱快只有这一张卡 —— 根类名 `.ikuai-card-root`（类型名本身已含 card，按规则会得到 `ikuai-card-card`，故单独定名）。
+
+#### 依赖集成：`ikuai`（必需）
+
+本卡片**不能独立工作**，数据全部来自自定义集成 **`ikuai`**：
+
+- **仓库地址**：https://github.com/chjspp520/ikuai （下载 / 更新都从这里取）
+- **安装位置**：`<配置目录>/custom_components/ikuai`（开发机映射盘 `Y:\custom_components\ikuai`）
+- **安装步骤**：
+  1. 从上面仓库下载，把整个 `ikuai` 目录放进 HA 配置目录的 `custom_components/`；
+  2. 重启 Home Assistant；
+  3. 「设置 → 设备与服务 → 添加集成」，搜索 **iKuai**，填爱快路由地址与账号密码。
+- **它提供什么**：为整台爱快建实体（系统 / 接口 / 线路 / DHCP / 客户端 / 本地认证 / Docker / 虚拟机 / 日志 / 查询 API…），并生成**聚合实体 `sensor.ikuai_all_entities`** —— 卡片就是靠它"一次拿到全部设备与实体"，所以配置里**只要一个实体**，不必逐个写。
+- ⚠️ **别装错集成**：旧集成 `ikuai_router` 是已删除的 `type: ikuai` 旧卡用的，**不适用这张卡**。
+
+聚合实体的 `attributes.groups[]` 就是一份**实体目录**（集成按设备标识自动归类：`router` / `docker` / `auth` / `vm_<id>`，
+每项 `{entity_id, name, state, icon}`）。
+
+- **卡片不写死任何实体 id**：角色与归类全认**短名**（显示名去掉设备名前缀：`iKuai CPU占用` → `CPU占用`，
+  `虚拟机 win7 远程控制台` → `远程控制台`），id 后缀只作兜底 —— HA 占号（实测 `sensor.ikuai_cpu_2`、
+  `switch.ikuai_docker_nps_2`）很常见，按 id 锚定必然错；新增容器 / 账号 / 虚拟机不用改一行代码。
+- 目录里的 `state` 是集成侧的合并快照，**实时值一律回 `hass.states` 读**（否则点了开关界面最长好几秒不动）。
+
+#### 三种入口（与其它卡片一致）
+
+| 入口 | 写法 |
+|------|------|
+| 独立卡片 | `standalone_type: ikuai_card`（高度 `auto`，卡片自带 3 秒值级刷新，故不参与独立模式的 1 秒轮询） |
+| 点按钮弹出 | `tap_action: { action: card, card: ikuai_card }`（走 `showIkuaiAllPopup`） |
+| 弹窗内嵌 | `tap_action: { action: popup_card, card: { type: ikuai_card } }` |
+
+#### 配置项
+
+| 键 | 必填 | 类型 | 说明 |
+|----|:----:|------|------|
+| `entity` | ❌ | string | 聚合实体（默认 `sensor.ikuai_all_entities`） |
+| `name` / `icon` | ❌ | string | 头部标题 / 图标（默认「爱快」/ `mdi:router-network`） |
+| `accent` | ❌ | string / object | 主色调（走框架 `applyAccent`：命名色 / hex+rgb / auto / 实体驱动） |
+| `width` / `popup_width` / `popup_position` | ❌ | number / string | 卡片宽度、弹窗宽度与弹出方位 |
+| `confirm_power_off` | ❌ | bool | 关机类操作是否二次确认（默认开） |
+
+#### 四个页签（后三个按"内容存在与否"自动出现）
+
+| 页签 | 内容 |
+|------|------|
+| **路由** | 页内再分六个子页签，见下一节 |
+| **Docker** | 容器一行一个（状态 / 镜像 / 内存占用；点开看该容器信息）+ 启停 / 重启 / 删除；容器区不折叠 |
+| **虚拟机** | 每台一张卡：电源开关 + 远程控制台（集成签好的 noVNC 地址，iframe 内嵌）+ **画面预览** + 属性与操作；屏幕墙是页内折叠区块（最多 8 格，点某格才进控制台 —— 格子本身不嵌 iframe） |
+| **日志** | ① 告警与消息（未读数 + 全部已读 / 清空）；② 每个分类一个折叠区块（标题 = 短名去掉「日志-」前缀 + 实时条数，展开列出最近记录，点单条看完整字段，右上「清空」二次确认） |
+
+#### 「路由」页的六个子页签（`ikuai-card-mini-tabs`）
+
+顺序按"一台路由器实际长什么样"排 —— 先总览 → WAN 侧 → **LAN 侧地址分配** → 拿到地址的终端 → 认证 → 设置：
+
+| # | 子页签 | 内容 |
+|---|--------|------|
+| ① | **网络** | 网络总体状态 + 上下行当前速率（两栏大字，带色点）+ **近 30 分钟双线 SVG 曲线**（历史一次 + 之后每 5 秒采一点）+ 网络关键格 + 流量分布环形图（近30分钟 / 近1小时 / 近1日 三档胶囊）+ 网络接口（外网口 / 内网口）+ ARP 表（条目数 + 已绑定筛选） |
+| ② | **线路** | 拨号 / VPN：四个页签（在线线路 / PPPoE / PPTP / L2TP，数写在页签里）+ 选中那一类一行一条（连上没连上、连的谁、拨在哪个口、上线多久） |
+| ③ | **DHCP** | DHCP 服务（`sensor.ikuai_dhcp`）：四档页签（服务端 / 静态分配 / 动态租约 / MAC 名单）+ 选中那一档。**条件页签：没有这个实体就不出现**（其余五档常驻，各有空态文案） |
+| ④ | **客户端** | 在线终端一行一台 + 右侧「**允许上网**」开关（直接控制 `switch.ikuai_mac_*`，不是"写 MAC + 按按钮"）；缺 MAC 管控 / 终端跟踪实体时给一句说明，不空屏 |
+| ⑤ | **本地认证** | 本地认证 / VPN 服务端（PPPoE・PPTP・L2TP・OpenVPN）的启停与参数 + 认证用户 |
+| ⑥ | **设置** | 系统操作（只露常用：重启 / 重连 WAN / 同步时间 / 清空流量 / 拉黑放行；低频项在「更多操作」气泡里）+ 服务开关（按功能分组）+ 网络唤醒 + 固件（只报版本，升级在爱快后台）+ 规则统计 + 兜底的其他实体。**整页不折叠** |
+
+#### DHCP 子页签（v6.3.0 新增）
+
+数据源就是 `sensor.ikuai_dhcp` 的四组属性：`servers`（服务端配置）/ `statics`（静态绑定）/ `leases`（动态租约）/
+`blocked`（MAC 名单），条数差异极大（实测 1 / 76 / 78 / 1）—— 所以和「线路」页同一套打法：**页签分四档 + 按需建体**，
+只把选中那一档的行建进 DOM；页签里带着条数（优先用集成的 `static_total` / `lease_total` / `blocked_total`），空的档淡一档。
+
+- **服务端**：一台一张小卡 —— 启用旗标 + 物理口 + 只露**非 0** 的选项旗标（地址有效性检测 / 仅中继 / 延迟）
+  + 参数两列（地址池 / 排除地址 / 掩码 / 网关 / DNS 并排 / WINS / 域名 / 可用地址 / 租期），**集成没给的字段不列**；
+  点了这张卡看完整配置。
+- **静态分配 / 动态租约**：共用一个「筛选框 + 可排序表格」（列只差最后一格 —— 接口 / 剩余租期）。
+  - 排序：点表头换列、再点反向（↑ ↓）；**IP 按 `ip_addr_int` 数值排**（不是字符串）；
+  - 筛选：可搜 IP / MAC / 名称 / 主机名 / 接口，**多个词是「且」**；底部 `显示 x / y 条`（集成截断过会说明一句）；
+  - 租约行的色点按 `status === 1` 分「在线 / 其它」两档（集成没给这个字段的映射，所以不猜语义，
+    原始值放在行 `title` 里：`status=0 · 到期 … · 起租 …`）；
+  - 点一行 → **详情气泡**：hero = 记录名 + `IP · 所属接口` + 状态徽标（静态绑定的「已启用/已停用」、租约的「租期中/已到期」）、
+    关键格全是**中文标签**（IP 地址 / MAC 地址 / 备注 / 主机名 / 所属接口 / 剩余租期 / 到期时刻…）、
+    「复制 IP / 复制 MAC」动作，摆不下的生僻键收进**折叠的「原始字段」**（默认收起，排查时才展开）；
+    每个值**现读**当前那一行，属性一刷新（3 秒 tick）就跟着变。
+- **MAC 名单**：`acl_mode_text` 说明这是黑名单还是白名单 + 一行一条（MAC / 备注 / 启用状态），
+  IPv6 侧（`dhcp6_blocked`）有内容才画一段。
+
+#### 头部那条分割线：API 密钥剩余时长进度条
+
+`switch.ikuai_api`（查询 API）**开着**时，头部下面那条分隔线本身就是**进度条**（`.ikuai-card-api-bar`）：
+填充比例 = `sensor.ikuai_api_key` 的 `remaining_seconds` / 3600（集成整点换新，一把 key 的周期就是 1 小时），
+从右往左退。**一枚小标签骑在进度条上**，跟着填充端点一起滑动，写剩余时长 ——
+**<1 分钟 `x秒` ｜ <60 分钟 `x分` ｜ 否则 `x.x时`**（向下取整）；**轨道与标签同色三档**：
+**<1 分钟红 ｜ 1~10 分钟黄 ｜ >10 分钟绿**（两端各收 6%，标签不会滑出卡片）。
+**点标签**弹出「API 密钥」详情气泡（中文标签 + 简约骨架：密钥 / 条目 / 有效至 / 剩余时长 /
+调用次数 / CPU 指纹 / 算法 / 用法 + 复制密钥）。`off` 时整条进度条不出现，头部保持原样。
+剩余时长的取值顺序：`remaining_seconds` → 实体 state（分钟）→ `valid_until` 推算；三者都没有就不画，不编数。
+
+#### 刷新与开销
+
+- **3 秒值级刷新**（只做文本 / 宽度 / 类名的脏检查写入）：页面不可见跳过、卡片脱离 DOM 自动停表；
+- `image.` 实体**不订阅**（每 5 秒一跳纯噪音）；画面只在「虚拟机 / 屏幕墙」页才 render；
+- 虚拟机那格画面预览是**懒加载实体**的特例：实体 state 为空时卡片会**主动叫醒**一次
+  （给 `<img>` 指一次 `/api/image_proxy/…?state=kick…`；叫醒期间 20 秒内不再调 render 把它撤掉），
+  抓帧成功后实体 state 有值，常规路径自然接管 —— 缘由与坑见 `CHANGELOG.md` 第 226 节；
+- 大分组（>12 项）区块默认收起，框架的 section **展开时才建 body** —— 173 个实体的环境首屏也不会把 DOM 撑起来。
+
+---
+
+### 6.47 叮咚门铃卡片 (type: dingdong)
+
+> **只配一个「实体清单」实体，就能把一台叮咚（移康 eques）门铃装进一张卡：抓拍 / 实时画面 + 按天回看的事件时间轴 + 设置 + 诊断。**
+>
+> 清单实体由 `eques_dingdong` 集成提供（默认 `sensor.eques_bell_entities`），它的属性
+> `entities = [{ entity_id, name, icon, state }, …]` 列出该设备名下**全部**实体；
+> 卡片按「**域 + entity_id 后缀**」自己反查角色（22 条角色表见下）——
+> **换设备、多台门铃、实体被集成改名，都不必改配置**。
+>
+> 📌 卡片本体就是一张**卡内选项卡**（不再自动开弹窗）；`action: card` 弹出的是同一套内容的独立弹窗。
+
+#### 依赖
+
+| 依赖 | 必需性 | 说明 |
+|------|:------:|------|
+| `eques_dingdong` 集成（`Y:\custom_components\eques_dingdong`） | ✅ | 卡片**只读**它产生的实体，不调用集成内部代码 |
+| **「实体清单」实体**（默认 `sensor.eques_bell_entities`） | ✅ | 卡片唯一的入口实体；取不到 → **整卡空态**（只留一句"实体清单不可用" + 实体 id），不留半截空壳 |
+| 「录像抓拍接口密钥」实体（`sensor.*_api_key` 的 `key` 属性）+ 集成路由 `/api/eques_dingdong/day` · `/events` · `/media` | ➖ | 按天明细、多天事件、媒体直链走接口。集成那几条路由是自鉴权的，直链必须显式带 `?key=`；**接口关着/取不到 → 退化为实体属性里残留的那部分**，并在块下给一句原因 |
+| 画面实体：`image.*_last_capture`（抓拍）/ `camera.*_live`（实时）/ `camera.*_live_sub`（反转）/ `camera.*_last_clip`（最近录像） | ➖ | 缺哪个就不摆哪个画面源按钮；一个都没有 → 画面区只有 HUD 空态 |
+| `switch.*` / `number.*` / `select.*_sensitivity`（设置项）、`button.*_refresh_info` · `_switch_camera` · `_restart` | ➖ | 卡片按域全收开关/数字；缺了对应区块不出现 |
+
+> 卡片**不引第三方库、不连 CDN**（图表与装饰全是 SVG / CSS）；不用自带轮询定时器，
+> 5 秒值级刷新挂在宿主卡片的共享 tick 上，页面不可见/脱离 DOM 自动停表。
+
+#### 适用范围
+
+**适用：**
+
+- ✅ **叮咚 / 移康（eques）门铃**由 `eques_dingdong` 集成接管的设备。一张卡一台设备，多台就配多张卡（各自写自己的清单实体）。
+- ✅ 以**按天回看**为主的场景：日期条选天 → 当天的事件 / 抓拍 / 录像**混在一条时间轴**上；另有跨天的双向时间轴（竖向日期 × 横向时刻，10 分钟一格）。
+- ✅ **电池供电设备**：默认只显示「最后一条」抓拍（不唤醒设备），要看实时得手动切到「实时」，切走/关闭即释放会话。
+
+**不适用 / 需注意：**
+
+- ❌ **非 `eques_dingdong` 接管的摄像头**：卡片只认这一个清单实体（角色靠集成固定命名反查），其它品牌请用 HA 原生 picture / camera 卡片。
+- ⚠️ **`standalone_type: dingdong` 未适配**：卡片能被常显渲染，但独立模式的高度分支（`modules/core/standalone.js` 里那份"高度由内容决定"的名单）**还没有这一项**，常显时会走 `height: 100%` 可能把内容裁掉。**要常显请用 `popup_card` 内嵌**（或在自由布局弹窗里用 `type: card` 内嵌）。
+- ⚠️ **实时画面会唤醒电池设备**：集成侧是私有 P2P 协议转 MJPEG，拉流即唤醒机器。不希望被唤醒就把 `show_live: false`（画面源只剩「最后一条」），或干脆切到「最后一条」。
+- ⚠️ **日期条能不能选，取决于「每日汇总」实体**：可用标记与置灰都以它的 `每日` 属性为准（媒体被淘汰后不回退，是"哪些日子有数据"的权威口径）；没有这个实体时日期条退化为只读当天。
+
+#### 三种用法
+
+```yaml
+# ① 卡片自带弹窗（action: card）
+tap_action:
+  action: card
+  card:
+    type: dingdong
+    width: 520px
+
+# ② 内嵌进 HA 原生弹窗（popup_card）
+tap_action:
+  action: popup_card
+  card:
+    type: dingdong
+    name: 入户门铃
+
+# ③ 内嵌进自由布局弹窗（rows[].items 里用 type: card + card_config）
+tap_action:
+  action: call-service
+  service: modern_room_card.show_free_layout_popup
+  service_data:
+    title: 门铃
+    width: 440px
+    tabs:
+      - name: 门铃
+        icon: mdi:door
+        rows:
+          - row: 1
+            per_line: 1
+            items:
+              - type: card
+                name: 画面
+                card_config:
+                  type: dingdong
+                  width: 430px
+```
+
+#### 配置项
+
+| 配置项 | 必填 | 类型 | 默认值 | 说明 |
+|--------|:----:|------|--------|------|
+| `entity` / `entity_list` | ❌ | `string` | `sensor.eques_bell_entities` | 「实体清单」实体；**必配的只有它一个**（两个键名等价） |
+| `name` | ❌ | `string` | 清单实体的设备名（去掉尾巴"实体清单"） | 卡片标题 |
+| `accent` | ❌ | `string` | 主题主色 | 外壳主色（走框架 `applyAccent`） |
+| `date` | ❌ | `string` | 最近有数据的那天，没有就今天 | 初始选中日期 `YYYY-MM-DD` |
+| `events_limit` | ❌ | `number` | `5` | 该日时间轴最多几条**事件**（1~20） |
+| `shots_limit` | ❌ | `number` | `4` | 该日时间轴最多几张**抓拍**（0~12，`0` = 轴上不放抓拍） |
+| `videos_limit` | ❌ | `number` | `5` | 该日时间轴最多几段**录像**（0~12，`0` = 轴上不放录像） |
+| `show_live` | ❌ | `bool` | `true` | 是否给「实时 / 反转」画面源（关掉 = 只留「最后一条」，**电池设备的省电开关**） |
+| `hero_ratio` | ❌ | `string` | 空 = 实测实时视频比例，量不到按 `16:9` | 锁死画面区比例，写 `16:9` / `4/3` / `1.78` 都认；**切换画面源不会改变高度** |
+| `hero_max_height` | ❌ | `string` / `number` | 空 = 不限 | 画面区最高多少，`320`（自动补 `px`）或 `40vh` |
+| `width` | ❌ | `string` | `520px` | 弹窗宽度（`action: card` 时生效） |
+| `popup_position` | ❌ | `string` | `center` | 弹窗位置（`action: card` 时生效） |
+
+> 「重启设备」的二次确认是**内置行为**（没有开关可配）：确认框文案固定为"确定要**重启门铃**吗？重启期间设备会短暂离线。"
+
+#### 界面
+
+**画面区（hero）**
+
+| 位置 | 内容 |
+|------|------|
+| 右上 | 画面源切换：**最后一条 · 实时 · 反转**（按角色出现；`show_live: false` 时只剩「最后一条」） |
+| 左上 | 在线点（绿/红/灰）+ 设备名 + 在线文案 |
+| 左下 | 最近事件（类型图标 + 相对时间） |
+| 右下 | 今日报警大号数字（0 时弱化） |
+| 整帧 | HUD 四角 + 缓慢下扫的光带（装饰，`prefers-reduced-motion` 下关掉）；响铃时红边脉冲 + 「响铃中」徽标 |
+
+- **画面区高度固定**：口径优先 `hero_ratio` → 实测的**实时**视频比例 → `16:9` 兜底；**切换信号源不会改变高度**（抓拍与实时的原始比例不同，卡片刻意只认实时那一份）。
+- **图片只自适应**：`object-fit: contain` —— 既不裁切也不拉伸，比例与画面区不一致时留**黑边**（画面区底色是纯黑）。
+- **点画面**＝在**卡内窗口**看这一帧大图；录像则在卡内播放（不再跳新标签页）。
+
+**选项卡（按实体可用性裁剪）**
+
+| 选项卡 | 内容 |
+|--------|------|
+| **门铃事件** | 日期条 `◀ [2026-10-15 ▾] ▶ [今天]` + 该日三计数；下面是**事件 · 抓拍 · 录像混在一条轴**上的时间轴：日期组头（`10-15 周三 ──── 12`）、每条一个带图标的彩圈 + 标题/副标题/标签、右侧时刻（合并过的给范围）与抓拍缩略图 / 录像播放键。**点抓拍条目＝卡内看大图，点录像条目＝卡内播放**，同类事件 2 分钟内合并成「N 条 xx」，点它弹气泡看逐条 |
+| **事件时间轴** | 跨天的双向时间轴（竖向日期轴 × 横向时刻轴，10 分钟一格一个点）；点小点弹气泡列出那一格的逐条明细，点日期行 = 选定那天并切回上一页（最多摆 12 天） |
+| **设置** | 操作（刷新 / 换镜头 / 重启，重启二次确认）+ 开关（按域全收，中文短名取清单里的 `name`）+ 侦测灵敏度 + 数字参数 |
+| **诊断** | 状态概览网格 + 设备诊断信息 + 录像抓拍接口 + 实体清单 |
+
+#### 实体角色反查表（22 条）
+
+卡片**不写死任何完整实体 id**：按「域 + entity_id 后缀」从清单实体的 `entities` 里反查，后缀**按长度降序**匹配（否则 `live` 会抢走 `live_sub`、`events` 与 `entities` 相互误吞）。
+
+| 域 | entity_id 后缀 | 用途 |
+|----|----------------|------|
+| `binary_sensor` | `online` | 在线状态 |
+| `binary_sensor` | `ringing` | 响铃中 |
+| `sensor` | `alarm_today` | 今日报警数 |
+| `sensor` | `last_event` | 最近事件 |
+| `sensor` | `events` | 事件记录（条数 + 明细属性） |
+| `sensor` | `daily` | 每日汇总（**日期条的可用性口径**） |
+| `sensor` | `archive` | 最近录像与抓拍 |
+| `sensor` | `battery` | 电池电量 |
+| `sensor` | `storage_used` | 存储已用百分比 |
+| `sensor` | `wifi_level` | WiFi 信号等级 |
+| `sensor` | `device_info` | 设备诊断信息 |
+| `sensor` | `api_key` | 录像抓拍接口密钥 |
+| `sensor` | `entities` | 实体清单（自身） |
+| `image` | `last_capture` | 最近抓拍（默认画面源） |
+| `camera` | `live_sub` | 反转监控 |
+| `camera` | `live` | 实时监控 |
+| `camera` | `last_clip` | 最近录像 |
+| `event` | `event` | 事件实体 |
+| `button` | `refresh_info` | 立即刷新设备信息 |
+| `button` | `switch_camera` | 切换摄像头 |
+| `button` | `restart` | 重启设备 |
+| `select` | `sensitivity` | 侦测灵敏度 |
+
+> `switch.*` / `number.*` 两类**按域全收**（都是设备设置项，数量固定），中文短名直接取清单里的 `name`，不维护映射表。
+
+#### 刷新与开销
+
+- **5 秒值级刷新**（只做文本 / 类名 / 宽度的脏检查写入，`_registerLowFreqTask` 挂在宿主共享 tick 上）；结构（实体成员）变了才重建 DOM，重建时保留当前选项卡与选中日期。
+- 抓拍画面走通用件 `infra/image-entity.js`（`/api/image_proxy/…?token=…&state=…`）；**存档里的媒体直链**（集成自己的 `/api/eques_dingdong/media/…`）直接给 `<img>` / `<video>` 并显式带 `?key=` —— 两者不是一回事，混用会让存档图被 image 实体的 token 算法重指。
+- 实时画面走 HA 的 MJPEG 代理，**切走或关闭即释放会话**（电池设备不能 7×24 拉流）。
 
 ---
 
@@ -6295,9 +8113,11 @@ tap_action:
 | `consumables` | 耗材管理面板 | 电池/滤芯剩余量 |
 | `device` | 通用设备状态面板 | 设备开关状态 |
 | `media` | 媒体控制面板 | 播放/暂停/音量 |
-| `phone` | 话费信息面板 | 余额/流量/通话 |
 | `health` | 健康数据面板 | 步数/心率等 |
 | `scene_mode` | 情景模式气泡 | 气泡选择/执行进度 |
+| `esxi` | ESXi 虚拟化面板 | 主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡（见 6.44） |
+| `bill` | 个人账单面板 | 概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表（见 6.45） |
+| `dingdong` | 叮咚门铃面板 | 抓拍 / 实时画面 + 按天回看的时间轴（事件·抓拍·录像混轴）+ 设置 + 诊断四选项卡（见 6.47） |
 
 **配置示例：**
 
@@ -6498,7 +8318,7 @@ tap_action:
 
 ## 八、弹窗中的选项卡（Tabs）
 
-灯光、插座、耗材等弹窗以及自由布局弹窗（`show_free_layout_popup` / `popup_card`）都支持使用选项卡来分类显示设备。选项卡功能非常丰富，支持图标、高亮、自动跳转、条件过滤、禁用、角标等。
+灯光、插座、耗材等弹窗以及自由布局弹窗（`show_free_layout_popup` / `popup_card`）都支持使用选项卡来分类显示设备。选项卡功能非常丰富，支持图标、高亮、自动跳转、条件过滤、禁用、角标等。**选项卡之间可以直接左右滑动切换**（跟手 + 吸附 + 高亮跟手，规则见「八-A、左右滑动」）。
 
 ---
 
@@ -7223,6 +9043,42 @@ tap_action:
 
 ---
 
+## 八-A、左右滑动（切换选项卡 / 翻页）
+
+**卡片里所有分页的地方都支持左右滑动**：弹窗内的选项卡、头部模式的多页按钮，以及各卡片自己的分页（多房间 / 多用户 / 多档位 / 多数据集）。它们由同一个通用机制驱动（`modules/infra/swipe-tabs.js`），所以手感完全一致：
+
+- **跟手拖动**：内容跟着手指走；已经在第一页还往右拖、或最后一页还往左拖时会更"黏"（拖得动、但拖不走，一松手就弹回）。
+- **松手吸附**：按位移与甩动速度决定翻到上一页 / 下一页，不过阈值就弹回原位。
+- **页签高亮跟手**：拖动过程中越过半屏，目标页的选项卡 / 底部圆点就先亮起来，不会出现"滑完了高亮才闪过去"。
+- **纵向滚动不受影响**：先动的方向决定归属 —— 横向归翻页、纵向交回浏览器滚动。起点落在**按钮 / 输入框 / 日期导航**上时不算翻页（那是交互）；页面里**横向可滚动的区域**（如横向卡片列表）会主动让路。
+- **只有一页时不启用**：没有可翻的页就不绑手势，也不会影响页面滚动。
+- **无需任何配置**：配了多页 / 多个选项卡就自动生效；桌面端在**头部多页**上还可以直接用**滚轮**翻页。
+
+**支持左右滑动的位置一览**
+
+| 位置 | 翻动的是什么 |
+|---|---|
+| 卡片头部多页（`head: true` + `buttons_2` / `buttons_3` …） | 按钮页（底部圆点指示当前页） |
+| 灯光 / 插座 / 耗材弹窗 | 房间 / 楼层选项卡 |
+| 自动化管理卡片 | 「信息 / 编辑」 |
+| 媒体播放器卡片 | 底部页面页签（播放列表 / 自由布局页等） |
+| 用户卡片 | 多个用户之间（每人一页） |
+| 用户详情弹窗 | 上一个人 / 下一个人 |
+| 健康数据弹窗 | 「查询 / 新增」 |
+| 空调弹窗 | 两页（控制 / 曲线） |
+| 使用量日历卡片 | 六个选项卡（日历 / 历史 / 年 / 月 / 日 / 洞察） |
+| 设备用电详情弹窗 | 房间 / 全屋 / 桑基图 |
+| 调试信息卡片 | 调试 / 性能 / 版本 / 数据库 |
+| 最近使用气泡（概览行） | 数据集（卡片 / 全部） |
+| 自由布局弹窗（选项卡模式） | 分组选项卡 |
+| ESXi 卡片 | 主机 / 虚拟机 / 屏幕墙 |
+| iKuai 全实体卡片 | 路由（六个子页签）/ Docker / 虚拟机 / 日志 |
+| 通讯模块（`comm`） | 账户 / 通讯记录 / 统计分析 |
+
+> **滑不动怎么办**：先确认该处确实有多于一页；再确认起手位置不是在按钮 / 输入框 / 日期导航上（这些位置是交互，不翻页）。纵向拖动是故意交给页面滚动的，不会翻页。
+
+---
+
 ## 九、人员/人在传感器（Person）
 
 在卡片左下角显示一个人体感应小按钮，点击弹出完整的人员活动弹窗，包含：
@@ -7728,7 +9584,7 @@ overview:
 
 在概览栏**最左侧的固定入口列**（`.ov-entry-col`，约 70px，与"自动化管理"横向并排两格，独立成列、带右分隔线）显示"常用"入口，点击弹出**最近使用设备气泡卡片**（复用统一气泡弹窗 `_showBubble`）。
 
-**依赖**：需配合 **HA 统一数据存储系统 2.13.0 及以上版本**（提供"近期使用设备"实体及 `config_id` / `device_type` 字段）。
+**依赖**：需配合 **HA 统一数据存储系统 2.13.0 及以上版本**（提供"近期使用设备"实体及 `config_id` / `device_type` 字段）；「全部」选项卡还依赖后端提供实体 **`all` 节点**与查询类型 **`timeline`** / **`all_rooms_data_dates`**，后端未提供这些节点/接口时「全部」列表为空、时间线与日历标记不显示（前端不报错）。
 
 ```yaml
 overview:
@@ -7743,8 +9599,22 @@ overview:
 
 - **入口**：概览栏**最左侧固定入口列**（`.ov-entry-col`，约 70px）中与"自动化管理"横向并排一格，显示"常用"文本 + 去重后的设备个数；固定入口列自带右分隔线，与中间动态指标列（`.ov-left-col`）隔开，点击入口列间隙/边距不会误开"全量概览"弹窗。
 - **气泡宽度**：可通过 `width` 参数自定义（如 `430px`），未配置时默认 440px。
+- **数据集选项卡「卡片 / 全部」**（`recently-used-header` **右端**，胶囊样式 `.recently-used-view-tabs`；默认「卡片」，无 `devices` 数据时自动落到「全部」）：
+  - **卡片**（默认）：数据源为实体 `attributes.devices[]`（用户操作过的设备卡片，含 `user_name` / `config_id`），即原有内容；标题「卡片内最近使用（N）」。
+  - **全部**：数据源为实体 `attributes.all[]`（全部受监控设备，**无用户维度**：`room` → 房间名，无 `user_name` / `config_id`，点击按实体反查配置树）；**列表行布局、图标/状态标签、房间标签、右侧控件、点击弹窗、实时状态同步与「卡片」完全一致**，只是数据不同；标题「全部最近使用（N）」。
+  - 切换选项卡时重建下方子选项卡行（用户筛选 + 时间线 + 时空），两个选项卡各自的「时空 / 时间线」惰性渲染状态互相独立；标题括号内数量为**该数据集**去重后的设备总数，不随用户筛选变化。
 - **气泡列表**：按 `entity_id` 去重、按最近使用时间倒序；设备项之间显示分割线；`header` 固定不滚动、列表独立滚动；图标按实体/名称推断（实体域 `climate` → `mdi:air-conditioner`，名称含"灯"或"照片" → `mdi:lightbulb`，名称含"插座/插排" → `mdi:power-socket-au`）。
-- **用户筛选**：`header` 右端按 `user_name` 筛选（"全部" + 各用户选项卡，复用 `eh-tabs` 样式），默认选中当前登录用户。
+- **用户筛选**：子选项卡行按 `user_name` 筛选（"全部" + 各用户选项卡，复用 `eh-tabs` 样式），默认选中当前登录用户；「全部」数据集无用户维度 → 不显示用户选项卡。
+- **"时间线"选项卡**（子选项卡行内固定项）：按时间倒序展示当日事件（日期导航 `◀ 日期 ▶` + 可滚动列表），条目 = 左侧节点（有用户 → 用户头像；无用户 → **事件来源图标**，底色按 `source` 区分）+ 设备名 + 状态徽章 + 房间/状态/用户 + 右下角操作控件。
+  **数据源按数据集区分**：
+
+  | 数据集 | 接口 | 字段映射 |
+  |---|---|---|
+  | 卡片 | `query?type=user_actions_daily&key=xxx&date=YYYY-MM-DD` | 原 `actions` 结构：`ts` / `ts_text` / `user_name` / `room_name` / `state_log` / `config_id` |
+  | 全部 | `query?type=timeline&key=xxx&date=YYYY-MM-DD`（后端多来源事件流：device / user_action / automation / vacuum / xiaoai / health / printer） | `ts_ms` → `ts`、`ts` → `ts_text`、`room` → `room_name`、`user` → `user_name`、`detail` → `state_log`、`name` 缺失时回退 `title`、`config_id` 置空 |
+
+  来源底色 `_timelineSourceColor()`：device 橙 / user_action 蓝 / automation 紫 / vacuum 绿 / xiaoai 青 / health 红 / printer 深灰；`event: on/off` 追加「开启 / 关闭」徽章；无用户事件不显示用户名标签。
+  **点击日期文本**打开日历弹窗（`calendar-popup-container`），日期 "A" 标记的数据源同样按数据集区分：卡片 → `user_actions_month_dates`；全部 → `all_rooms_data_dates&category=device`（复用 `_fetchCachedMonthDates` 的 10 分钟共享缓存）。
 - **"时空"表盘选项卡**：用户筛选选项卡栏**最右侧**新增固定选项卡 **"时空"**，点击切换到 **24 小时同心环表盘**视图（表盘**自适应气泡宽度**保持正方形，气泡默认宽 440px）：
   - **空间 = 圈层**：每个房间一圈同心环（`room_name`，空房间归为 **"头部"**），环半径**基于表盘半径自动均匀分配**，最外圈半径**随房间个数动态求解**且**贴近刻度内侧**（最外房间区域延伸到表盘外环、外部不留大段空白），从中央保留区到外圈等距铺满，环内即该房间区域；按房间操作总次数降序由内到外。房间名**沿环带中心半径按弧度错落分布**在 **02:00→06:00 方向**弧段（不同房间不同半径+角度），不再固定于左右两端。图标**落在环带内部中心**（非边界线上），避免与环线/标签重叠。
   - **时间 = 角度**：设备最后使用时间（`last_used`）映射角度，0 点在正上方、顺时针，精确到分钟。
@@ -7916,8 +9786,6 @@ overview:
 > 与 `type: environment` / `type: energy` 同时配置时，**右列以 `right-col` 为准**；后两者仍照常写入概览弹窗（`overview-control-popup`），只是不再占用右列位置。
 
 ---
-
-### 11.12 公告栏（Notice Bar）
 
 ### 11.12 公告栏（Notice Bar）
 
@@ -8394,7 +10262,7 @@ cards:
 
 #### 头部多屏模式（多页滑动）
 
-当 `head: true` 且按钮数量超过一页时，可以通过 `buttons_2`、`buttons_3`…… 等配置将按钮分到多个页面，通过横向滑动切换页面，底部圆点指示器显示当前页位置。
+当 `head: true` 且按钮数量超过一页时，可以通过 `buttons_2`、`buttons_3`…… 等配置将按钮分到多个页面，**左右滑动即可切换页面**（跟手拖动 + 松手吸附；底部圆点指示当前页，拖动越过半屏时高亮就跟手过去）。桌面端也可以直接把**纵向滚轮**转成翻页。机制与其它选项卡完全一致，见「八-A、左右滑动」。
 
 ```yaml
 head: true
@@ -8758,6 +10626,9 @@ tap_action:
 | `printer` | 打印机用量统计卡片 | `entity`、`name` |
 | `fnnas` | 飞牛 NAS 管理卡片 | `name`、`system_status`、`power_switch`、`docker_containers`、`vms` |
 | `daily_report` | 今日家庭日报卡片 | `entity`、`refresh`、`hide_room`、`env_from_config_id`、`width` |
+| `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`、`hosts`、`vms`、`exclude`、`default_vm`、`show_screen`、`show_refresh`、`show_sync`、`confirm_power_off`、`width` |
+| `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`、`key`、`name`、`icon`、`subtitle`、`accent`、`page_size`、`recent_days`、`source`、`direction` |
+| `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`、`name`、`date`、`show_live`、`events_limit`、`shots_limit`、`videos_limit`、`hero_ratio`、`hero_max_height`（见 6.47） |
 
 #### radio 卡片（单选按钮组）
 
@@ -9970,7 +11841,6 @@ Room Elves Card 的弹窗系统是所有交互控制的核心载体——点击�
 | `curtain` | `showCurtainControlPopup()` | `curtain-control-popup` | 窗帘控制面板（百分比/双层/开合模式） |
 | `clothes_dryer` | `showClothesDryerPopup()` | — | 晾衣架控制面板（拖拽/收藏位置） |
 | `fan` | — | — | 风扇控制面板（风速/摇头） |
-| `phone` | `showPhonePopup()` | `phone-control-popup` | 话费面板 |
 | `device` / `heater` | `showDevicePopup()` | `device-popup` | 通用设备/暖气控制面板 |
 | `scene_mode` | `showSceneModeBubble()` | — | 情景模式气泡选择面板 |
 | `popup_card`（tap_action） | `handlePopupCardAction()` | `custom-card-popup` | 自定义 HA 卡片弹窗 |
@@ -10494,6 +12364,9 @@ tabs:
 | `printer` | 打印机用量统计卡片 | `entity`, `name` |
 | `fnnas` | 飞牛 NAS 管理卡片 | `name`, `system_status`, `power_switch`, `docker_containers`, `vms` |
 | `daily_report` | 今日家庭日报卡片 | `entity`, `refresh`, `hide_room`, `env_from_config_id`, `width` |
+| `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`, `hosts`, `vms`, `exclude`, `default_vm`, `show_screen`, `show_refresh`, `show_sync`, `confirm_power_off`, `width` |
+| `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`, `key`, `name`, `icon`, `subtitle`, `accent`, `page_size`, `recent_days`, `source`, `direction` |
+| `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`, `name`, `date`, `show_live`, `events_limit`, `shots_limit`, `videos_limit`, `hero_ratio`, `hero_max_height`（见 6.47） |
 | `card` | 自定义卡片 | 标准 HA 卡片配置 |
 | `conditional_tabs` | 条件选项卡 | 条件控制 Tab 显示 |
 
@@ -11468,6 +13341,8 @@ buttons:
   - **Room Elves Card 详情气泡**（点击名称）：顶部为当前版本号 + GitHub 地址（可点击跳转），下方为 **卡片结构模块树**——"卡片结构"标题（右端合计模块总数）+ 各目录分组（core / infra / render / popup / cards / events / utils / presets）。每个目录为一级分组，**默认折叠、点击展开**，展开后逐条显示该目录模块名称与功能简介（内容硬编码自 `room-elves-code-tree.md`）。
   - **HA数据统一存储系统详情气泡**（点击名称）：本地访问地址 / 数据库地址 / **数据库大小（右侧带「压缩」按钮**，点击调用后端 `db_maintain` 执行 VACUUM，完成后 toast 提示压缩前后大小/节省/压缩率）/**数据表（显示 `x 张 / xxx 条` 含合计记录数）** 及各表行数。
   - **版本历史气泡**（点击版本号）：带标题栏（`版本历史 · xxx`）+ 版本列表；**最新版本整行绿色高亮并标注 `Latest` 徽标**。
+- **版本历史缓存**：结果缓存在浏览器本地，**同一浏览器 6 小时内刷新页面不再重新请求 GitHub**（内存副本 10 分钟）；
+  感到过时可在「版本」选项卡点手动刷新（会清掉持久缓存并重新拉取）。GitHub 限流（403/429）时会进入 1 小时冷却期，冷却状态同样持久化，避免反复撞限流。
 - **HA服务器信息**：数据源为后端实体 `sensor.ha_data_store_db_viewer_url` 的 `attributes.system`（每 10 分钟刷新）。精简概览卡展示 **HA版本 / 内存 / 硬盘 / 运行时长** 四项，各项独立交互：
   - **HA版本**：`mdi:home-assistant` 图标 + "HA版本"文字 + 版本号；点击弹**版本信息气泡**（HA核心版本、前端版本、安装方式、服务器名称、更新于）。
   - **内存 / 硬盘**：**圆环占用图**（58px 圆环，名称与占用百分比居中于环内，下方显示"已用 / 总量"）；实时百分比与已用/总量读取自 `sensor.ha_data_store_memory_usage` / `disk_usage`（30 秒刷新），缺失时回退仅显示总容量。
@@ -11617,7 +13492,9 @@ buttons:
 | 网格 | **缓存条目** | AC 图标 / 状态映射 / AC 日历缓存 |
 | 网格 | **卡片规模** | 卡片实例数 + 各卡片耗时排行 |
 
-> 📌 「一键复制」按钮会导出**完整快照文本**（含原始样本序列、环境信息、UA 等），内容比面板上看到的多，适合贴给别人排查。
+> 📌 「一键复制」按钮会导出**完整快照文本**（含原始样本序列、环境信息、UA 等），内容比面板上看到的多，适合贴给别人排查；
+> **现已同时包含「性能事件流」日志**（定时器 / 订阅 / 索引 / 慢步骤 / hass / 弹窗 / 气泡 / 子卡 / 网络，最新 500 条），一次粘贴即可带走现场，不必再单独点「复制日志」。
+> 标题行右侧还有 **「后台」** 按钮：开启后**关掉面板仍继续采集**，重开面板即可看到这期间的数据（口径变化见 25.6.4）。
 
 #### 25.6.2 各指标的读法
 
@@ -11717,7 +13594,7 @@ room-elves-card/releases  1 次 · 平均 1161ms · 最大 1161ms
 
 用 `PerformanceObserver` 旁路采集**所有** fetch / xhr（零侵入，不改任何一处 `fetch()` 调用），归类键取 URL 末两段路径（去掉 query，使不同参数归为一类）。
 
-- **次数高**的接口，说明有轮询在打它（ikuai 10s / fnnas 3s / 使用量日历 10s 都是自管轮询）
+- **次数高**的接口，说明有轮询在打它（ikuai-card 3s / fnnas 3s / 使用量日历 10s 都是自管轮询）
 - **耗时长**的接口（如 800ms+ 的版本检查）会拖慢启动
 - **失败请求**（HTTP ≥ 400）会单独标出
 - 这里也会包含 HA 自身的请求（如语言包、`ha_data_store`），属预期 —— 它是"整个页面的网络活动"
@@ -11755,7 +13632,40 @@ roomElvesPerf.subs()        // 订阅实体（全页，按域分组）
 roomElvesPerf.cards()       // 各卡片一览（索引 / 订阅 / 节点数 / 耗时）
 roomElvesPerf.perf()        // 各卡片耗时排行（哪张卡最慢）
 roomElvesPerf.net()         // 后端请求统计（次数 / 平均 / 最大 / 失败）
+roomElvesPerf.log(true)     // 事件流开关（定时器 / 订阅 / 更新链 / 索引 / hass / 弹窗 / 气泡 / 子卡 / 网络）
+roomElvesPerf.logText()     // 打印事件流文本（= 面板「日志」区「复制日志」的内容）
+roomElvesPerf.bg(true)      // ★ 后台运行：关掉面板后**继续采集**（**全局开关** · 仅本次会话，不落盘）
 ```
+
+#### 25.6.4 后台运行（关掉面板后继续采）
+
+面板标题行右侧有个 **「后台」** 按钮（控制台等价命令 `roomElvesPerf.bg(true/false)`）。
+
+> **这是一个全局开关**（`modules/infra/perf-switch.js` 里的一个变量，**所有卡片共用同一个值**）：
+> 在任意一张卡片的调试弹窗上点「后台」、或执行 `roomElvesPerf.bg(true)`，都是**同一件事**；
+> 之后**新建的卡片自动继承**（不需要再点一次），也不会出现"某张卡把全局关掉"；
+> **刷新页面恢复默认「关」**（会话级，不写 localStorage）。
+打开它的效果是：**关闭性能面板之后，采集继续进行** —— 之后任何时候重新打开面板，就能看到这段时间累积的数据（更新链耗时、事件流、后端请求）。适合"我先复现卡顿，再打开面板看"的场景。
+
+> 设计上刻意做了**采集与刷新分离**：
+> - **保留（采集层）**：帧耗时样本、更新链各步骤打点、索引命中统计、**事件流**（定时器 / 订阅 / 索引 / hass / 弹窗 / 气泡 / 子卡 / 网络）、长任务与后端请求观测器；
+> - **停掉（刷新层）**：面板的 2 秒刷新定时器（含全量 DOM 统计）与帧率采样的 `requestAnimationFrame`。
+>
+> 也就是说，后台运行**不会**留下"每 2 秒跑一次全量 DOM 查询"或"60fps 常驻 rAF"这类与省性能背道而驰的开销 —— 这正是它与"最小化性能开销"能共存的原因。
+
+**两个必须知道的口径变化**（面板与快照都会如实标注）：
+
+| 指标 | 后台运行期间 |
+|---|---|
+| 更新链步骤 | 显示为**「后台运行期间累计」**（刷新层停了 ⇒ 不再每 30 秒重置窗口） |
+| 帧率 / 主线程延迟 | **不采样**（两者都依赖刷新层）；重开面板后会清零并重新采样，不会引用关闭前的陈旧值 |
+| 长任务 / 后端请求 | **继续采样**（观测器是廉价旁路） |
+
+> ⚠️ 开关**仅本次会话生效，不写入 localStorage** —— 刷新页面即回到默认关闭，避免"某次开启后忘了关"。
+> `roomElvesPerf.stop()` 会**连带结束后台运行**（避免"以为停了其实还在采"）。
+
+> 💡 **多窗口/多标签**：控制台 API 作用于**当前页面**的卡片。想在另一个 HA 窗口做性能检测，就在**那个窗口**的控制台执行 `roomElvesPerf.run(10)` 或 `bg(true)` —— 采到的自然是那个窗口的数据。
+
 
 #### 最常用：一条命令完成"取证"
 
@@ -11849,6 +13759,9 @@ roomElvesPerf.snap()     // 看 [活跃定时器]
 - **同间隔的定时器来源是否相同** —— 相同 = 可能重复注册
 - **存活时间**是否远超预期（例如弹窗已关，但某个 2 秒定时器还在跑）
 
+更快的定位方式：面板底部的「日志（事件流）」区（或 `roomElvesPerf.logText()`）按时间列出**每一笔**
+定时器注册 / 清除，含「来源片段」（回调源码摘要）—— 直接看是谁注册的、什么时候清的。
+
 #### 场景四：后端接口被频繁调用
 
 ```js
@@ -11856,6 +13769,37 @@ roomElvesPerf.net()
 ```
 
 次数高的接口说明有轮询在打它。对照「活跃定时器」的间隔一起看 —— 通常两者能对上（如 10 秒的定时器 → 10 秒一次的 API 调用）。
+
+#### 场景五：想知道「刚才到底发生了什么」
+
+```js
+roomElvesPerf.log(true)      // 打开事件流（面板可见时会自动开；这条用于不开面板时）
+// …复现问题…
+roomElvesPerf.logText()      // 打印事件流（最新在前）；也可用面板「复制日志」
+```
+
+事件流包含九类：
+
+| 类型 | 内容 |
+|---|---|
+| `定时器` | 注册 / 清除，含间隔、`#id`、**来源片段**与 tag（如 `+interval #124 2000ms 来源 ()=>this._perfTick()`） |
+| `订阅` | 订阅集重建：前后条数 + 配置版本 |
+| `索引` | 实体 DOM 索引重建：全量 / 子树 + 实体数 + 耗时 |
+| `步骤` | 更新链**慢步骤**（≥1ms）+ 耗时 |
+| `hass` | 每次 hass 更新帧：变更实体数 / 是否走了重活 / 帧耗时 |
+| `弹窗` | 弹窗生命周期：`+打开 类型 标题=… 来源 渲染 Xms / 插入+登记 Yms / 合计 Zms 节点 N 子卡 M`、`-关闭 类型 标题=… 存活 Xs 原因=… 清理 定时器 N · 图表 M · 索引 K`、`↻替换 类型 标题=…（旧弹窗直接移除）`。**标题**从弹窗 DOM 取（`showPopup` 没有 title 选项，标题由各卡 content 自建）：`[class*="popup-title"]` → `[class*="popup-header"]` 内的标题 → 任意 `h1~h4`，最多 24 字（多出的 `…`）；取不到就不写 `标题=`，不添噪音。打开/关闭/替换**三行都带**，便于配对。关闭原因只有「点击遮罩」能自动判定，其余如实记为「程序调用」（调用方可传参覆盖） |
+| `气泡` | 气泡生命周期：`+气泡 类型 来源=<实体\|.类名\|<标签名>\|虚拟定位目标（无 DOM）> 构建 Xms / 定位 Yms 节点 N 子卡 M`、`-气泡 类型 存活 Xs 原因=…`。**构建** = 目标测量 + 内容解析 + 插入（内容多时主要花在这）；**定位** = 测量与放置（多次强制布局，同规模气泡可能差数倍，用它区分）。来源取不到类名时退化成 `<div>` 这类标签名（`className` 被赋成 undefined 会变成字符串 "undefined"，不再原样照抄）；调用方只传 `buttonRect`/点击点时会临时造一个纯对象作 target，此时标注 **`虚拟定位目标（无 DOM）`**。关闭原因自动区分 `点击遮罩` / `点击外部` / `再次点击目标` / `程序调用`，程序关闭路径（卡片销毁 / 切页）走 `_closeBubble` 也留痕 |
+| `子卡` | **卡片工厂**（所有子卡的单一漏斗）：`+子卡 <type> 实体=… <内部容器\|外部卡容器\|HA 自定义元素\|创建失败\|创建失败（抛错）> 创建 Xms 节点 N`。`type: card` 带 `card_config` 会递归解包 ⇒ 两行（外层 + 真实类型）。**抛错路径也留痕**（行尾 `错误=…`），且异常照旧向上抛 |
+
+> 弹窗 / 气泡日志里的 `子卡 N` 就来自这里（**工厂产出**，普通 `div` 容器也算）；`HA M` 则是带 `hass` 的自定义元素 / `hui-*`（与"需要传 hass 的元素"同一判据，二者由单测守着一致）。
+| `网络` | fetch / xhr 完成 + 耗时（沿用面板的 PerformanceObserver；同一条请求**跨卡片去重**，因为观察器是每卡一个）。补发的老请求会带真实发生时刻：`ha_data_store/query  371.8ms @63.0s前` —— 观察器 `buffered: true` 会把打开面板前已完成的请求一次性补收，行首的 `-0.0s` 是**写入时间**，两者并存才不会误读成"刚刚打了 30 个请求"。4xx/5xx 追加 `状态=404` |
+
+面板里的「日志」区另有 `暂停 / 清空 / 复制日志` 三个按钮；同一份缓冲也挂在调试卡片的
+`perf-log` 开关下（`dump`），两条出口共用一份文本。
+
+**成本**：默认关闭，调用方一律 `if (perfLog.enabled) …` —— 关闭时连字符串都不拼；
+打开由「面板可见」驱动（面板一关就停），另给 `roomElvesPerf.log(true/false)` 手动开关；
+缓冲是固定 **1000 条**的环形数组（九类事件约覆盖 25~30 秒），同 kind + 同内容 50ms 内合并为 `×N`；「复制日志 / 一键复制」默认导出最新 **500 条**（面板内嵌日志区显示最新 40 条）。
 
 #### 25.6.5 为什么它自己不耗性能
 
@@ -11895,38 +13839,7 @@ roomElvesPerf.net()
 
 ---
 
-## 二十六、常见问题
-
-### Q: 卡片显示"加载中"或空白
-A: 检查 JS 和 CSS 文件是否已放到 HA 的 `www` 文件夹，并在仪表板资源中正确添加。
-
-### Q: 按钮点了没反应
-A: 确认实体的 Entity ID 是否正确。可以在 HA 的"开发者工具 → 状态"中复制正确的 ID。
-
-### Q: 图标显示不出来
-A: 检查图标名称是否正确，以 `mdi:` 开头，如 `mdi:lightbulb`。完整的图标列表可以在 https://pictogrammers.com/library/mdi/ 查询。
-
-### Q: 卡片样式不对（比如透明背景变成白色）
-A: 检查 `theme` 配置。如果使用 `transparent` 主题，需要在卡片的 `style` 中设置合适的 `background`。
-
-### Q: 图片/图标闪烁
-A: 这是正常的，HA 状态刷新时图标会重新渲染。如果频繁闪烁，检查是否有多个实体状态在快速变化。
-
-### Q: 弹窗打不开或打开了盖不住
-A: 可能是 Z-Index 栈出现问题。试试刷新页面。
-
-### Q: 多个 Room Elves Card 在一页上，点击弹窗互相干扰
-A: 使用 `prohibit_homepage_scroll` 配置，或者刷新页面重新加载。
-
-### Q: way 计算显示 -- 或没有数据
-A: way 计算需要历史数据。确认 HA 已经记录了足够的历史记录（至少包含当天数据）。刚重启 HA 后历史数据可能需要几分钟才能查询到。
-
-### Q: 如何在卡片内调整弹窗宽度
-A: 在按钮上设置 `width: 500`（数字，单位为像素）。
-
----
-
-## 二十七、配置速查表
+## 二十六、配置速查表
 
 | 顶层配置 | 说明 | 必须 |
 |---------|------|:----:|
@@ -12010,6 +13923,37 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 | `tabs_config.from_config_id[].entity_value` | 覆盖选项卡实体匹配值 | 否 |
 | `tabs_config.from_config_id[].replace_config` | 替换展开后选项卡的指定键 | 否 |
 | `tabs_config.config_id` | 为组合后的配置注册 ID（可选） | 否 |
+
+---
+
+## 二十七、常见问题
+
+### Q: 卡片显示"加载中"或空白
+A: 检查 JS 和 CSS 文件是否已放到 HA 的 `www` 文件夹，并在仪表板资源中正确添加。
+
+### Q: 按钮点了没反应
+A: 确认实体的 Entity ID 是否正确。可以在 HA 的"开发者工具 → 状态"中复制正确的 ID。
+
+### Q: 图标显示不出来
+A: 检查图标名称是否正确，以 `mdi:` 开头，如 `mdi:lightbulb`。完整的图标列表可以在 https://pictogrammers.com/library/mdi/ 查询。
+
+### Q: 卡片样式不对（比如透明背景变成白色）
+A: 检查 `theme` 配置。如果使用 `transparent` 主题，需要在卡片的 `style` 中设置合适的 `background`。
+
+### Q: 图片/图标闪烁
+A: 这是正常的，HA 状态刷新时图标会重新渲染。如果频繁闪烁，检查是否有多个实体状态在快速变化。
+
+### Q: 弹窗打不开或打开了盖不住
+A: 可能是 Z-Index 栈出现问题。试试刷新页面。
+
+### Q: 多个 Room Elves Card 在一页上，点击弹窗互相干扰
+A: 使用 `prohibit_homepage_scroll` 配置，或者刷新页面重新加载。
+
+### Q: way 计算显示 -- 或没有数据
+A: way 计算需要历史数据。确认 HA 已经记录了足够的历史记录（至少包含当天数据）。刚重启 HA 后历史数据可能需要几分钟才能查询到。
+
+### Q: 如何在卡片内调整弹窗宽度
+A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 ---
 
