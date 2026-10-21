@@ -3,7 +3,7 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.4.2及其以前的版本)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.6.0及其以前的版本)
 
 # Room Elves Card - 房间精灵卡片 完整使用说明
 
@@ -13,7 +13,7 @@
 
 **Room Elves Card**（房间精灵卡片）是一款功能极为强大的 Home Assistant 自定义卡片，旨在将一个房间（或全屋）的所有设备状态与控制能力集中到一张卡片中，实现"一卡掌控全家"的智能家居体验。
 
-> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai) 均由 **chjspp520** 制作维护。
+> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai)、[飞牛 fnOS 集成](https://github.com/chjspp520/fnos) 均由 **chjspp520** 制作维护。
 >
 > **免责声明**：作者仅提供软件功能，不对数据泄露提供安全保障。数据安全由用户自行负责，使用本软件即代表接受本条款（适用法律以所在地为准）。
 
@@ -32,6 +32,7 @@
 - **三张卡片已从"外置独立卡片"并入内建（内部子卡片）**：**温湿度面板**（`wenshidu`）、**设备回放**（`replay`）、**定时精灵**（`timer`）原先各自是**在本卡片之外单独安装的独立卡片**（`wenshidu-card.js` / `device-replay-card.js` / `timer-control-card.js`），现已**整体并入房间精灵卡片**，成为它的**内部子卡片** —— 独立 custom element 已退役（不再单独注册），改由本卡片以 `standalone_type: wenshidu / replay / timer` 直接内置渲染，也能作为 `type: wenshidu / replay / timer` 按钮嵌进按钮网格；配置写法见 6.42 / 6.40 / 6.41，实现位于 `modules/cards/wenshidu.js` / `device-replay.js` / `timer-control.js`（引擎内封在各自 Element 里，只对卡片原型暴露少数方法）
 - **多页模式（头部模式）**：用 `buttons_2` / `buttons_3` … 把按钮分到多页，**左右滑动切换页面**（跟手拖动 + 松手吸附 + 圆点高亮跟手），底部圆点指示当前页；桌面端也可用滚轮翻页
 - **图表卡片系统**：内置 10 种图表类型——仪表图（纯 SVG）、进度条（纯 CSS）、柱状图（纯 CSS）、曲线图/环形图/饼图/南丁格尔玫瑰图/热力图/日历图/混合图表（ECharts），以及插座功率流向桑基图
+- **飞牛 fnOS 全实体卡片（`fnos`）**：把一台飞牛 NAS **整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.fnos_all_entities`，不配也用它兜底）就自动认设备与角色（**不写死任何实体 id**），顶层五个页签（主机 / 存储 / Docker / 虚拟机 / 应用）：主机含指标格、网络与磁盘 IO、系统信息、存储概况、服务开关与重启 / 关机；存储页列出存储池与硬盘；Docker 页一行一个容器（启停 / 重启）；虚拟机页含电源 / 重启 / 强制关机 / 打开远程；应用页汇总文件·相册·影视。依赖 [fnos 集成](https://github.com/chjspp520/fnos)，配置见 6.37
 - **个人账单卡片（`bill`）**：把 ha_data_store 的账单数据画成一张卡——概览（环形图 + 来源占比条 + 年度 / 月度收支 + 最近 N 日）、分析（四张环形图 + 月度趋势 + 支付时刻 + 对方排行）、日历（格子分两行写"收 / 支" + 年月选择）、查询（条件可折叠 + 汇总（合计行"有哪个显示哪个"，不计收支也摆得出来）+ 排序条 + 涉及年筛选）、历史（历史今日 / 历史本月）**五个选项卡**，并支持在**一个窗口里一路下钻**（年 → 月 → 日 → 时 → 那一个小时的账单）；明细行的字段还能直接点着去查询。配置见 6.45
 - **iKuai 全实体卡片（`ikuai_card`）**：把一台爱快路由器**整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.ikuai_all_entities`）就自动认设备与角色（**不写死任何实体 id**），顶层四个页签（路由 / Docker / 虚拟机 / 日志），路由页再分六个子页签（网络 / 线路 / DHCP / 客户端 / 本地认证 / 设置）；虚拟机带远程控制台与画面预览。配置见 6.46
 - **叮咚门铃卡片（`dingdong`）**：只配一个「实体清单」实体，就把一台叮咚（移康 eques）门铃装进一张卡 —— 抓拍 / 实时 / 反转三态画面 + 按天回看的事件·抓拍·录像混合时间轴 + 跨天双向时间轴 + 设置 + 诊断；不写死实体 id（按「域 + 后缀」从清单反查角色）。依赖 `eques_dingdong` 集成，配置见 6.47
@@ -63,12 +64,13 @@
 
 以下是与本卡片配套使用的推荐卡片和依赖集成：
 
-> ⚠️ 下面三个集成分别对应三张卡片，**卡片本身不含数据采集，缺集成就没有数据**：
-> `ha_data_store` → `bill`（个人账单，v5.0.0+）· `esxi_control` → `esxi`（ESXi 虚拟化）· `ikuai` → `ikuai_card`（iKuai 全实体卡）。
+> ⚠️ 下面列出的集成，**卡片本身不含数据采集，缺集成就没有数据**。其中 `ha_data_store` 属于**深度依赖集成**（历史 / 播放列表 / 健康数据等多处共用，**不专属某一张卡片**）；其余三个各对应一张卡片：
+> `esxi_control` → `esxi`（ESXi 虚拟化）· `ikuai` → `ikuai_card`（iKuai 全实体卡）· `fnos` → `fnos`（飞牛 fnOS 全实体卡）。
 
-- **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等。建议优先安装配置。**`type: bill` 个人账单卡片的必需集成（需 v5.0.0 及以上）**，见 6.45。
+- **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成（不绑定单张卡片）**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等，多处功能共用，**建议优先安装配置**。它同时是 `type: bill` 个人账单卡片的必需集成（需 v5.0.0 及以上），见 6.45。
 - **ESXi Control** ([esxi_control](https://github.com/chjspp520/esxi_control)) — ⚠️ **`type: esxi` 卡片的必需集成**。为每台主机 / 虚拟机 / 数据存储 / 许可证建实体，并生成聚合实体 `sensor.esxi_all_entities`；**没装集成时 ESXi 卡片没有数据**（只显示提示），安装见 6.44。
 - **iKuai 集成** ([ikuai](https://github.com/chjspp520/ikuai)) — ⚠️ **`type: ikuai_card` 卡片的必需集成**。为整台爱快（系统 / 线路 / DHCP / 客户端 / Docker / 虚拟机 / 日志…）建实体，并生成聚合实体 `sensor.ikuai_all_entities`；**没装集成时爱快卡片没有数据**，安装见 6.46。注意**不是**旧的 `ikuai_router` 集成。
+- **飞牛 fnOS 集成** ([fnos](https://github.com/chjspp520/fnos)) — ⚠️ **`type: fnos` 卡片的必需集成**。为整台飞牛（主机 / 存储 / Docker / 虚拟机 / 文件·相册·影视）建实体，并生成聚合实体 `sensor.fnos_all_entities`；**没装集成时飞牛卡片没有数据**（只显示提示），安装与配置见 6.37。
 - **电力卡片** ([electricity-info-card](https://github.com/chjspp520/electricity-info-card)) — 家庭用电信息展示卡片，支持功率、电量、电费等多维度数据
 
 ---
@@ -592,10 +594,11 @@ name: 客厅空调                    # 显示名称（可选）
 
 > **其中 `replay`（设备回放）/ `timer`（定时精灵）/ `wenshidu`（温湿度面板）三张，原先是在本卡片之外单独安装的独立卡片**（`device-replay-card.js` / `timer-control-card.js` / `wenshidu-card.js`），现已**整体并入房间精灵卡片**成为**内部子卡片**：独立 custom element 不再注册，配置改成本卡片的写法（分别见 6.40 / 6.41 / 6.42）。也就是说，用这三张现在**只需要房间精灵卡片本身**，不必再另装一张卡片。
 
-> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` 三张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
+> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` / `fnos` 四张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
 > [`esxi_control`](https://github.com/chjspp520/esxi_control) · [`ikuai`](https://github.com/chjspp520/ikuai) ·
-> [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，个人账单）。
-> 安装方式与依赖细节见各自小节（6.44 / 6.45 / 6.46），**光装房间精灵卡片本身不够**。
+> [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，个人账单） ·
+> [`fnos`](https://github.com/chjspp520/fnos)（飞牛 fnOS 全实体卡片）。
+> 安装方式与依赖细节见各自小节（6.37 / 6.44 / 6.45 / 6.46），**光装房间精灵卡片本身不够**。
 
 **常规设备类型：**
 
@@ -606,8 +609,7 @@ name: 客厅空调                    # 显示名称（可选）
 | `media` | 媒体控制面板（开关/播放控制） | `media_player` |
 | `clothes_dryer` | 晾衣架控制面板（拖拽/收藏位置/灯光联动） | `cover` / `switch` |
 | `nas` | NAS 服务器状态卡片（硬盘状态/电源控制/温度风扇） | HP iLO 集成实体 |
-| `printer` | 打印机用量统计卡片（墨量/日/月/年用量/累计统计） | `sensor` |
-| `fnnas` | 飞牛 NAS 管理卡片（系统信息/电源/Docker/虚拟机管理） | fn_nas 集成实体 |
+| `printer` | 打印机用量统计卡片（设备状态 / 日历热力图 / 墨量 / 累计统计 / 用墨占比环形图） | `sensor` |
 | `entities_health` | 实体健康状态卡片（按房间/按状态展示全屋实体在线离线情况） | `sensor` |
 | `daily_report` | 今日家庭日报卡片（summary 日报/状态横幅/关键指标） | `sensor` |
 | `replay` | 设备回放卡片（户型图 + 设备时间轴，可播放/拖拽/选日期） | 任意（用 `entities:` 配置回放设备，见 6.40） |
@@ -618,6 +620,7 @@ name: 客厅空调                    # 显示名称（可选）
 | `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡）**⚠️ 需先装 `esxi_control` 集成** | `esxi_control` 集成实体（聚合实体 `sensor.esxi_all_entities`，回退 `sensor.entities`，见 6.44） |
 | `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表）**⚠️ 需先装 `ha_data_store` v5.0.0+** | ha_data_store 账单接口（配 `api_base_url` + `key`，见 6.45） |
 | `ikuai_card` | iKuai 全实体卡片（路由 / Docker / 虚拟机 / 日志四页签，只配一个聚合实体即认全设备）**⚠️ 需先装 `ikuai` 集成** | 新集成 `ikuai` 的聚合实体 `sensor.ikuai_all_entities`（见 6.46） |
+| `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用五页签，只配一个聚合实体即认全设备）**⚠️ 需先装 [`fnos`](https://github.com/chjspp520/fnos) 集成** | 飞牛 fnOS 集成的聚合实体 `sensor.fnos_all_entities`（见 6.37） |
 | `sensor` | 传感器卡片（数值显示） | `sensor` |
 | `switch` | 开关卡片 | `switch` / `input_boolean` |
 | `select` | 选择下拉卡片 | `select` / `input_select` |
@@ -704,6 +707,100 @@ temp_colors:
 ```
 
 > 完整字段（多房间、字体、单位显隐、3D、外部 API 数据源等）见 6.42。
+
+**设备回放独立卡片**
+
+把「户型图 + 设备时间轴」做成可播放的一天回放（内部子卡片，无需另装卡片）：
+
+```yaml
+type: custom:room-elves-card
+standalone_type: replay
+card_width: 500                     # 设计基准宽度（实际随容器等比缩放）
+floorplan_height: 400               # 户型图高度
+background_image: /local/pobaby_package/floorplan/1f.png
+entities:                           # 回放设备列表（坐标按 card_width 基准书写）
+  - entity: light.ke_ting
+    name: 客厅-大灯
+    x: 0
+    y: 0
+    image_url: /local/pobaby_package/device/ke_ting_on.png
+    image_scale: 100
+  - entity: climate.ke_ting
+    name: 客厅-空调
+    x: 300
+    y: 100
+    image_url: /local/pobaby_package/device/kong_tiao.png
+    image_scale: 30
+    rotation: 90
+```
+
+> 设备项字段（坐标 / 图标 / 缩放 / 旋转 / 传感器气泡 / 轨道等）与顶层字段见 6.40。
+
+**ESXi 虚拟化独立卡片**
+
+```yaml
+# 最省事：只给聚合实体
+type: custom:room-elves-card
+standalone_type: esxi
+entity: sensor.esxi_all_entities     # 默认就是它（旧环境自动回退 sensor.entities）
+name: 虚拟化
+
+# 需要收窄范围时再加（都是可选项）
+# hosts: 主机                         # 只保留这些主机
+# vms: Windows 10                    # 只保留这些虚拟机
+# exclude: ESXi 统计                  # 排掉集成的兜底设备
+# show_screen: true                  # 是否生成「屏幕」页签
+# show_refresh: true                 # 头部「立即刷新数据」按钮
+# show_sync: true                    # 「主机配置」里的「同步（重载集成）」
+# confirm_power_off: false           # 关机不二次确认
+```
+
+> ⚠️ 需先安装 [`esxi_control`](https://github.com/chjspp520/esxi_control) 集成；高度由内容决定，卡片自带 3 秒值级刷新。完整字段见 6.44。
+
+**个人账单独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: bill
+name: 个人账单
+api_base_url: http://192.168.1.100:8123/api/ha_data_store/
+key: 你的KEY
+page_size: 20                        # 明细分页每页条数（默认 20）
+recent_days: 7                       # 概览「最近 N 日」天数（默认 7）
+# source: 微信                       # 初始来源筛选（可省）
+# direction: 支出                    # 初始收支方向筛选（可省）
+```
+
+> ⚠️ 需先安装 [`ha_data_store`](https://github.com/chjspp520/ha_data_store) **v5.0.0+** 并开好账单接口生成 Key；**无轮询** —— 只在打开卡片 / 切到未取过数的页 / 点刷新 / 换查询条件时取数。完整字段见 6.45。
+
+**iKuai 全实体独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: ikuai_card
+entity: sensor.ikuai_all_entities    # 默认就是它，可省
+name: 爱快
+accent: auto                         # 主色：命名色 / hex / auto / 实体驱动
+width: 760px                         # 卡片基准宽度（弹窗里用 popup_width）
+# confirm_power_off: true            # 关机类操作是否二次确认（默认开）
+```
+
+> ⚠️ 需先安装 [`ikuai`](https://github.com/chjspp520/ikuai) 集成；**只配一个聚合实体**即可认全路由 / Docker / 虚拟机 / 日志，高度 `auto`、自带 3 秒值级刷新（不参与独立模式的 1 秒轮询）。完整页签与字段见 6.46。
+
+**飞牛 fnOS 全实体独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: fnos
+entity: sensor.fnos_all_entities     # 默认就是它，可省（被占号时自动识别 _2 后缀）
+name: 飞牛 fnOS
+icon: mdi:nas
+accent: "#26a69a"                    # 主色（可省）
+popup_width: 900px                   # 弹窗宽度（卡片形态下不生效，可省）
+# confirm_power: true                # 重启 / 关机 / 强制关机是否二次确认（默认 true）
+```
+
+> ⚠️ 需先安装 [飞牛 fnOS 集成](https://github.com/chjspp520/fnos)；**只配一个聚合实体**即可认全主机 / 存储 / Docker / 虚拟机 / 应用，高度 `auto`、自带 3 秒值级刷新。完整页签与字段见 6.37。
 
 **窗帘独立卡片**
 
@@ -3283,6 +3380,7 @@ badge_entity 示例：
     off_color: '#74787c'                       # 关闭时颜色
     width: 400px                               # 弹窗宽度
     locker: false                              # 关闭锁定模式，启用拖拽和收藏位置
+    reverse: true                              # 位置方向反转（可选，不写=按实体属性自动识别）
     collect_position:                          # 收藏位置快捷按钮（最多3个）
       - name: 经常
         position: 70                           # 目标位置百分比（0=顶部, 100=底部）
@@ -3311,19 +3409,21 @@ badge_entity 示例：
 | `width` | ❌ | `string` | 弹窗宽度，默认 `440px` |
 | `locker` | ❌ | `boolean` | 锁定模式，默认 `true`。锁定时位置固定 75%，隐藏拖拽手柄和收藏位置按钮，仅通过上升/下降按钮控制电机方向；设为 `false` 时启用拖拽交互和收藏位置快捷按钮 |
 | `collect_position` | ❌ | `array` | 收藏位置快捷按钮，最多 3 个，每个含 `name` 和 `position` 字段（仅在 `locker: false` 时显示） |
+| `reverse` | ❌ | `boolean` | 位置方向反转，默认 `auto`（不写时自动读取实体 `position_reverse` 属性）。部分设备 `current_position` 与卡片视觉方向相反（HA `100` = 升起 / `0` = 放下）且没有该属性，可设 `reverse: true` 强制反转；也可显式写 `reverse: false` 关掉自动识别。别名 `position_reverse` 同义 |
 | `card` | ❌ | `array` | 功能开关卡片列表，使用统一卡片系统渲染，2 列网格布局 |
 
 **交互功能说明：**
 
 1. **机械仿真拖拽**：弹窗中的晾衣架可视化区域支持触摸/鼠标拖拽，直接拖动晾杆到目标位置（`locker: false` 时可用）
-2. **升降按钮**：提供上升/停止/下降三个按钮，长按持续移动
-3. **收藏位置**：一键快速移动到预设位置，带平滑过渡动画，当前位置匹配时按钮高亮（`locker: false` 时显示）
+2. **升降按钮（一条方向命令 + 位置同步）**：提供上升/停止/下降三个按钮。点「上升/下降」**只发一条**方向命令（`cover.open_cover` / `cover.close_cover`，方向随 `reverse` 翻转），之后每 300ms 读取实体 `current_position` 同步卡片百分比与晾杆位置，到 0/100 自动停止；再点同一方向等同停止。点「停止」立即发 `cover.stop_cover`（设备声明了 STOP 能力时只发这一条，不再补定位命令——旧位置会把它指回端点），并**立即刷新一次显示位置**（同时调 `homeassistant.update_entity` 让集成立刻上报真实位置）。全程不连发定位指令（此前每 18ms 一条、约 55 条/秒，设备会一直「滴滴滴」）
+3. **收藏位置**：点一下与「上升/下降」同一套逻辑 —— 只发**一条**方向命令（朝目标方向），之后每 300ms 读实体 `current_position` 同步显示与晾杆动画，到达/越过目标自动 `stop_cover`；当前就在目标附近（±1.5%）时不动电机，位置匹配时按钮高亮（`locker: false` 时显示）
 4. **灯光控制**：
    - 壳体右上角的灯光按钮可直接切换 `light_entity` 开关
    - 灯光开启时，壳体下方出现暖黄色倒置梯形光晕照射效果（上窄下宽）
    - 光晕效果实时响应灯光状态变化
 5. **功能卡片**：底部 2 列网格展示功能开关卡片；配置了 `light_entity` 时，灯光开关会自动插入首位，无需在 `card` 中手动添加
-6. **位置反转自动适配**：自动检测 cover 实体的 `position_reverse` 属性，适配不同品牌晾衣架的正反转逻辑
+6. **位置反转适配**：默认自动检测 cover 实体的 `position_reverse` 属性，适配不同品牌晾衣架的正反转逻辑；设备没有该属性时用 `reverse: true` 手动反向（影响位置显示、拖拽、收藏位置与上升/下降方向）
+7. **外部状态实时同步**：面板（独立卡片 / 弹窗 / 功能网格）会跟随 `hass` 推送即时同步晾杆位置与标题栏在线圆点 —— 在 HA 前台、物理遥控器或其他卡片里升降后无需刷新页面；拖拽或电机运行中本地值优先，不会被回推覆盖
 
 **`collect_position` 子项字段：**
 
@@ -5506,11 +5606,11 @@ buttons:
 
 ---
 
-### 6.36 打印机用量统计卡片 (type: printer)
+### 6.36 打印机统计卡片 (type: printer)
 
-打印机用量统计卡片用于展示打印机（如 HP）的墨量、日/月/年用量、累计统计。数据来源为打印机用量统计实体（`sensor.hp_printer_yong_liang_tong_ji`）的 `attributes`。
+打印机统计卡片用于展示打印机的**状态、今日作业、日/月/年用量、累计统计、四色耗材、页数统计、事件日志**，分 4 个选项卡。
 
-点击按钮弹出打印机用量统计面板，支持通过 `popup_card` 或 `card` 动作打开。
+**只需要配一个实体** —— 集成生成的「全部实体」聚合传感器：
 
 ```yaml
   - entity: input_boolean.da_yin_ji
@@ -5522,195 +5622,249 @@ buttons:
     on_color: "#f58220"
     off_color: "#74787c"
     tap_action:
-      action: popup_card                 # 或 action: card（走独立弹窗）
+      action: popup_card                    # 或 action: card（走独立弹窗）
       popup_position: clone_button_top
-      width: 400px                       # 外层弹窗宽度（可选）
+      width: 400px                          # 外层弹窗宽度（可选）
       card:
         type: printer
-        name: HP Printer 用量统计        # 可选，弹窗标题，默认同上
-        entity: sensor.hp_printer_yong_liang_tong_ji  # 可选，默认此实体
+        name: HP OfficeJet Pro 7730         # 可选，标题；默认 'HP Printer'
+        entity: sensor.hp_printer_quan_bu_shi_ti   # 聚合实体（默认就是它）
+        # ── 以下都是可选项 ──────────────────────────────
+        # colors:                           # 自定义类型颜色（图标/日历热力/累计卡/环形图全局同步）
+        #   print: '#fb8c00'
+        #   scan: '#8e24aa'
+        #   copy: '#00897b'
+        #   fax: '#78909c'
+        #   jam_printer: '#e53935'
+        #   all: '#fb8c00'
+        # api_base_url: /api/ha_data_store/  # 历史逐日补数 / 明细接口（不配则只用实体本地数据）
+        # key: 你的key
 ```
+
+#### 数据来源
+
+聚合实体的 `attributes.entities[]` 是 `{ entity_id, name, icon, state }` 清单；卡片拿清单去 `hass.states` 里逐个取**真实状态与属性**，再按**名称关键字**认出各类实体：
+
+| 名称包含 | 用途 |
+|---|---|
+| `用量统计` | `daylist` / `monthlist` / `yearlist` / `total`（日-月-年用量、累计、近日记录） |
+| `今日作业记录` | `print` / `scan` / `copy` / `fax` / `jam_printer` 明细数组（点今日指标弹气泡） |
+| `事件日志` | `count` + 以 ISO 时间戳为键的 `{seq, code, description, occurrences, pages}` |
+| `<颜色> 墨水剩余 / 墨盒状态 / 序列号 / 更换墨盒次数 / HP原装墨量` | 四色耗材（**累计用墨 = 更换次数 × 原装墨量**，不直接取集成值） |
+| `<颜色> 累计用墨量` | 仅当原装墨量或更换次数取不到数时兜底 |
+| `设备状态` / `打印机状态` / `错误状态` | 头部状态与状态区 |
+| `…打印页数 / 复印页数 / 扫描页数 / 传真页数 / 卡纸次数` | 统计选项卡的页数分组 |
+| `补齐历史用量` / `重新加载用量数据`（**button 域**） | 数据维护按钮（点击需二次确认，走统一动作系统 `button.press`） |
+
+> 认实体用的是**名称关键字**而不是硬编码 entity_id —— 设备名或实体前缀不同也能用。
+> 旧配置（`entity` 直接填 `sensor.hp_printer_yong_liang_tong_ji`）仍然可用：没有 `entities` 属性时自动走 legacy 路径。
+
+**关于 `daylist` / `monthlist` 的重复条目**：集成实际输出里，**同一个日期（同一个月）会出现两条记录**。
+卡片在数据层做合并（`_printerMergeByKey`）：按 `day` / `month` 归并，**逐字段取最大值**，不丢弃字段也不重复计数。
+- 两条值相同 → 结果不变：10 月去重后 `print 47` 与 `monthlist` 的 `47` 完全对得上；
+- 两条各只有部分字段 → 两个字段都会保留（不丢数据）；
+- 不能累加（两条相同时会把 10 月算成 94）。
+- 日历保留**所有日期**（0 值日期也在网格里，只是没有数量角标）；头部月合计优先取 `monthlist`
+  （它有 `daylist` 未覆盖的更早月份，如 7/8 月），没有对应月份时才用逐日求和。
 
 #### 配置字段
 
 | 字段 | 必填 | 类型 | 说明 |
 |------|:----:|------|------|
-| `name` | 否 | `string` | 弹窗标题（显示在顶部） |
-| `entity` | 否 | `string` | 打印机用量统计实体 ID，默认 `sensor.hp_printer_yong_liang_tong_ji` |
+| `name` | 否 | `string` | 标题（默认 `HP Printer`） |
+| `entity` | 否 | `string` | 「全部实体」聚合实体，默认 `sensor.hp_printer_quan_bu_shi_ti`；兼容填用量统计实体 |
 | `width` | 否 | `string` | `card` 动作下弹窗宽度（默认 `560px`），`popup_card` 下用 `tap_action.width` |
 | `popup_position` | 否 | `string` | 弹窗位置（默认 `center`），`popup_card` 下用 `tap_action.popup_position` |
+| `today_print` | 否 | `string` | 今日作业记录实体；新版会自动认出，一般不用配 |
+| `colors` | 否 | `object` | 各类型颜色（见下），**一处配置全局生效** |
+| `api_base_url` | 否 | `string` | 历史明细 / 逐日补数接口前缀；不配则只能看实体本地保留期内的数据 |
+| `key` | 否 | `string` | 上述接口的鉴权 key（与 `api_base_url` 成对出现） |
+
+**`colors`（类型颜色，可选）**：图标色、日历热力图底色/角标/今日描边、头部合计胶囊、
+累计总量小卡、月度折线图、墨盒环形图、明细气泡色点，**全部取自这一份配置**，改一处必然同步。
+
+```yaml
+card:
+  type: printer
+  colors:
+    print: '#fb8c00'        # 打印（默认）
+    scan: '#8e24aa'         # 扫描（默认）
+    copy: '#00897b'         # 复印（默认）
+    fax: '#78909c'          # 传真（默认）
+    jam_printer: '#e53935'  # 卡纸（默认）
+    all: '#fb8c00'          # 日历「全部」筛选的综合色
+```
+
+> 颜色可写 hex、`rgb()`、`hsl()` 或 `var(--xxx)`；热力图的浅色底由类型色自动混算。
+> 取值优先级：按钮 `card` 配置 → 本次弹窗缓存 → 整卡配置。
 
 #### 卡片布局
 
 ```
-┌─────────────────────────────┐
-│ 🖨  HP Printer 用量统计      │  ← 标题 + 最新日期
-│    HP Printer · 最近更新 xx  │
-├─────────────────────────────┤
-│ 墨量概览                     │  ← 区块标题（带分割线）
-│ [█ 黑色 0%  已换5次·累计198] │  ← 墨盒卡（≤20% 标红）
-│ [█ 青色 17% 已换7次·累计408] │
-│ [█ 品红 7% ...]  [█ 黄色 7%] │
-├─────────────────────────────┤
-│ 今日用量 · 2026-08-05        │
-│ [🖨 3] [⇄ 0] [⧉ 0] [🖯 0] [⚠ 0]│
-├─────────────────────────────┤
-│ 月度统计                     │
-│ 月份     打印  扫描  复印 ... │
-├─────────────────────────────┤
-│ 累计总量                     │
-│ [8758] [1015] [154] [0] [67] │
-├─────────────────────────────┤
-│ 近日记录                     │
-│ 日期     打印  扫描  复印 ... │  ← 日期列自适应宽度，0 值留空
-└─────────────────────────────┘
+┌──────────────────────────────────────────┐
+│ 🖨 HP 7730            [打印][耗材]…      │  ← 标题 + 状态副标题 + 4 个选项卡
+│    在线 · 空闲                            │
+├──────────────────────────────────────────┤
+│ 设备状态                                  │
+│ [● 设备 在线][● 打印机 空闲][● 错误 无]   │
+│ 今日用量 · 2026-10-21                     │
+│ [🖨 打印] [⇄ 扫描] [⧉ 复印] [🖯 传真] [⚠ 卡纸] │  ← 图标+名称一行，数值下一行
+│    12        3        1        0        0 │
+│ 月度统计（表格，点月份看折线图）           │
+│ 累计总量                                  │
+│ [累计打印 9970][累计扫描 1119]…           │  ← 每格用该类型自己的颜色
+│ 近日记录                      [全部 ▾]    │  ← 下拉：全部/打印/扫描/复印/传真/卡纸
+│ ‹ 2026年10月 ›                 打印 20    │  ← 合计胶囊同色跟随筛选类型
+│ 一 二 三 四 五 六 日                      │
+│ ▢ ▢ ① … ⑳ 8 ㉑ 12 …                      │  ← 日期=实心圆徽章；数量=彩色角标
+│                          少 ▢▢▢▢▢ 多      │  ← 热力图图例
+│ 数据维护                                  │
+│ [补齐历史用量] [重新加载用量数据]          │  ← 点击弹确认框
+├──────────────────────────────────────────┤
+│ 耗材：墨量概览（4 色墨盒卡，点开墨量曲线） │
+│       墨盒详情（每色两行卡 + 环形图）      │
+├──────────────────────────────────────────┤
+│ 统计：打印 / 复印 / 扫描 / 传真 / 异常 分组格子│
+├──────────────────────────────────────────┤
+│ 事件：事件日志（时间/描述/次数/页数）+ 今日卡纸│
+└──────────────────────────────────────────┘
 ```
 
 #### 交互说明
 
-- **墨量概览**：显示 4 色墨盒的剩余百分比（带进度条）、替换次数和累计使用量，剩余 ≤20% 时百分比标红
-- **今日用量**：显示最新日期当天的打印/扫描/复印/传真/卡纸五项指标
-- **月度统计 / 近日记录**：表格展示，日期/月份列按内容自适应宽度，数值为 0 的格子留空不显示
-- **累计总量**：打印机累计打印/扫描/复印/传真/卡纸总数
+- **设备状态**：三块（设备 / 打印机 / 错误），带状态色点。**设备只显示「在线 / 离线」**（"运行中"→ 在线，`离线/offline/unavailable/unknown` → 离线）。
+  **错误**：空错误码一律显示「无」（绿点）——`错误()`、`错误(0)`、`错误（）`、`错误( 0 )`、`错误(０)`、`Error()` 都算；
+  `错误(12)`、`错误（缺纸）` 这类有内容的仍原样显示（红点）。
+  每块还带 `data-raw-state` 属性，悬停 `title` 与属性里都是**集成原始值**，便于排查。
+- **选项卡**：打印 / 耗材 / 统计 / 事件，页签在标题行右侧；支持左右滑动切换，颜色为**橙色**（可用 `accent` 覆盖）
+- **高度**：以第一个选项卡「打印」为准锁定（`basis:'first', fit:'exact'`），切页不跳高度，超出内容页内滚动；头部吸顶 + 滚动羽化
+- **今日用量**：5 张卡，「图标 + 名称」同一行、数值另起一行居中；图标色与日历热力色同源。
+  配置了今日作业记录实体后，点击卡片弹该类别当日**逐条明细**（时间 / 张数 / 时长）
+- **累计总量**：5 张卡（累计打印 / 扫描 / 复印 / 传真 / 卡纸），每张用该类型自己的颜色（淡底 + 同色字）
+- **近日记录（日历）**：
+  - 月视图，周一为第一天；**热力图**按当天数值分 5 档着色（当月该类型单日最大值为基准），今日加同色描边；
+  - 日期是**实心圆徽章**、数量是**彩色角标**（带白描边），二者形状不同便于区分；
+  - 标题行右端下拉可筛「全部 / 打印 / 扫描 / 复印 / 传真 / 卡纸」，日历头部**合计胶囊**的文字与底色跟随当前类型；
+  - 日历下方有 `少 ▢▢▢▢▢ 多` 热力图图例；`‹ ›` 翻月，翻到缺数据的月份时按需向后端补数（见下）；
+  - **点击有记录的日子**：优先直接用「用量统计」实体的 `daylist` 汇总（**不发请求**），
+    今日且配了今日作业记录实体时改用逐条明细；只有 `daylist` 覆盖不到的日期才走 `printer_detail` 接口
+- **月度统计**：表格点某个月份 → 该月每日各类型折线图（x 轴刻度自适应，不再重叠）
+- **墨盒卡**：剩余 ≤20% 标红，点击弹该墨盒的历史墨量曲线（来自 `daylist` 的 `ink_*`；x 轴刻度自适应）
+- **墨盒详情**：每色一张两行小卡 —— 第一行「色点 + 颜色名 + 状态徽章」，第二行「更换 / 原装墨量 / 累计用墨 / 序列号」
+- **各色累计用墨占比（环形图）**：墨盒详情下方；右侧竖排图例（带数值）、环心显示合计、
+  外部拉线标签显示占比；扇形颜色与墨盒色点一致
+- **数据维护**：聚合清单里的两个 **`button` 域**实体 ——「补齐历史用量」「重新加载用量数据」，
+  位于「打印」页日历下方。点击先弹**确认对话框**（补齐/重载各带一句说明），
+  确认后通过**统一动作系统**执行（`call-service: button.press`），成功后右下角 toast 提示。
+  按钮只认 `button.` 前缀，关键字误命中 sensor 时不会凭空生成按钮；legacy 模式（只配用量统计实体）没有这段。
+- **事件日志**：最多渲染 120 条，最新在上
 
-> **依赖说明**：打印机卡片数据来源于打印机用量统计实体（`sensor.hp_printer_yong_liang_tong_ji`），需安装对应打印机状态统计集成生成该实体。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
+#### 数据与单位约定
+
+- **累计用墨 = 更换次数 × 每盒原装墨量**（例：6 次 × 217ml = 1302ml）。
+  集成自带的「累计用墨量」实体实测等于单盒容量（没乘次数），只在原装墨量 / 更换次数取不到数时兜底。
+- **单位动态**：单位优先取实体自己的 `unit_of_measurement`（`ml` / `L` / 页…），缺失才回退 `ml`（更换次数回退 `次`）。
+- **容量进位**：≥1000ml 自动显示为 L 并保留两位小数（`1302ml` → `1.30L`）；未到 1000 仍是整数（`217.0ml` → `217ml`）。
+- **`daylist` / `monthlist` 去重**：集成每次写两条相同记录，卡片按 `day` / `month` 归并、**逐字段取最大值**（不累加、不丢字段）。
+- **历史补数**：配了 `api_base_url` + `key` 时，日历翻到 `daylist` 未覆盖的月份会自动按天补齐（每月份只试一次）；
+  没配接口时只显示 `monthlist` 的月汇总，并在日历下方给一行说明。
+
+> **依赖说明**：需要生成「全部实体」聚合实体（`sensor.hp_printer_quan_bu_shi_ti`）的打印机集成。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
 
 ---
 
-### 6.37 飞牛 NAS 管理卡片 (type: fnnas)
+### 6.37 飞牛 fnOS 全实体卡片 (type: fnos)
 
-飞牛 NAS 管理卡片用于展示飞牛 NAS 系统信息，并支持系统电源管理、Docker 容器管理、虚拟机管理。数据来源于 [fn_nas 集成](Y:\custom_components\fn_nas) 生成的传感器 / 开关 / 按钮实体。
+飞牛 fnOS 全实体卡片以**单个聚合实体**驱动整台飞牛的面板：只读 `sensor.fnos_all_entities` 的 `attributes.groups[]`（整机 + 全部 Docker 容器 + 全部虚拟机 + 文件 / 相册 / 影视的实体目录），**卡片不写死任何实体 id**，集成侧新增容器 / 虚拟机 / 应用时卡片无需改一行配置。
 
-点击按钮弹出飞牛 NAS 管理面板，支持通过 `popup_card` 或 `card` 动作打开。
+卡片最多只配置一个实体（`entity`）；不配置时自动使用内置的 `sensor.fnos_all_entities` 兜底（HA 里 id 被占号生成 `_2` 后缀也能识别）。
 
-卡片从上到下分为 **6 个区域**：
+> 本卡（`fnos`）以聚合实体驱动：只依赖下面这套实体目录，不需要逐个填写 sensor / switch / button 的实体 id（旧的 `fnnas` 卡片已移除）。
 
-| 区域 | 内容 |
+#### 依赖集成
+
+| 项 | 说明 |
 |------|------|
-| 1. 卡片标题 | 名称 + 分割线 |
-| 2. 系统信息 | 内存总大小/已使用、系统运行时长、主板温度、CPU 温度 |
-| 3. 硬盘信息 | 各磁盘状态（型号 + 状态/温度 + 健康状态，`disk_1`、`disk_2`...） |
-| 4. 系统管理 | 电源管理（关机/开机）、重启主机 |
-| 5. Docker 管理 | 容器列表，支持启动/停止/重启 + 状态显示 |
-| 6. 虚拟机管理 | 虚拟机列表，支持启动/停止/重启 + 状态显示 |
+| 集成 | **飞牛 fnOS 集成（fnos）** |
+| 集成地址 | https://github.com/chjspp520/fnos |
+| 必需实体 | `sensor.fnos_all_entities`（聚合实体，`attributes.groups[]` 即整机实体目录） |
+| 其余实体 | 各组内的 `sensor` / `binary_sensor` / `switch` / `button`（由集成自动生成，卡片按分组与名称自动识别，无需配置） |
 
 #### 配置示例
 
 ```yaml
-  - entity: input_boolean.fn_nas
+# ① 常规：popup_card（点击按钮在房间卡片内弹出）
+  - entity: input_boolean.fei_niu
     type: sensor
-    name: 飞牛NAS
+    name: 飞牛
     icon: mdi:nas
     tap_action:
-      action: popup_card                 # 或 action: card（走独立弹窗）
-      width: 480px
+      action: popup_card
       card:
-        type: fnnas
-        name: 飞牛 NAS
-        system:
-          # --- 系统信息 ---
-          system_status: sensor.fei_niu_nasxi_tong_jian_kong_xi_tong_zhuang_tai      # 系统状态（含运行时长属性）
-          memory_available: sensor.fei_niu_nasxi_tong_jian_kong_ke_yong_nei_cun      # 内存（含总内存/已用内存属性）
-          cpu_temp: sensor.fei_niu_nasxi_tong_jian_kong_cpuwen_du                    # CPU 温度（可选）
-          motherboard_temp: sensor.fei_niu_nasxi_tong_jian_kong_zhu_ban_wen_du       # 主板温度（可选）
-        control:
-          # --- 系统管理 ---
-          power: switch.fei_niu_nasxi_tong_dian_yuan                                 # 电源开关
-          reboot: button.fei_niu_nasxi_tong_zhong_qi                                 # 重启主机按钮
-        disk:
-          # --- 硬盘信息（按分组显示，每组可多个磁盘 disk_1/disk_2...） ---
-          - name: 系统
-            disk_1: sensor.colorful_sl500_2tb_ying_pan_..._zhuang_tai
-          - name: 存储
-            disk_1: sensor.wdc_wd40efrx_68n32n0_ying_pan_..._zhuang_tai
-            disk_2: sensor.wdc_wd40efrx_68n32n0_ying_pan_..._zhuang_tai
-        # --- Docker 管理（显式配置每个容器） ---
-        docker:
-          - name: XiaomiMusic
-            status: sensor.xiaomusic_zhuang_tai
-            switch: switch.xiaomusic_rong_qi
-            restart: button.xiaomusic_zhong_qi
-          - name: go2rtc
-            status: sensor.go2rtc_zhuang_tai
-            switch: switch.go2rtc_rong_qi
-            restart: button.go2rtc_zhong_qi
-        # --- 虚拟机管理（显式配置每台虚拟机） ---
-        vm:
-          - name: Windows 7
-            status: sensor.windows_7_zhuang_tai
-            switch: switch.windows_7_dian_yuan
-            restart: button.windows_7_zhong_qi
-          - name: Ubuntu
-            status: sensor.ubuntu_zhuang_tai
-            switch: switch.ubuntu_dian_yuan
-            restart: button.ubuntu_zhong_qi
+        type: fnos
+        # entity: sensor.fnos_all_entities   # 可选，不配就用它兜底
+        name: 飞牛 fnOS                       # 可选，标题（默认「飞牛 fnOS」）
+        icon: mdi:nas                         # 可选，标题图标
+        accent: "#26a69a"                     # 可选，主色
+        popup_width: 900px                    # 可选，弹窗宽度（兼容 width）
+        popup_position: center                # 可选，弹窗位置
+        confirm_power: true                   # 可选，重启/关机是否二次确认（默认 true）
+
+# ② action: card（独立弹窗）
+    tap_action:
+      action: card
+      card:
+        type: fnos
+
+# ③ 独立常显（standalone_type）
+type: custom:room-elves-card
+standalone_type: fnos
+# entity: sensor.fnos_all_entities
 ```
 
 #### 配置字段
 
-**顶层：**
-
 | 字段 | 必填 | 类型 | 说明 |
 |------|:----:|------|------|
-| `name` | 否 | `string` | 卡片标题（默认 `飞牛 NAS`） |
-| `system` | 否 | `object` | 系统信息配置块（见下表） |
-| `control` | 否 | `object` | 系统管理配置块（`power` / `reboot`） |
-| `disk` | 否 | `array` | 硬盘分组数组，每项 `{ name, disk_1, disk_2... }` |
-| `docker` | 否 | `array` | Docker 容器数组，每项 `{ name, status, switch, restart }` |
-| `vm` | 否 | `array` | 虚拟机数组，每项 `{ name, status, switch, restart }` |
+| `entity` | 否 | `string` | 聚合实体 ID，默认 `sensor.fnos_all_entities`（被占号时自动识别 `_2` 后缀） |
+| `name` | 否 | `string` | 卡片标题（默认 `飞牛 fnOS`） |
+| `icon` | 否 | `string` | 标题图标（默认取聚合实体 icon，兜底 `mdi:nas`） |
+| `accent` | 否 | `string` | 主色，写入本卡根元素的 `--re-accent*`，不影响全局。**默认琥珀橙 `#f59e0b`**（蓝 / 绿 / 紫 / 红已被其它卡片占用，飞牛用橙系区分） |
+| `popup_width` / `width` | 否 | `string` | 弹窗宽度（默认 `900px`，最大 `94vw`） |
+| `popup_position` | 否 | `string` | 弹窗位置（默认 `center`） |
+| `confirm_power` | 否 | `boolean` | 重启 / 关机 / 强制关机等危险按钮是否二次确认（默认 `true`） |
 
-**`system` 配置块：**
+#### 卡片结构
 
-| 字段 | 必填 | 类型 | 说明 |
-|------|:----:|------|------|
-| `system_status` | 否 | `string` | 系统状态传感器，读取 `运行时间` 属性 |
-| `memory_available` | 否 | `string` | 可用内存传感器，读取 `总内存 (GB)`、`已用内存 (GB)` 属性 |
-| `cpu_temp` | 否 | `string` | CPU 温度传感器 |
-| `motherboard_temp` | 否 | `string` | 主板温度传感器 |
+头部：图标 + 标题 + 副标题（**只显示 CPU 占用率**，如 `CPU 15%`）。选项卡按聚合实体里**真实存在的分组**动态生成 —— 没有 Docker 分组就不出现「Docker」页，没有虚拟机分组就不出现「虚拟机」页。
 
-**`control` 配置块：**
+页内每个**区域（区块）都是常显的**：标题行没有折叠箭头、点击也不会折叠，所有内容一次性建好并参与 3 秒值级刷新（不会出现"折叠着就看不到实时值"的情况）。
 
-| 字段 | 必填 | 类型 | 说明 |
-|------|:----:|------|------|
-| `power` | 否 | `string` | 电源开关（`switch.xxx_power`） |
-| `reboot` | 否 | `string` | 重启主机按钮（`button.xxx_reboot`） |
-
-**`disk` 数组每项（硬盘分组）：**
-
-| 字段 | 必填 | 类型 | 说明 |
-|------|:----:|------|------|
-| `name` | 否 | `string` | 分组名（如 `系统` / `存储`，显示为组标签） |
-| `disk_1` / `disk_2` ... | 否 | `string` | 该组磁盘传感器，可多个（`disk_1`、`disk_2`...），可为状态或温度传感器 |
-
-**`docker` / `vm` 数组每项：**
-
-| 字段 | 必填 | 类型 | 说明 |
-|------|:----:|------|------|
-| `name` | 是 | `string` | 容器/虚拟机名称（显示在行内） |
-| `status` | 否 | `string` | 状态传感器实体 ID |
-| `switch` | 否 | `string` | 启动/停止开关实体 ID |
-| `restart` | 否 | `string` | 重启按钮实体 ID |
-
-> **向后兼容**：旧的扁平写法（`power_switch`/`reboot_button`、`system` 内 `disk_N`、`docker_status_prefix` + `docker_containers` 等）仍可使用，但推荐使用上面的 `system` / `control` / `disk` / `docker` / `vm` 嵌套结构。
-
-#### 磁盘说明
-
-磁盘通过 `disk` 数组分组配置，支持多组（如 系统 / 存储），每组内可多个磁盘（`disk_1`、`disk_2`...）。磁盘可为**状态传感器**或**温度传感器**：
-
-- **状态传感器**：`state` 为 `空闲中` / `活动中`，`attributes` 含 `硬盘型号`、`健康状态`（良好/异常）、`状态`、`总容量`、`序列号`、`通电时间` 等
-- **温度传感器**：`state` 为温度数值，`attributes` 含 `健康状态`
-
-**显示样式**：硬盘信息区域采用与 NAS 卡片一致的**拟物硬盘槽位**风格（金属拉丝纹理 + LED 状态灯 + 图标 + 容量），所有磁盘在**同一横向槽位行**排列（过多时自动换行），槽位顶部显示所属分组名（如 `系统` / `存储`）。健康状态正常显示绿色呼吸灯、异常显示红色闪烁灯。
+| 选项卡 | 内容 |
+|------|------|
+| 主机 | **概览仪表**：CPU / 内存 / GPU 三个圆环（纯 SVG 百分比弧 + 中心大数字，≥80% 转深橙、≥90% 转红；**内存环下方另写「已用 / 总量」**，**点环弹出历史曲线气泡**：6 小时 / 24 小时 / 7 天三档切换 + 最低 / 平均 / 最高统计 + 首末时间轴，气泡内「查看全部属性」可跳到属性面板）；**网络与磁盘**：下载 · 上传、磁盘读 · 写各一张**双线迷你面积曲线**（卡片内每 2.5 秒采样、40 点滚动 ≈ 2 分钟，顶部留白自动缩放）；**系统信息**：版本 / 更新 / 网卡 / 硬盘 / 登录设备 / 未读通知 + Docker·虚拟机·证书·域名·FN Connect 胶囊（右上「硬件」按钮看硬件属性）；**存储概况**：使用率进度条 + 总 / 已用 / 可用 / 异常硬盘；**服务开关**：远程控制 / SSH / SMB / NFS / FTP / WebDAV / DLNA / 防火墙；**系统操作**：重启 / 关机 / 打开面板 |
+| 存储 | **存储池**：名称 + 状态胶囊 + 使用率进度条 + 类型·磁盘数·挂载点 + 已用 / 可用 / 总容量；**硬盘**：设备 + 容量标签 + 系统盘徽标 + 型号·类型·温度·存储池 + 健康状态胶囊 |
+| Docker | 顶部「运行中 / 总数」计数；每个容器一行：状态点 + 名称 + 状态徽标（运行中 / 已退出 / 异常…）+ CPU·内存 + 重启按钮 + 电源开关 |
+| 虚拟机 | 每台一张卡：状态点 + 名称 + 电源状态 + 电源开关；资源胶囊（IP / vCPU / 内存 / 磁盘）；系统 / MAC 标签；重启 / 强制关机 / 打开远程 |
+| 应用 | **文件**（最近 / 收藏 / 回收站 / 分享链接数 + 打开应用）、**相册**（可用状态 / 最近添加 / 打开）、**影视**（可用状态 / 打开） |
 
 #### 交互说明
 
-- **系统信息**：内存显示"已用/总 GB"，温度自动补 `°C` 单位
-- **硬盘信息**：拟物硬盘槽位，显示分组名 + 图标 + 型号 + 容量 + LED 状态灯；**点击槽位弹出硬盘详情气泡**（型号、序列号、容量、健康状态、通电时间、温度等）
-- **系统管理**：电源开关点击直接切换；重启主机点击弹出确认对话框
-- **Docker / 虚拟机**：每行显示名称 + 运行状态徽标 + 启动/停止/重启按钮；重启操作弹出确认对话框
-- 容器/虚拟机的状态根据其状态实体判断：`on`/`运行中`/`running` 视为运行中
+- **开关**：点击即启停（`switch.turn_on` / `switch.turn_off`）；实体为 `unknown` / `unavailable` 时开关置灰且不可点
+- **按钮**：重启 / 关机 / 强制关机 / 容器重启等先二次确认（`confirm_power: false` 可关闭确认），执行后立即刷新并延时补刷两次
+- **历史曲线气泡**：点击 CPU / 内存 / GPU 三个圆环，弹出该实体的历史曲线 —— 顶栏是实时值，下面是 `6 小时 / 24 小时 / 7 天` 三档范围胶囊（切换即重新取数）、最低 / 平均 / 最高统计、SVG 曲线（网格 + 面积 + 折线 + 末端圆点 + 首末时间轴），数据走宿主统一的 `getHistory`；没有历史数据时给明确提示。气泡内「查看全部属性」可跳到属性面板
+- **属性气泡**：点击指标格、容器行、硬盘行、虚拟机卡，弹出该实体的实时值 + 全部属性（对象 / 数组自动分层，数组最多列 30 行）；气泡内的开关 / 按钮可直接操作
+- **打开远程**：应用行与「打开面板」使用实体 `attributes.url` 的签名地址（24h 有效），取不到时给出提示
+- **进度条 / 圆环配色**：常态跟随主色（琥珀橙），使用率 ≥80% 转深橙、≥90% 转红
+- **迷你曲线**：网络 / 磁盘各一条双线面积图，数据是卡片自己按 2.5 秒节流采样（hass 推送再频繁也不会把时间轴压缩），最多 40 点、纯 SVG 绘制，不加载 ECharts
 
-> **依赖说明**：飞牛 NAS 卡片数据来源于 [fn_nas 集成](Y:\custom_components\fn_nas)。使用前需先安装并配置 fn_nas 集成生成对应实体。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
+#### 数据口径与刷新
+
+- 聚合实体只当**实体目录**用；实时值一律回 `hass.states` 现读，所以点开关后界面立即跟随，不用等聚合实体下一次合并刷新
+- 结构签名（有哪些实体 / 属于哪一组 / 存储池与硬盘清单）变化才整卡重建；值变化走 **3 秒值级刷新**，只写发生变化的文本 / 宽度 / 类名（脏检查）
+- 页面不可见时跳过刷新，卡片脱离 DOM 自动停表；独立模式下不依赖外部 1 秒轮询（`standalonePoll: false`），高度由内容决定（`height: auto`）
+
+> **依赖说明**：数据来源于 [飞牛 fnOS 集成](https://github.com/chjspp520/fnos)，使用前需先安装并配置该集成，由它生成聚合实体 `sensor.fnos_all_entities` 及其分组实体。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css` 的 `.fnos-card-*` 段。
 
 ---
 
@@ -10623,8 +10777,8 @@ tap_action:
 | `button_group` | 按钮组（选项卡样式聚合小按钮） | `buttons`、`direction`、`on_color`、`off_color`、`show_name` |
 | `action` | 快捷操作（点击弹出情景模式气泡） | `name`、`icon`、`scenes`、`scene_mode` |
 | `water_temp` | 水温可视化卡片 | `entity`、`min_temp`、`max_temp`、`width`、`height` |
-| `printer` | 打印机用量统计卡片 | `entity`、`name` |
-| `fnnas` | 飞牛 NAS 管理卡片 | `name`、`system_status`、`power_switch`、`docker_containers`、`vms` |
+| `printer` | 打印机用量统计卡片（日历热力图 / 墨盒详情 / 用墨占比环形图） | `entity`、`name`、`colors`、`api_base_url`、`key`、`today_print` |
+| `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用） | `entity`、`name`、`icon`、`accent`、`popup_width`、`popup_position`、`confirm_power` |
 | `daily_report` | 今日家庭日报卡片 | `entity`、`refresh`、`hide_room`、`env_from_config_id`、`width` |
 | `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`、`hosts`、`vms`、`exclude`、`default_vm`、`show_screen`、`show_refresh`、`show_sync`、`confirm_power_off`、`width` |
 | `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`、`key`、`name`、`icon`、`subtitle`、`accent`、`page_size`、`recent_days`、`source`、`direction` |
@@ -12361,8 +12515,8 @@ tabs:
 | `usage` | 使用量统计 | `entity`, `name` |
 | `weather` | 天气预报 | `weather`（多地区数组）, `height`, `compact` |
 | `nas` | NAS 服务器状态卡片 | `power_switch`, `storage_summary`, `array_01`, `array_02` |
-| `printer` | 打印机用量统计卡片 | `entity`, `name` |
-| `fnnas` | 飞牛 NAS 管理卡片 | `name`, `system_status`, `power_switch`, `docker_containers`, `vms` |
+| `printer` | 打印机用量统计卡片（日历热力图 / 墨盒详情 / 用墨占比环形图） | `entity`, `name`, `colors`, `api_base_url`, `key`, `today_print` |
+| `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用） | `entity`, `name`, `icon`, `accent`, `popup_width`, `popup_position`, `confirm_power` |
 | `daily_report` | 今日家庭日报卡片 | `entity`, `refresh`, `hide_room`, `env_from_config_id`, `width` |
 | `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`, `hosts`, `vms`, `exclude`, `default_vm`, `show_screen`, `show_refresh`, `show_sync`, `confirm_power_off`, `width` |
 | `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`, `key`, `name`, `icon`, `subtitle`, `accent`, `page_size`, `recent_days`, `source`, `direction` |
@@ -13594,7 +13748,7 @@ room-elves-card/releases  1 次 · 平均 1161ms · 最大 1161ms
 
 用 `PerformanceObserver` 旁路采集**所有** fetch / xhr（零侵入，不改任何一处 `fetch()` 调用），归类键取 URL 末两段路径（去掉 query，使不同参数归为一类）。
 
-- **次数高**的接口，说明有轮询在打它（ikuai-card 3s / fnnas 3s / 使用量日历 10s 都是自管轮询）
+- **次数高**的接口，说明有轮询在打它（ikuai-card 3s / fnos 3s / 使用量日历 10s 都是自管轮询）
 - **耗时长**的接口（如 800ms+ 的版本检查）会拖慢启动
 - **失败请求**（HTTP ≥ 400）会单独标出
 - 这里也会包含 HA 自身的请求（如语言包、`ha_data_store`），属预期 —— 它是"整个页面的网络活动"
@@ -13959,5 +14113,6 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 ## 二十八、后记
 
-Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 15 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+
 
