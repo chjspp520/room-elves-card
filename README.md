@@ -3,7 +3,7 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.6.0及其以前的版本)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.8.0及其以前的版本)
 
 # Room Elves Card - 房间精灵卡片 完整使用说明
 
@@ -13,7 +13,7 @@
 
 **Room Elves Card**（房间精灵卡片）是一款功能极为强大的 Home Assistant 自定义卡片，旨在将一个房间（或全屋）的所有设备状态与控制能力集中到一张卡片中，实现"一卡掌控全家"的智能家居体验。
 
-> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai)、[飞牛 fnOS 集成](https://github.com/chjspp520/fnos) 均由 **chjspp520** 制作维护。
+> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai)、[飞牛 fnOS 集成](https://github.com/chjspp520/fnos)、[NPS 集成](https://github.com/chjspp520/nps) 均由 **chjspp520** 制作维护。
 >
 > **免责声明**：作者仅提供软件功能，不对数据泄露提供安全保障。数据安全由用户自行负责，使用本软件即代表接受本条款（适用法律以所在地为准）。
 
@@ -29,13 +29,14 @@
 - **左右滑动（全场景统一）**：弹窗选项卡、头部多页按钮、各卡片自己的分页（多房间 / 多用户 / 多档位 / 多数据集）都支持左右滑动，手感一致；纵向滚动仍归浏览器，起点落在按钮 / 输入框 / 日期导航上不算翻页，页面里的横向滚动区会主动让路；只有一页时不启用；**无需任何配置**（详见「八-A、左右滑动」）
 - **程序扩展坞（Dock）**：从屏幕右侧滑入的快捷启动栏，支持头部模式全部按钮类型和动作系统，点击触发按钮展开/收起
 - **独立卡片模式（Standalone）**：将单个设备控制面板直接作为一张卡片使用，支持空调、窗帘、媒体、晾衣架、图表等 20+ 种独立卡片类型
-- **三张卡片已从"外置独立卡片"并入内建（内部子卡片）**：**温湿度面板**（`wenshidu`）、**设备回放**（`replay`）、**定时精灵**（`timer`）原先各自是**在本卡片之外单独安装的独立卡片**（`wenshidu-card.js` / `device-replay-card.js` / `timer-control-card.js`），现已**整体并入房间精灵卡片**，成为它的**内部子卡片** —— 独立 custom element 已退役（不再单独注册），改由本卡片以 `standalone_type: wenshidu / replay / timer` 直接内置渲染，也能作为 `type: wenshidu / replay / timer` 按钮嵌进按钮网格；配置写法见 6.42 / 6.40 / 6.41，实现位于 `modules/cards/wenshidu.js` / `device-replay.js` / `timer-control.js`（引擎内封在各自 Element 里，只对卡片原型暴露少数方法）
+- **三张卡片已从"外置独立卡片"并入内建（内部子卡片）**：**温湿度面板**（`wenshidu`）、**设备回放**（`replay`）、**定时精灵**（`timer`）原先各自是**在本卡片之外单独安装的独立卡片**（`wenshidu-card.js` / `device-replay-card.js` / `timer-control-card.js`），现已**整体并入房间精灵卡片**，成为它的**内部子卡片** —— 独立 custom element 已退役（不再单独注册），改由本卡片以 `standalone_type: wenshidu / replay / timer` 直接内置渲染，也能作为 `type: wenshidu / replay / timer` 按钮嵌进按钮网格；配置写法见 6.41 / 6.39 / 6.40，实现位于 `modules/cards/wenshidu.js` / `device-replay.js` / `timer-control.js`（引擎内封在各自 Element 里，只对卡片原型暴露少数方法）
 - **多页模式（头部模式）**：用 `buttons_2` / `buttons_3` … 把按钮分到多页，**左右滑动切换页面**（跟手拖动 + 松手吸附 + 圆点高亮跟手），底部圆点指示当前页；桌面端也可用滚轮翻页
-- **图表卡片系统**：内置 10 种图表类型——仪表图（纯 SVG）、进度条（纯 CSS）、柱状图（纯 CSS）、曲线图/环形图/饼图/南丁格尔玫瑰图/热力图/日历图/混合图表（ECharts），以及插座功率流向桑基图
-- **飞牛 fnOS 全实体卡片（`fnos`）**：把一台飞牛 NAS **整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.fnos_all_entities`，不配也用它兜底）就自动认设备与角色（**不写死任何实体 id**），顶层五个页签（主机 / 存储 / Docker / 虚拟机 / 应用）：主机含指标格、网络与磁盘 IO、系统信息、存储概况、服务开关与重启 / 关机；存储页列出存储池与硬盘；Docker 页一行一个容器（启停 / 重启）；虚拟机页含电源 / 重启 / 强制关机 / 打开远程；应用页汇总文件·相册·影视。依赖 [fnos 集成](https://github.com/chjspp520/fnos)，配置见 6.37
-- **个人账单卡片（`bill`）**：把 ha_data_store 的账单数据画成一张卡——概览（环形图 + 来源占比条 + 年度 / 月度收支 + 最近 N 日）、分析（四张环形图 + 月度趋势 + 支付时刻 + 对方排行）、日历（格子分两行写"收 / 支" + 年月选择）、查询（条件可折叠 + 汇总（合计行"有哪个显示哪个"，不计收支也摆得出来）+ 排序条 + 涉及年筛选）、历史（历史今日 / 历史本月）**五个选项卡**，并支持在**一个窗口里一路下钻**（年 → 月 → 日 → 时 → 那一个小时的账单）；明细行的字段还能直接点着去查询。配置见 6.45
-- **iKuai 全实体卡片（`ikuai_card`）**：把一台爱快路由器**整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.ikuai_all_entities`）就自动认设备与角色（**不写死任何实体 id**），顶层四个页签（路由 / Docker / 虚拟机 / 日志），路由页再分六个子页签（网络 / 线路 / DHCP / 客户端 / 本地认证 / 设置）；虚拟机带远程控制台与画面预览。配置见 6.46
-- **叮咚门铃卡片（`dingdong`）**：只配一个「实体清单」实体，就把一台叮咚（移康 eques）门铃装进一张卡 —— 抓拍 / 实时 / 反转三态画面 + 按天回看的事件·抓拍·录像混合时间轴 + 跨天双向时间轴 + 设置 + 诊断；不写死实体 id（按「域 + 后缀」从清单反查角色）。依赖 `eques_dingdong` 集成，配置见 6.47
+- **图表卡片系统**：内置 10 种图表图形（注册 11 个 type，`chart` 与 `chart_line` 是同一实现的两个别名）——仪表图（纯 SVG）、进度条（纯 CSS）、柱状图（纯 CSS）、曲线图/环形图/饼图/南丁格尔玫瑰图/热力图/日历图/混合图表（ECharts）；另有插座功率流向桑基图，它是 `type: socket` 的 `shwo_sankey` 配置，不是独立图表类型
+- **飞牛 fnOS 全实体卡片（`fnos`）**：把一台飞牛 NAS **整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.fnos_all_entities`，不配也用它兜底）就自动认设备与角色（**不写死任何实体 id**），顶层五个页签（主机 / 存储 / Docker / 虚拟机 / 应用）：主机含指标格、网络与磁盘 IO、系统信息、存储概况、服务开关与重启 / 关机；存储页列出存储池与硬盘；Docker 页一行一个容器（启停 / 重启）；虚拟机页含电源 / 重启 / 强制关机 / 打开远程；应用页汇总文件·相册·影视。依赖 [fnos 集成](https://github.com/chjspp520/fnos)，配置见 6.36
+- **个人账单卡片（`bill`）**：把 ha_data_store 的账单数据画成一张卡——概览（环形图 + 来源占比条 + 年度 / 月度收支 + 最近 N 日）、分析（四张环形图 + 月度趋势 + 支付时刻 + 对方排行）、日历（格子分两行写"收 / 支" + 年月选择）、查询（条件可折叠 + 汇总（合计行"有哪个显示哪个"，不计收支也摆得出来）+ 排序条 + 涉及年筛选）、历史（历史今日 / 历史本月）**五个选项卡**，并支持在**一个窗口里一路下钻**（年 → 月 → 日 → 时 → 那一个小时的账单）；明细行的字段还能直接点着去查询。配置见 6.44
+- **iKuai 全实体卡片（`ikuai_card`）**：把一台爱快路由器**整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.ikuai_all_entities`）就自动认设备与角色（**不写死任何实体 id**），顶层四个页签（路由 / Docker / 虚拟机 / 日志），路由页再分六个子页签（网络 / 线路 / DHCP / 客户端 / 本地认证 / 设置）；虚拟机带远程控制台与画面预览。配置见 6.45
+- **叮咚门铃卡片（`dingdong`）**：只配一个「实体清单」实体，就把一台叮咚（移康 eques）门铃装进一张卡 —— 抓拍 / 实时 / 反转三态画面 + 按天回看的事件·抓拍·录像混合时间轴 + 跨天双向时间轴 + 设置 + 诊断；不写死实体 id（按「域 + 后缀」从清单反查角色）。依赖 `eques_dingdong` 集成，配置见 6.46
+- **NPS 隧道管理卡片（`nps`）**：只配一个「所有实体」聚合实体，就把一台 NPS 内网穿透服务端装进一张卡 —— 概览（实时速率 / 入出流量环 / 指标条 / **访问控制**：管理面板访问开关 + 密钥剩余时长 + 点开复制面板 URL）+ 隧道（备注 / 类型 / 端口 / 启停 / 编辑）+ 客户端（名称 / 脱敏 IP / 连接·断开 / 编辑）三个页签，还能**新增 / 编辑 / 删除**隧道与客户端（写入走集成的 `nps/action`，需管理员）；不写死实体 id（按 entity_id 后缀认角色）。依赖 [nps 集成](https://github.com/chjspp520/nps)，配置见 6.47
 - **平面户型图**：支持 JSON 坐标数据的平面户型图渲染，实时显示各房间人员占用状态，拖动时间轴可回溯历史活动
 - **人员/天气/导航**：用户卡片支持多人头像布局（当前登录用户大头像居中）、在/离家状态检测、实时定位、高德地图导航路线规划、多地区天气预报（支持和风天气 API 与 HA 实体双数据源）
 - **情景模式**：一键执行预定义操作列表，支持气泡选择/直接执行模式、延时执行、执行进度实时展示、状态验证、执行历史记录，服务调用自动推断（覆盖 light/climate/cover/fan/media_player/vacuum/lock/automation/script 等所有域）。还可作为统一卡片类型（`type: action`）或 `tap_action: quick-action` 在弹窗、title_entities 等任意位置使用
@@ -64,13 +65,14 @@
 
 以下是与本卡片配套使用的推荐卡片和依赖集成：
 
-> ⚠️ 下面列出的集成，**卡片本身不含数据采集，缺集成就没有数据**。其中 `ha_data_store` 属于**深度依赖集成**（历史 / 播放列表 / 健康数据等多处共用，**不专属某一张卡片**）；其余三个各对应一张卡片：
-> `esxi_control` → `esxi`（ESXi 虚拟化）· `ikuai` → `ikuai_card`（iKuai 全实体卡）· `fnos` → `fnos`（飞牛 fnOS 全实体卡）。
+> ⚠️ 下面列出的集成，**卡片本身不含数据采集，缺集成就没有数据**。其中 `ha_data_store` 属于**深度依赖集成**（历史 / 播放列表 / 健康数据等多处共用，**不专属某一张卡片**）；其余四个各对应一张卡片：
+> `esxi_control` → `esxi`（ESXi 虚拟化）· `ikuai` → `ikuai_card`（iKuai 全实体卡）· `fnos` → `fnos`（飞牛 fnOS 全实体卡）· `nps` → `nps`（NPS 隧道管理卡）。
 
-- **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成（不绑定单张卡片）**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等，多处功能共用，**建议优先安装配置**。它同时是 `type: bill` 个人账单卡片的必需集成（需 v5.0.0 及以上），见 6.45。
-- **ESXi Control** ([esxi_control](https://github.com/chjspp520/esxi_control)) — ⚠️ **`type: esxi` 卡片的必需集成**。为每台主机 / 虚拟机 / 数据存储 / 许可证建实体，并生成聚合实体 `sensor.esxi_all_entities`；**没装集成时 ESXi 卡片没有数据**（只显示提示），安装见 6.44。
-- **iKuai 集成** ([ikuai](https://github.com/chjspp520/ikuai)) — ⚠️ **`type: ikuai_card` 卡片的必需集成**。为整台爱快（系统 / 线路 / DHCP / 客户端 / Docker / 虚拟机 / 日志…）建实体，并生成聚合实体 `sensor.ikuai_all_entities`；**没装集成时爱快卡片没有数据**，安装见 6.46。注意**不是**旧的 `ikuai_router` 集成。
-- **飞牛 fnOS 集成** ([fnos](https://github.com/chjspp520/fnos)) — ⚠️ **`type: fnos` 卡片的必需集成**。为整台飞牛（主机 / 存储 / Docker / 虚拟机 / 文件·相册·影视）建实体，并生成聚合实体 `sensor.fnos_all_entities`；**没装集成时飞牛卡片没有数据**（只显示提示），安装与配置见 6.37。
+- **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成（不绑定单张卡片）**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等，多处功能共用，**建议优先安装配置**。它同时是 `type: bill` 个人账单卡片的必需集成（需 v5.0.0 及以上），见 6.44。
+- **ESXi Control** ([esxi_control](https://github.com/chjspp520/esxi_control)) — ⚠️ **`type: esxi` 卡片的必需集成**。为每台主机 / 虚拟机 / 数据存储 / 许可证建实体，并生成聚合实体 `sensor.esxi_all_entities`；**没装集成时 ESXi 卡片没有数据**（只显示提示），安装见 6.43。
+- **iKuai 集成** ([ikuai](https://github.com/chjspp520/ikuai)) — ⚠️ **`type: ikuai_card` 卡片的必需集成**。为整台爱快（系统 / 线路 / DHCP / 客户端 / Docker / 虚拟机 / 日志…）建实体，并生成聚合实体 `sensor.ikuai_all_entities`；**没装集成时爱快卡片没有数据**，安装见 6.45。注意**不是**旧的 `ikuai_router` 集成。
+- **飞牛 fnOS 集成** ([fnos](https://github.com/chjspp520/fnos)) — ⚠️ **`type: fnos` 卡片的必需集成**。为整台飞牛（主机 / 存储 / Docker / 虚拟机 / 文件·相册·影视）建实体，并生成聚合实体 `sensor.fnos_all_entities`；**没装集成时飞牛卡片没有数据**（只显示提示），安装与配置见 6.36。
+- **NPS 集成** ([nps](https://github.com/chjspp520/nps)) — ⚠️ **`type: nps` 卡片的必需集成**（同样由 **chjspp520** 维护）。为自建的 NPS 内网穿透服务端（ehang-io/nps 面板）建隧道 / 客户端 / 域名映射 / 面板访问等实体，并生成聚合实体 `sensor.nps_server_<主机地址>_all_entities`；卡片只用这一个实体拿"全部实体清单"，**没装集成时 NPS 卡片没有数据**（只显示提示）。新增 / 编辑 / 删除隧道走集成注册的 WebSocket 命令 `nps/action`（**需管理员**）。安装与配置见 6.47。
 - **电力卡片** ([electricity-info-card](https://github.com/chjspp520/electricity-info-card)) — 家庭用电信息展示卡片，支持功率、电量、电费等多维度数据
 
 ---
@@ -146,7 +148,7 @@ overview:
 
 ## 四、基础配置结构
 
-配置采用层级结构，最外层定义卡片的全局行为和外观，内层通过`style`、`entities`、`person`、`automation`、`overview`、 `buttons（头部模式才可配置该项）`等字段组织具体功能。
+配置采用层级结构，最外层定义卡片的全局行为和外观，内层通过 `style`、`entities`、`person`、`automation`、`overview`、`buttons` 等字段组织具体功能（`buttons` 两种模式都可用：普通模式排在卡片右侧，头部模式铺成网格）。
 
 ### 卡片的两大模式
 
@@ -158,7 +160,7 @@ overview:
 | **传感器** | 显示在卡片左侧（`entities`） | 不显示左侧传感器区域 |
 | **概览栏** | ❌ 不支持 | ✅ 顶部显示全屋态势概览 |
 | **按钮排列** | 右侧自动流式排列 | CSS Grid 网格，支持跨行跨列（`row_column`） |
-| **网格控制** | 无 | `head_columns`（列数）、`head_rows`（行数） |
+| **网格控制** | 无 | `head_columns`（列数）、`head_rows`（预留，目前仅 `auto` 生效） |
 | **适用场景** | 单房间卡片，展示该房间传感器和设备 | 全屋控制中心，放在页面顶部总览全局 |
 
 > 💡 **选择建议**：如果你只想管理一个房间，使用普通模式即可；如果你想在页面顶部放一张"全屋控制中心"卡片，同时总览所有房间的灯光、空调、人员、能耗等状态，请使用头部模式。
@@ -186,18 +188,18 @@ overview:
 
 #### 网格列数与行数
 
-通过 `head_columns` 和 `head_rows` 控制网格的列数和行数：
+通过 `head_columns` 控制网格的列数（`head_rows` 为预留字段，见下表）：
 
 ```yaml
 head: true
 head_columns: 6                       # 网格列数，默认 6 列
-head_rows: auto                       # 网格行数，默认 auto（自动撑开）
+head_rows: auto                       # 预留字段：目前仅 auto 生效（行数由按钮数量自动决定）
 ```
 
 | 配置项 | 类型 | 默认值 | 说明 |
 |--------|------|--------|------|
 | `head_columns` | `number` | `6` | 网格列数，决定一行最多放几个按钮 |
-| `head_rows` | `string` | `auto` | 网格行数，`auto` 表示根据按钮数量自动撑开 |
+| `head_rows` | `string` | `auto` | **预留字段**：仅 `auto` 生效，填其它值不会改变布局（行高由 CSS `grid-auto-rows` 决定） |
 
 #### 按钮跨行跨列（row_column）
 
@@ -239,7 +241,7 @@ buttons:
 | `'1,1-4'` | 1×4 横条 | 媒体设备 |
 | 不配置 | 自动排列（1×1） | 插座、独立开关等 |
 
-> **序号**只决定排列顺序，不决定最终位置。系统会自动检测碰撞，优化布局。
+> **序号**只用于标识与重复校验（同一组内序号不允许重复），**不参与排序**：按钮按 `buttons` 数组顺序，以 Z 字型依次落位，系统会自动跳过被占用的格子（碰撞检测）。
 
 #### 头部模式完整配置示例
 
@@ -513,7 +515,7 @@ overview:                           # 概览栏（⚠️ 仅 head 模式可用�
 | `mode` | ❌ | `string` | `grouped` | 卡片布局模式，保持 `grouped` 即可 |
 | `head` | ❌ | `boolean` | `false` | 是否启用头部模式。`false` = 普通模式（左侧传感器 + 右侧按钮），`true` = 头部模式（按钮按网格铺满，顶部显示概览栏） |
 | `head_columns` | ❌ | `number` | `6` | ⚠️ **仅 head 模式可用**。网格列数，决定一行最多放几个按钮 |
-| `head_rows` | ❌ | `string` | `auto` | ⚠️ **仅 head 模式可用**。网格行数，`auto` 表示根据按钮数量自动撑开 |
+| `head_rows` | ❌ | `string` | `auto` | ⚠️ **仅 head 模式可用**。**预留字段**，目前仅 `auto` 生效 —— 填其它值不会改变布局，行高由 CSS `grid-auto-rows` 按按钮数量自动撑开 |
 | `primary_update_interval` | ❌ | `number` | `10` | ⚠️ **仅 head 模式可用**。primary 文本更新间隔（秒）。默认 10 秒，设为 `0` 表示实时更新（约每 2 秒），自定义秒数则按配置值更新 |
 | `theme` | ❌ | `string` | `light` | 主题风格，可选 `light` / `dark` 或自定义主题名 |
 | `show_animation` | ❌ | `boolean` | `true` | 是否启用按钮图标动画效果（如空调旋转、灯光呼吸等）。设为 `false` 禁用所有动画 |
@@ -592,13 +594,14 @@ name: 客厅空调                    # 显示名称（可选）
 
 ### 支持的设备类型
 
-> **其中 `replay`（设备回放）/ `timer`（定时精灵）/ `wenshidu`（温湿度面板）三张，原先是在本卡片之外单独安装的独立卡片**（`device-replay-card.js` / `timer-control-card.js` / `wenshidu-card.js`），现已**整体并入房间精灵卡片**成为**内部子卡片**：独立 custom element 不再注册，配置改成本卡片的写法（分别见 6.40 / 6.41 / 6.42）。也就是说，用这三张现在**只需要房间精灵卡片本身**，不必再另装一张卡片。
+> **其中 `replay`（设备回放）/ `timer`（定时精灵）/ `wenshidu`（温湿度面板）三张，原先是在本卡片之外单独安装的独立卡片**（`device-replay-card.js` / `timer-control-card.js` / `wenshidu-card.js`），现已**整体并入房间精灵卡片**成为**内部子卡片**：独立 custom element 不再注册，配置改成本卡片的写法（分别见 6.39 / 6.40 / 6.41）。也就是说，用这三张现在**只需要房间精灵卡片本身**，不必再另装一张卡片。
 
-> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` / `fnos` 四张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
+> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` / `fnos` / `nps` 五张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
 > [`esxi_control`](https://github.com/chjspp520/esxi_control) · [`ikuai`](https://github.com/chjspp520/ikuai) ·
 > [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，个人账单） ·
-> [`fnos`](https://github.com/chjspp520/fnos)（飞牛 fnOS 全实体卡片）。
-> 安装方式与依赖细节见各自小节（6.37 / 6.44 / 6.45 / 6.46），**光装房间精灵卡片本身不够**。
+> [`fnos`](https://github.com/chjspp520/fnos)（飞牛 fnOS 全实体卡片） ·
+> [`nps`](https://github.com/chjspp520/nps)（NPS 隧道管理卡片）。
+> 安装方式与依赖细节见各自小节（6.36 / 6.43 / 6.44 / 6.45 / 6.47），**光装房间精灵卡片本身不够**。
 
 **常规设备类型：**
 
@@ -612,21 +615,21 @@ name: 客厅空调                    # 显示名称（可选）
 | `printer` | 打印机用量统计卡片（设备状态 / 日历热力图 / 墨量 / 累计统计 / 用墨占比环形图） | `sensor` |
 | `entities_health` | 实体健康状态卡片（按房间/按状态展示全屋实体在线离线情况） | `sensor` |
 | `daily_report` | 今日家庭日报卡片（summary 日报/状态横幅/关键指标） | `sensor` |
-| `replay` | 设备回放卡片（户型图 + 设备时间轴，可播放/拖拽/选日期） | 任意（用 `entities:` 配置回放设备，见 6.40） |
-| `timer` | 定时精灵卡片（延时/定时执行设备动作，含任务列表与历史） | 任意（后端 `sensor.ha_data_store_timer`，见 6.41） |
-| `wenshidu` | 温湿度面板卡片（时间轴回放 + 温度/湿度两张户型图 + 3D 视图 + 历史曲线） | 任意（用 `rooms:` + `entities:` 配置，见 6.42） |
+| `replay` | 设备回放卡片（户型图 + 设备时间轴，可播放/拖拽/选日期） | 任意（用 `entities:` 配置回放设备，见 6.39） |
+| `timer` | 定时精灵卡片（延时/定时执行设备动作，含任务列表与历史） | 任意（后端 `sensor.ha_data_store_timer`，见 6.40） |
+| `wenshidu` | 温湿度面板卡片（时间轴回放 + 温度/湿度两张户型图 + 3D 视图 + 历史曲线） | 任意（用 `rooms:` + `entities:` 配置，见 6.41） |
 | `overview` | 概览面板卡片（把概览弹窗内容直接渲染成常显卡片） | 无（用顶层 `overview:` 配置） |
 | `scene_mode` | 情景模式卡片（情景列表常显，点击就地执行并显示进度） | 无（用顶层 `scenes:` 配置） |
-| `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡）**⚠️ 需先装 `esxi_control` 集成** | `esxi_control` 集成实体（聚合实体 `sensor.esxi_all_entities`，回退 `sensor.entities`，见 6.44） |
-| `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表）**⚠️ 需先装 `ha_data_store` v5.0.0+** | ha_data_store 账单接口（配 `api_base_url` + `key`，见 6.45） |
-| `ikuai_card` | iKuai 全实体卡片（路由 / Docker / 虚拟机 / 日志四页签，只配一个聚合实体即认全设备）**⚠️ 需先装 `ikuai` 集成** | 新集成 `ikuai` 的聚合实体 `sensor.ikuai_all_entities`（见 6.46） |
-| `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用五页签，只配一个聚合实体即认全设备）**⚠️ 需先装 [`fnos`](https://github.com/chjspp520/fnos) 集成** | 飞牛 fnOS 集成的聚合实体 `sensor.fnos_all_entities`（见 6.37） |
+| `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡）**⚠️ 需先装 `esxi_control` 集成** | `esxi_control` 集成实体（聚合实体 `sensor.esxi_all_entities`，回退 `sensor.entities`，见 6.43） |
+| `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表）**⚠️ 需先装 `ha_data_store` v5.0.0+** | ha_data_store 账单接口（配 `api_base_url` + `key`，见 6.44） |
+| `ikuai_card` | iKuai 全实体卡片（路由 / Docker / 虚拟机 / 日志四页签，只配一个聚合实体即认全设备）**⚠️ 需先装 `ikuai` 集成** | 新集成 `ikuai` 的聚合实体 `sensor.ikuai_all_entities`（见 6.45） |
+| `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用五页签，只配一个聚合实体即认全设备）**⚠️ 需先装 [`fnos`](https://github.com/chjspp520/fnos) 集成** | 飞牛 fnOS 集成的聚合实体 `sensor.fnos_all_entities`（见 6.36） |
+| `nps` | NPS 隧道管理卡片（概览 / 隧道 / 客户端三页签，可启停·新增·编辑·删除，含管理面板访问控制）**⚠️ 需先装 [`nps`](https://github.com/chjspp520/nps) 集成** | nps 集成的聚合实体 `sensor.nps_server_<主机地址>_all_entities`（见 6.47） |
 | `sensor` | 传感器卡片（数值显示） | `sensor` |
 | `switch` | 开关卡片 | `switch` / `input_boolean` |
 | `select` | 选择下拉卡片 | `select` / `input_select` |
 | `number` | 数字输入卡片 | `number` / `input_number` |
 | `button` | 按钮卡片 | 任意 |
-| `slider` | 滑块卡片 | `number` / `input_number` |
 | `usage` | 用量卡片（电费/水费等） | `sensor` |
 | `usage_calendar` | 使用量日历卡片（日历视图 + 年/月/日 ECharts 图表） | 任意 |
 
@@ -644,7 +647,6 @@ name: 客厅空调                    # 显示名称（可选）
 | `chart_calendar` | 日历图 | ECharts |
 | `chart_mixed` | 混合图表 | ECharts |
 | `chart_nightingale` | 南丁格尔玫瑰图 | ECharts |
-| `chart_scatter` | 散点图 | ECharts |
 
 > ⚠️ **ECharts 依赖**：使用 ECharts 渲染的图表类型需要 `echarts.min.js`。卡片优先加载本地文件 `www/pobaby_package/js/echarts.min.js`，若不存在则自动从 CDN 加载。
 
@@ -706,7 +708,7 @@ temp_colors:
   30-32: "#e74c3c"
 ```
 
-> 完整字段（多房间、字体、单位显隐、3D、外部 API 数据源等）见 6.42。
+> 完整字段（多房间、字体、单位显隐、3D、外部 API 数据源等）见 6.41。
 
 **设备回放独立卡片**
 
@@ -734,7 +736,7 @@ entities:                           # 回放设备列表（坐标按 card_width 
     rotation: 90
 ```
 
-> 设备项字段（坐标 / 图标 / 缩放 / 旋转 / 传感器气泡 / 轨道等）与顶层字段见 6.40。
+> 设备项字段（坐标 / 图标 / 缩放 / 旋转 / 传感器气泡 / 轨道等）与顶层字段见 6.39。
 
 **ESXi 虚拟化独立卡片**
 
@@ -755,7 +757,7 @@ name: 虚拟化
 # confirm_power_off: false           # 关机不二次确认
 ```
 
-> ⚠️ 需先安装 [`esxi_control`](https://github.com/chjspp520/esxi_control) 集成；高度由内容决定，卡片自带 3 秒值级刷新。完整字段见 6.44。
+> ⚠️ 需先安装 [`esxi_control`](https://github.com/chjspp520/esxi_control) 集成；高度由内容决定，卡片自带 3 秒值级刷新。完整字段见 6.43。
 
 **个人账单独立卡片**
 
@@ -771,7 +773,7 @@ recent_days: 7                       # 概览「最近 N 日」天数（默认 7
 # direction: 支出                    # 初始收支方向筛选（可省）
 ```
 
-> ⚠️ 需先安装 [`ha_data_store`](https://github.com/chjspp520/ha_data_store) **v5.0.0+** 并开好账单接口生成 Key；**无轮询** —— 只在打开卡片 / 切到未取过数的页 / 点刷新 / 换查询条件时取数。完整字段见 6.45。
+> ⚠️ 需先安装 [`ha_data_store`](https://github.com/chjspp520/ha_data_store) **v5.0.0+** 并开好账单接口生成 Key；**无轮询** —— 只在打开卡片 / 切到未取过数的页 / 点刷新 / 换查询条件时取数。完整字段见 6.44。
 
 **iKuai 全实体独立卡片**
 
@@ -785,7 +787,7 @@ width: 760px                         # 卡片基准宽度（弹窗里用 popup_w
 # confirm_power_off: true            # 关机类操作是否二次确认（默认开）
 ```
 
-> ⚠️ 需先安装 [`ikuai`](https://github.com/chjspp520/ikuai) 集成；**只配一个聚合实体**即可认全路由 / Docker / 虚拟机 / 日志，高度 `auto`、自带 3 秒值级刷新（不参与独立模式的 1 秒轮询）。完整页签与字段见 6.46。
+> ⚠️ 需先安装 [`ikuai`](https://github.com/chjspp520/ikuai) 集成；**只配一个聚合实体**即可认全路由 / Docker / 虚拟机 / 日志，高度 `auto`、自带 3 秒值级刷新（不参与独立模式的 1 秒轮询）。完整页签与字段见 6.45。
 
 **飞牛 fnOS 全实体独立卡片**
 
@@ -800,7 +802,23 @@ popup_width: 900px                   # 弹窗宽度（卡片形态下不生效�
 # confirm_power: true                # 重启 / 关机 / 强制关机是否二次确认（默认 true）
 ```
 
-> ⚠️ 需先安装 [飞牛 fnOS 集成](https://github.com/chjspp520/fnos)；**只配一个聚合实体**即可认全主机 / 存储 / Docker / 虚拟机 / 应用，高度 `auto`、自带 3 秒值级刷新。完整页签与字段见 6.37。
+> ⚠️ 需先安装 [飞牛 fnOS 集成](https://github.com/chjspp520/fnos)；**只配一个聚合实体**即可认全主机 / 存储 / Docker / 虚拟机 / 应用，高度 `auto`、自带 3 秒值级刷新。完整页签与字段见 6.36。
+
+**NPS 隧道管理独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: nps
+entity: sensor.nps_server_47_108_189_87_8080_all_entities   # 集成提供的「所有实体」聚合传感器（单个实体）
+name: 内网穿透                       # 标题（默认「NPS 隧道」）
+icon: mdi:tunnel                    # 标题图标（默认 mdi:tunnel，可省）
+# accent: "#1fb6ff"                 # 主色（默认科技青蓝，可省）
+# initial_tab: tunnels              # 初始页签：overview（默认）/ tunnels / clients
+```
+
+> ⚠️ 需先安装 [`nps`](https://github.com/chjspp520/nps) 集成；**只配一个「所有实体」聚合实体**（`entity` 省略时自动发现 `sensor.*_all_entities`）就能认全概览 / 隧道 / 客户端三页签，**卡片不写死任何实体 id**（按 entity_id 后缀认角色）。
+> 高度写死 **70% 视口高**（`createTabBar({ height: '70%', fit: 'exact' })`，**不是配置项**）：三页签等高、不随内容跳动，超出的内容由各页自己滚；自带 **5 秒值级刷新**（挂宿主共享 tick，不参与独立模式的 1 秒轮询）。
+> 隧道启停 / 客户端连接断开都会先弹确认框；**新增 / 编辑 / 删除**在卡里直接做（写入走集成 WebSocket `nps/action`，**需管理员**）。完整页签、访问控制与写入说明见 6.47。
 
 **窗帘独立卡片**
 
@@ -986,7 +1004,6 @@ entity: climate.living
 name: 客厅空调
 current_temperature: sensor.living_temperature    # 当前温度传感器
 power_display_entity: sensor.ac_power            # 功率显示实体
-show_usage: true                                  # 显示使用统计
 ```
 
 > **注意：** 独立卡片模式与普通/头部模式互斥。配置了 `standalone_type` 后，`head`、`buttons`、`entities` 等字段均无效。例外：`standalone_type: overview` 用顶层 `overview:` 配置面板内容；`standalone_type: scene_mode` 用顶层 `scenes:` 配置情景列表。
@@ -1134,7 +1151,7 @@ buttons:
 
 | 配置项 | 类型 | 默认值 | 说明 |
 |--------|------|--------|------|
-| `close_time` | `number` | `0` | 弹窗自动关闭倒计时（秒）。设为 `0` 时不自动关闭，设为 `300` 表示 300 秒后自动关闭弹窗 |
+| `close_time` | `number` | `3` | 弹窗自动关闭倒计时（秒）。**不配置时默认 3 秒**；设为 `0` 时不自动关闭；设为 `300` 表示 300 秒后自动关闭弹窗 |
 | `group_lights_by_room` | `boolean` | `false` | 弹窗中是否按 `room` 字段分组显示灯光，各房间独立区域展示 |
 | `show_duration` | `boolean` | `false` | 按钮上是否显示已开启时长 |
 
@@ -1171,7 +1188,7 @@ buttons:
     on_color: '#f1c40f'
     off_color: '#95a5a6'
     show_duration: true                     # 显示已开启时长
-    close_time: 600                         # 自动关闭倒计时（秒），0=不自动关闭
+    close_time: 600                         # 自动关闭倒计时（秒）；不配置默认 3 秒，0=不自动关闭
     # ── 收藏快捷按钮（可选，配置方式与 lights 的 card 子项一致）──
     collect_brightness:
       - name: 夜灯
@@ -1273,7 +1290,7 @@ buttons:
 
 | 形态 | 何时使用 | 说明 |
 |------|----------|------|
-| **使用量日历卡片（多实体）**（默认） | 不配置 | 直接内嵌 [6.35 使用量日历卡片](#635-使用量日历卡片-type-usage_calendar) 的**多实体聚合**形态：日历 / 历史 / 年 / 月 / 日 / 洞察**六个选项卡**、时段全景图与下钻、日历格子「N 台」角标、分设备甘特图等全部复用 |
+| **使用量日历卡片（多实体）**（默认） | 不配置 | 直接内嵌 [6.34 使用量日历卡片](#634-使用量日历卡片-type-usage_calendar) 的**多实体聚合**形态：日历 / 历史 / 年 / 月 / 日 / 洞察**六个选项卡**、时段全景图与下钻、日历格子「N 台」角标、分设备甘特图等全部复用 |
 | 原内置合计日历 | `ac_calendar_card: old` | 本卡片自己实现的单页合计日历（月网格 + 年/月/历史），见下方小节 |
 
 **默认形态的内部自动配置**（不用手写 `api` / `entities`）：
@@ -1926,7 +1943,7 @@ features:
 | `url` | ❌ | `string` | — | 嵌入的 URL（与 `xiaomusic_url` 互为别名） |
 | `xiaomusic_url` | ❌ | `string` | — | `url` 的别名，向后兼容 |
 | `height` | ❌ | `string` | `800px` | iframe 高度 |
-| `sandbox` | ❌ | `string` | `allow-scripts allow-same-origin allow-forms allow-popups` | iframe sandbox 属性 |
+| `sandbox` | ❌ | `string` | `allow-scripts allow-forms allow-popups` | iframe sandbox 属性。默认**不含** `allow-same-origin`（它与 `allow-scripts` 并存时，被嵌入页面可自行解除沙箱，等于没开）；确有特殊集成需求再显式配置，风险自负 |
 | `allowfullscreen` | ❌ | `bool` | `true` | 是否允许全屏 |
 
 **动态图标自动启用（图标 + 颜色 + 动画随播放状态联动）：**
@@ -2346,7 +2363,7 @@ weather:
 
 **小头像点击：** 点击任意小头像，弹窗切换为该成员专属的定位/导航/详情页。
 
-### 6.9 健康 (type: health)
+### 6.8 健康 (type: health)
 
 显示健康数据入口，点击弹出健康数据控制面板。数据通过 HA 数据统一存储系统 API 接口获取，顶层配置的 `api_base_url` 和 `key` 自动生效。
 
@@ -2360,7 +2377,7 @@ weather:
     width: 430px
 ```
 
-### 6.10 动态图标 (type: dynamic_icon)
+### 6.9 动态图标 (type: dynamic_icon)
 
 动态图标是最灵活的按钮类型。可以根据实体的不同状态，自动切换图标、颜色和动画。多条规则同时匹配时可以循环显示，也可以始终显示第一条匹配的规则。适合用来做"状态监控中心"——一个按钮同时监控多个设备或传感器，哪个出问题就亮哪个。
 
@@ -2886,7 +2903,7 @@ display_time: 2
 ```yaml
   - type: dynamic_icon
     entity: weather.qweather_pro_lian_hu_weather  # 必填
-    preset: qweather                              # 自动展开 16 条天气规则
+    preset: qweather                              # 自动展开 62 条天气规则
     loop_display: false
     show_badge: false
     primary: |
@@ -2898,7 +2915,7 @@ display_time: 2
         entity: weather.qweather_pro_lian_hu_weather
 ```
 
-等价于手写 16 条 `rules`（每条自动注入 `condition.entity`、`icon`、`icon_text`、`color`、`animation`）。
+等价于手写 62 条 `rules`（每条自动注入 `condition.entity`、`icon`、`icon_text`、`color`、`animation`）。
 
 > **`preset: qweather` 与 `preset: weather` 的区别**：
 > - `weather` / `metno`：匹配实体 `state` 的 HA 标准条件字符串（`sunny`、`cloudy`、`rainy` 等）
@@ -2920,11 +2937,11 @@ display_time: 2
 |---------|---------|---------|---------|------|
 | `qweather` | 天气 | `attributes.qweather_icon` | 100 晴 / 104 阴 / 306 中雨 / 400 小雪 / 501 雾 / 999 未知 等 60+ 数值码 | 专为和风天气自定义集成设计，读取 `qweather_icon` 属性匹配，不受 HA 语言翻译影响。图标颜色按天气特征定制（雷→黄闪、暴雨→深蓝发抖、雪→白蓝旋转） |
 | `weather` / `metno` | 天气 | `state` | `clear-day` `sunny` `cloudy` `partlycloudy` `fog` `hail` `lightning` `lightning-rainy` `pouring` `rainy` `snowy` `snowy-rainy` `windy` `exceptional` `clear-night` `clear` | 覆盖 HA 标准天气状态。`icon_text` 统一为单字（晴/夜/阴/云/雾…），适合右上角三角徽章 |
-| `ac` / `aircon` / `climate` / `hvac` | 空调 (HVAC) | `state` | `off` `idle` `cool` `heat` `dry` `fan_only` `auto` | 匹配 climate 实体的 hvac_mode 状态。关闭时图标为 `mdi:air-conditioner` |
+| `ac` / `aircon` / `climate` / `hvac` | 空调 (HVAC) | `state` | `off` `cool` `heat` `dry` `fan_only` `auto` | 匹配 climate 实体的 hvac_mode 状态。关闭时图标为 `mdi:air-conditioner` |
 | `fan` / `circulation_fan` / `circ_fan` | 循环扇 | `state` | `off` `直吹风` `自然风` `智能风` `睡眠风` | 匹配 fan 实体的状态或 `preset_mode` 属性。模式值通常在 `preset_mode` 属性中，需配合 `condition.attribute: preset_mode`。关闭时图标为 `mdi:fan` |
-| `humidifier` / `humid` | 加湿器 | `state` | `off` `恒湿` `睡眠` `强力` | 匹配 humidifier 实体的状态或 `mode` 属性。模式值可能在 `mode` 属性中，需配合 `condition.attribute: mode`。关闭时图标为 `mdi:fan` |
+| `humidifier` / `humid` | 加湿器 | `state` | `off` `恒湿` `睡眠` `强力` | 匹配 humidifier 实体的状态或 `mode` 属性。模式值可能在 `mode` 属性中，需配合 `condition.attribute: mode`。关闭时图标为 `mdi:air-humidifier` |
 | `media_player` / `media` / `mp` | 媒体播放器 | `state` | `playing` `paused` `idle` `standby` `on` `off` | 匹配 media_player 实体的 state 状态。播放→`mdi:speaker-play`(绿)、暂停→`mdi:speaker-pause`(青)、空闲→`mdi:speaker-stop`(浅蓝灰)、待机/开启→`mdi:speaker`(深灰/蓝)、关闭→`mdi:speaker-off`(灰) |
-| `kettle` / `yang_sheng_hu` | 养生壶 | `state` | `待机中` `烹饪中` `预约中` `保温中` `空闲中提壶` `烹饪中提壶` `预约中提壶` `保温中提壶` `错误` `升级中` `烹饪完成` | 匹配养生壶实体的中文 state 状态。烹饪→`mdi:kettle-steam`(红 shake)、保温→`mdi:thermometer-chevron-up`(橙 breathe)、提壶状态→图标 outline 版 + jump 动画、错误→`mdi:alert-circle`(红 blink)、升级→`mdi:cloud-download`(蓝 rotate)、完成→`mdi:check-circle`(绿 breathe) |
+| `kettle` / `yang_sheng_hu` | 养生壶 | `state` | `待机中` `烹饪中` `预约中` `保温中` `空闲中提壶` `烹饪中提壶` `预约中提壶` `保温中提壶` `错误` `升级中` `烹饪完成` | 匹配养生壶实体的中文 state 状态。**11 个状态统一使用 `mdi:kettle-pour-over`**（暂无分状态图标），靠颜色与动画区分：烹饪→红 shake、预约→橙 breathe、保温→深橙 breathe、提壶各态→jump、错误→红 blink、升级→蓝 rotate、完成→绿 breathe |
 
 ##### 用户自定义覆盖
 
@@ -3191,7 +3208,7 @@ display_time: 2
         animation: blink
 ```
 
-### 6.11 时间轴 (type: timeline)
+### 6.10 时间轴 (type: timeline)
 
 在按钮上直接显示当天设备状态变化的时间轴（例如人体传感器从"无人"到"有人"的变化记录）。点击时间轴段显示详细活动记录。
 
@@ -3216,7 +3233,7 @@ display_time: 2
     api_base_url: http://192.168.1.100:8080  # 如果HA没有历史，可从外部API获取
 ```
 
-### 6.12 内嵌卡片 (type: card)
+### 6.11 内嵌卡片 (type: card)
 
 在 head 模式中嵌入其他 HA 卡片（如天气预报、地图等）。
 
@@ -3227,7 +3244,7 @@ display_time: 2
       entity: weather.home
 ```
 
-### 6.13 按钮 (type: button)
+### 6.12 按钮 (type: button)
 
 用于控制 `input_button`、`button` 等按压型实体，或 `switch` 等开关型实体。点击按钮触发操作，支持点击反馈动画和持续时长显示。
 
@@ -3280,7 +3297,7 @@ display_time: 2
 - `input_button` / `button` 实体：调用 `press` 服务
 - `switch` 等其他实体：调用 `toggle` 服务
 
-### 6.14 独立按钮（无 type）
+### 6.13 独立按钮（无 type）
 
 如果不写 type，就是一个独立的开关按钮，只控制一个实体。
 
@@ -3365,7 +3382,7 @@ badge_entity 示例：
 
 > 角标优先级： 配置了 badge 或 badge_entity 时，角标值决定图标/颜色，entity 的状态不再影响图标显示。badge 与 badge_entity 互斥，badge 优先级更高。
 
-### 6.15 晾衣架 (type: clothes_dryer)
+### 6.14 晾衣架 (type: clothes_dryer)
 
 控制晾衣架的升降位置，提供可视化的机械仿真拖拽交互、收藏位置快捷按钮和灯光控制。点击按钮弹出晾衣架控制面板。
 
@@ -3402,8 +3419,8 @@ badge_entity 示例：
 | `entity` | ✅ | `string` | 晾衣架 cover 实体 ID，使用 `current_position` 属性获取/设置升降位置 |
 | `name` | ❌ | `string` | 显示名称，显示在弹窗顶部标题栏，同时显示在线/离线状态标签 |
 | `light_entity` | ❌ | `string` | 灯光实体 ID（如 `switch` / `input_boolean`），控制壳体灯光按钮和光晕效果；配置后会自动在功能卡片首位插入灯光开关，无需手动添加 |
-| `on_icon` | ❌ | `string` | 开启时按钮图标，默认 `mdi:hanger` |
-| `off_icon` | ❌ | `string` | 关闭时按钮图标，默认 `mdi:tshirt-crew` |
+| `on_icon` | ❌ | `string` | 开启时按钮图标，默认 `mdi:tshirt-crew` |
+| `off_icon` | ❌ | `string` | 关闭时按钮图标，默认 `mdi:tshirt-crew-outline` |
 | `on_color` | ❌ | `string` | 开启时图标颜色，默认 `#2c7da0` |
 | `off_color` | ❌ | `string` | 关闭时图标颜色，默认 `#95a5a6` |
 | `width` | ❌ | `string` | 弹窗宽度，默认 `440px` |
@@ -3524,7 +3541,7 @@ buttons:
 >
 > **配置继承：** `locker`、`light_entity`、`collect_position` 等公共配置可以写在顶层，子项 `card` 内未配置时自动继承顶层值。`locker` 默认 `true`，配置了 `collect_position` 时自动解锁。
 
-### 6.16 NAS 卡片 (type: nas)
+### 6.15 NAS 卡片 (type: nas)
 
 NAS 卡片用于展示 HP iLO 服务器的硬盘状态、电源控制和运行状态监控。卡片分为三部分：上部分显示硬盘槽位（拟物 NAS 风格），中部分为电源开关操作区，下部分显示温度和风扇运行状态。
 
@@ -3608,7 +3625,7 @@ NAS 卡片用于展示 HP iLO 服务器的硬盘状态、电源控制和运行�
 
 > **依赖说明**：NAS 卡片的数据来源于 [HP iLO 集成](https://github.com/chjspp520/hp_ilo)。使用前需先配置 HP iLO 集成并生成对应实体。开机时长原始值单位为小时，卡片自动格式化为 `X天 X小时`。
 
-### 6.17 情景模式 (type: scene_mode)
+### 6.16 情景模式 (type: scene_mode)
 
 情景模式按钮用于一键执行一组预定义的操作（如"离家"关闭所有灯、"回家"打开指定灯），支持气泡选择、直接执行、执行进度展示和状态验证。
 
@@ -4026,7 +4043,7 @@ input_text:
 
 > 不配置 `entity` 时，情景模式功能完全正常，只是不会记录和显示执行历史。
 
-### 6.18 窗帘 (type: curtain)
+### 6.17 窗帘 (type: curtain)
 
 控制电动窗帘的开合、层级切换和开合模式。支持单层/双层窗帘、百分比开合控制、同向/对开模式。
 
@@ -4150,7 +4167,7 @@ buttons:
 
 **角标说明：** 单个窗帘不显示角标；多台窗帘（使用 `card` 数组）时按钮上显示已开启窗帘的数量（布帘位置 > `CURTAIN_OPEN_THRESHOLD`% 视为开启）。所有窗帘关闭时角标不显示。
 
-### 6.19 风扇 (type: fan)
+### 6.18 风扇 (type: fan)
 
 用于控制风扇设备，支持风速调节和摇头控制。
 
@@ -4167,7 +4184,7 @@ buttons:
 
 
 
-### 6.20 快捷操作 (type: action)
+### 6.19 快捷操作 (type: action)
 
 快捷操作卡片将情景模式的功能集成到统一卡片系统中，可在自由布局弹窗、title_entities 等任意支持 `card_config` 的位置使用。点击卡片弹出与 `scene_mode` 相同的情景模式气泡，支持多步骤快捷操作、执行进度展示和状态验证。
 
@@ -4207,12 +4224,12 @@ buttons:
 | `icon` | ❌ | `string` | `mdi:palette` | 图标 |
 | `icon_color` | ❌ | `string` | `#3498db` | 图标颜色 |
 | `description` | ❌ | `string` | 自动 | 描述文本，不配置时自动显示"N 个模式" |
-| `scenes` | ✅ | `array` | `[]` | 情景列表，配置格式与 `scene_mode`（6.17 节）完全一致 |
+| `scenes` | ✅ | `array` | `[]` | 情景列表，配置格式与 `scene_mode`（6.16 节）完全一致 |
 | `scene_mode` | ❌ | `string` | 自动 | 执行模式：`bubble`（气泡选择）/ `direct`（直接执行），不配置时自动判断 |
 | `fold` | ❌ | `boolean` | `false` | 动作列表是否默认展开 |
 | `verify_timeout` | ❌ | `number` | `10` | 执行后验证状态的超时秒数 |
 
-> `scenes` 的完整配置格式（actions 的 entity/entities/value/service_data/delay/confirm/select 等）与 6.17 节情景模式完全一致，此处不再重复。
+> `scenes` 的完整配置格式（actions 的 entity/entities/value/service_data/delay/confirm/select 等）与 6.16 节情景模式完全一致，此处不再重复。
 
 **在自由布局弹窗中使用：**
 
@@ -4261,7 +4278,7 @@ title_entities:
 | `icon_animation` | **自定义图标动画**（不覆盖空调/动态图标）。优先级高于顶层 `icon_animation`。可选：`shake` / `rotate` / `blink` / `breathe` / `jump` / `random-move` / `none` | `breathe` |
 | `show_badge` | 显示角标数字 | `true` |
 | `badge_entity` | 指定实体值作为角标 | `sensor.count` |
-| `badge` | 条件角标数组（独立按钮专用） | 见6.14节 |
+| `badge` | 条件角标数组（独立按钮专用） | 见6.13节 |
 | `confirm` | 点击是否需要确认 | `true` |
 | `primary` | 按钮下方的文字，支持模板。需完整 Jinja2 时配合 `server_explain: true` | `已开启3个` |
 | `server_explain` | `true` 时 primary 模板走 HA 后端渲染（仅限 expand 等 HA 独有函数） | `true` |
@@ -4269,7 +4286,7 @@ title_entities:
 | `width` | 弹窗宽度（像素） | `400` |
 | `per_line` | 弹窗每行按钮数 | `3` |
 | `row_column` | 网格位置（head按钮/弹窗item跨行跨列） | `'1,2-3'` |
-| `close_time` | 弹窗自动关闭倒计时（秒），0=不自动关闭 | `300` |
+| `close_time` | 弹窗自动关闭倒计时（秒）；不配置默认 3 秒，0=不自动关闭 | `300` |
 | `show_duration` | 显示距上次变化的持续时长 | `true` |
 | `popup_position` | 弹窗位置 | `top`, `bottom`, `left`, `right` |
 | `tabs_by` | 聚合弹窗按字段分组（如 `room` / `group`） | `room` |
@@ -4303,7 +4320,7 @@ tap_action:
       - light.living_led
     value: "off"
   ```
-  > `set_value` 桥接情景模式的服务自动推断引擎（`_inferSceneService`），根据实体域自动调用对应服务（如 `light.turn_on`、`climate.set_temperature` 等），无需手动指定服务名。支持所有实体类型，详见 6.16 节"支持的实体类型与服务自动推断"表格。
+  > `set_value` 桥接情景模式的服务自动推断引擎（`_inferSceneService`），根据实体域自动调用对应服务（如 `light.turn_on`、`climate.set_temperature` 等），无需手动指定服务名。支持所有实体类型，详见 6.15 节"支持的实体类型与服务自动推断"表格。
 
 - **`toggle-all`** — 切换分组中所有设备的开关
 - **`more-info`** — 弹出 HA 自带的详细信息弹窗
@@ -4455,7 +4472,7 @@ tap_action:
 - 多个按钮可以配置不同的 `auto_open_entity`，各自独立触发
 - `auto_open_entity` 实体类型建议使用 `input_boolean`、`switch`、`binary_sensor` 等二态实体
 
-### 6.21 按钮组 (type: button_group)
+### 6.20 按钮组 (type: button_group)
 
 将多个小按钮组合在一起，以 Windows 选项卡样式排列在同一个容器中，适合将同一区域的设备（如同一个房间的灯、同一类设备）集中管理。
 
@@ -4502,8 +4519,8 @@ buttons:
 | `on_color` | ❌ | `string` | `#3498db` | 子按钮开启状态的默认颜色 |
 | `off_color` | ❌ | `string` | `#95a5a6` | 子按钮关闭状态的默认颜色 |
 | `icon_size` | ❌ | `number` | `16` | 子按钮图标大小（px），子按钮可单独覆盖 |
-| `show_name` | ❌ | `boolean` | `true` | 是否显示子按钮文字，子按钮可单独覆盖 |
-| `gap` | ❌ | `string` | `4px` | 按钮间距，支持 CSS 间距值（如 `30px`、`8px`、`12px 8px`）|
+| `show_name` | ❌ | `boolean` | `true` | 是否显示名称：`false` 时隐藏组标签与全部子按钮文字、只留图标（子按钮可用自己的 `show_name` 覆盖） |
+| `gap` | ❌ | `string` | 不配置时用样式表默认 `15px` | 按钮间距，支持 CSS 间距值（如 `30px`、`8px`、`12px 8px`）|
 | `buttons` | ✅ | `array` | `[]` | 子按钮列表 |
 
 #### 子按钮（buttons 中的每项）配置
@@ -4518,7 +4535,7 @@ buttons:
 | `on_color` | ❌ | `string` | 组 `on_color` | 开启时颜色，覆盖组默认 |
 | `off_color` | ❌ | `string` | 组 `off_color` | 关闭时颜色，覆盖组默认 |
 | `icon_size` | ❌ | `number` | 组 `icon_size` | 图标大小（px），覆盖组默认 |
-| `show_name` | ❌ | `boolean` | 组 `show_name` | 是否显示按钮名称，覆盖组默认 |
+| `show_name` | ❌ | `boolean` | 组 `show_name`（组未配置时为 `true`） | 是否显示按钮名称，覆盖组默认 |
 | `confirm` | ❌ | `boolean` | `false` | 点击前是否弹出确认对话框 |
 | `tap_action` | ❌ | `object` | `{ action: 'toggle' }` | 点击动作，支持所有标准动作类型 |
 | `badge` | ❌ | `array` | 无 | 条件角标数组，满足条件的规则数量显示为红色角标 |
@@ -4582,7 +4599,7 @@ buttons:
 
 #### 仅图标模式
 
-设置 `show_name: false` 可隐藏按钮名称，只显示图标，适合按钮较多或空间有限的场景：
+设置 `show_name: false` 可隐藏组标签与全部子按钮名称，只显示图标，适合按钮较多或空间有限的场景（只想隐藏某一个子按钮时，把 `show_name: false` 写在那个子按钮上即可）：
 
 ```yaml
 buttons:
@@ -4669,9 +4686,9 @@ tap_action:
 
 ---
 
-### 6.22 图表卡片概览
+### 6.21 图表卡片概览
 
-图表卡片用于在弹窗中可视化展示数据，支持 9 种图表类型，均基于 ECharts 渲染（`chart_gauge` 除外，使用纯 SVG）。图表卡片通常配置在弹窗的 `items` 中，也可直接用于主卡片 `buttons`。
+图表卡片用于在弹窗中可视化展示数据，共 11 个图表 type（`chart` 与 `chart_line` 是同一实现的两个别名，即 10 种图形）；除 `chart_gauge`（纯 SVG）、`chart_progress` / `chart_bar`（纯 CSS）外均基于 ECharts 渲染。图表卡片通常配置在弹窗的 `items` 中，也可直接用于主卡片 `buttons`。
 
 **所有图表卡片共享的通用配置项：**
 
@@ -4705,7 +4722,7 @@ tap_action:
 
 ---
 
-### 6.23 仪表图 (type: chart_gauge)
+### 6.22 仪表图 (type: chart_gauge)
 
 显示数值型实体的半圆仪表盘，参照 HA 内置 gauge 卡片风格，使用纯 SVG 渲染，无需 ECharts。
 
@@ -4716,13 +4733,6 @@ tap_action:
   unit: °C                           # 单位（可选，默认取实体属性）
   min: 0                             # 最小值
   max: 40                            # 最大值
-  severity:                          # 颜色分段（可选，不配置则绿→黄→红自动渐变）
-    - value: 18
-      color: '#3498db'               # 蓝（低温）
-    - value: 26
-      color: '#2ecc71'               # 绿（舒适）
-    - value: 40
-      color: '#e74c3c'               # 红（高温）
   tap_action:
     action: more-info
 ```
@@ -4735,11 +4745,12 @@ tap_action:
 | `unit` | ❌ | `string` | 实体属性 | 显示单位 |
 | `min` | ❌ | `number` | `0` | 仪表最小值 |
 | `max` | ❌ | `number` | `100` | 仪表最大值 |
-| `severity` | ❌ | `array` | 自动渐变 | 颜色分段配置，每项含 `value` 和 `color` |
+
+> 弧线颜色固定分三段（暂不支持自定义分段）：数值处于范围 ≤30% 用蓝 `#3498db`、≤70% 用橙 `#f39c12`、其余用红 `#e74c3c`。
 
 ---
 
-### 6.24 进度条 (type: chart_progress)
+### 6.23 进度条 (type: chart_progress)
 
 显示多条水平进度条，每条对应一个实体，支持自定义范围和颜色分级。
 
@@ -4770,9 +4781,9 @@ tap_action:
 
 | 范围 | 级别 | 颜色 |
 |------|------|------|
-| 0% ~ 30% | `low` | 绿色 |
-| 30% ~ 70% | `medium` | 黄色 |
-| 70% ~ 100% | `high` | 红色 |
+| 0% ~ 30% | `low` | 蓝色（`#3498db`） |
+| 30% ~ 70% | `medium` | 橙色（`#f39c12`） |
+| 70% ~ 100% | `high` | 红色（`#e74c3c`） |
 
 **顶层配置项：**
 
@@ -4785,7 +4796,7 @@ tap_action:
 | 配置项 | 必填 | 类型 | 默认值 | 说明 |
 |--------|:----:|------|--------|------|
 | `entity` | ✅ | `string` | — | 实体 ID |
-| `name` | ❌ | `string` | 实体ID | 进度条名称 |
+| `name` | ❌ | `string` | 空（不显示名称） | 进度条名称。不配置时该条名称位留白；注意与 `chart_pie` 不同，后者才回退显示实体 ID |
 | `icon` | ❌ | `string` | 无 | 进度条图标 |
 | `show_name` | ❌ | `boolean` | `true` | 是否显示名称 |
 | `min` | ❌ | `number` | `0` | 最小值 |
@@ -4796,7 +4807,7 @@ tap_action:
 
 ---
 
-### 6.25 柱状图 (type: chart_bar)
+### 6.24 柱状图 (type: chart_bar)
 
 显示单实体的历史数据柱状图，支持按时间段聚合计算，纯 CSS 渲染无需 ECharts。
 
@@ -4808,7 +4819,7 @@ tap_action:
   height: 80px
   bar:                                  # 柱状图参数（也可写在顶层）
     min: 0                              # Y轴最小值
-    max: 100                            # Y轴最大值（可选，默认自适应）
+    max: 100                            # Y轴最大值（不配置时默认 100，不会自适应）
     hours_to_show: 48                   # 显示多少小时的历史数据
     bar_hours: 2                        # 每根柱子代表多少小时
     bar_hours_calc: average             # 聚合计算方式
@@ -4836,13 +4847,13 @@ tap_action:
 | `bar.bar_hours` | ❌ | `number` | `2` | 每根柱子的时间跨度（小时） |
 | `bar.bar_hours_calc` | ❌ | `string` | `average` | 聚合计算方式 |
 | `bar.min` | ❌ | `number` | `0` | Y轴最小值 |
-| `bar.max` | ❌ | `number` | 自适应 | Y轴最大值 |
+| `bar.max` | ❌ | `number` | `100` | Y轴最大值（不做自适应，柱高按该值折算百分比） |
 
 > 💡 `bar` 内的配置项也可直接写在顶层（如 `hours_to_show: 48`），`bar` 内优先级更高。
 
 ---
 
-### 6.26 曲线图 (type: chart_line / chart)
+### 6.25 曲线图 (type: chart_line / chart)
 
 使用 ECharts 渲染单实体的平滑历史数据曲线，支持自适应 Y 轴范围。
 
@@ -4875,7 +4886,7 @@ tap_action:
 
 ---
 
-### 6.27 环形图 (type: chart_pie)
+### 6.26 环形图 (type: chart_pie)
 
 显示多实体的占比环形图（甜甜圈图），点击扇区可在中心显示该项详情，使用 ECharts 渲染。
 
@@ -4921,7 +4932,7 @@ tap_action:
 
 ---
 
-### 6.28 完整饼图 (type: chart_pie_full)
+### 6.27 完整饼图 (type: chart_pie_full)
 
 显示多实体的标准饼图，带图例和百分比标签，使用 ECharts 渲染。与环形图的区别：饼图展示完整扇形，底部有水平图例，鼠标悬停有 tooltip。
 
@@ -4964,7 +4975,7 @@ tap_action:
 
 ---
 
-### 6.29 南丁格尔玫瑰图 (type: chart_nightingale)
+### 6.28 南丁格尔玫瑰图 (type: chart_nightingale)
 
 显示多实体状态值的南丁格尔玫瑰图，扇区半径按数值大小变化，使用 ECharts 渲染。适合多维度数据对比。
 
@@ -4998,7 +5009,7 @@ tap_action:
 
 ---
 
-### 6.30 日历热力图 (type: chart_heatmap)
+### 6.29 日历热力图 (type: chart_heatmap)
 
 显示年度日历热力图（类 GitHub 贡献图），颜色深浅表示数值高低，使用 ECharts 渲染。支持两种数据源：实体属性和外部 API。
 
@@ -5051,7 +5062,7 @@ tap_action:
 
 ---
 
-### 6.31 日历图 (type: chart_calendar)
+### 6.30 日历图 (type: chart_calendar)
 
 显示月历视图 + 年/月/日三级下钻柱状图，支持双数值系列对比，使用 ECharts 渲染。
 
@@ -5100,7 +5111,7 @@ tap_action:
 
 ---
 
-### 6.32 混合图表 (type: chart_mixed)
+### 6.31 混合图表 (type: chart_mixed)
 
 使用 ECharts 渲染柱状图、折线图、面积图的组合图表，支持年/月/日三级下钻切换，多数据系列混搭。
 
@@ -5160,7 +5171,7 @@ tap_action:
 
 ---
 
-### 6.33 插座桑基图（功率流向图）
+### 6.32 插座桑基图（功率流向图）
 
 插座按钮（`type: socket`）弹窗内置桑基图功能，可可视化展示各插座的功率/用电流向（三级结构：合计 → 房间 → 具体插座），使用 ECharts 渲染。
 
@@ -5213,7 +5224,7 @@ tap_action:
 
 ---
 
-### 6.34 设备用电统计卡片 (type: device_usage)
+### 6.33 设备用电统计卡片 (type: device_usage)
 
 设备用电统计卡片用于展示指定房间（或全屋）当日各设备的使用时长、用电量和事件分布。通过 `api_base_url` 对接 HA 数据统一存储系统（ha_data_store）的设备事件 API。
 
@@ -5352,7 +5363,7 @@ buttons_2:
       top_count: 4
 ```
 
-**前提**：`huifang` 这个 `config_id` 必须在主卡配置中通过 `tap_action` 注册一份完整的**设备回放**配置节点 —— 注意 `type` 现在写**本卡片**（`custom:room-elves-card` + `standalone_type: replay`）：旧的 `custom:device-replay-card` 元素已随「并入内建」退役、不再注册，继续照旧写会拿不到卡片（见 6.40）。
+**前提**：`huifang` 这个 `config_id` 必须在主卡配置中通过 `tap_action` 注册一份完整的**设备回放**配置节点 —— 注意 `type` 现在写**本卡片**（`custom:room-elves-card` + `standalone_type: replay`）：旧的 `custom:device-replay-card` 元素已随「并入内建」退役、不再注册，继续照旧写会拿不到卡片（见 6.39）。
 
 ```yaml
 buttons:
@@ -5388,7 +5399,7 @@ buttons:
 
 ---
 
-### 6.35 使用量日历卡片 (type: usage_calendar)
+### 6.34 使用量日历卡片 (type: usage_calendar)
 
 使用量日历卡片用于展示任意实体的用量/能耗/时长数据，支持日历视图和年/月/日 ECharts 图表视图。数据来源既可以是 [HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store/releases)（ha_data_store）API，也可以是实体属性。
 
@@ -5606,7 +5617,7 @@ buttons:
 
 ---
 
-### 6.36 打印机统计卡片 (type: printer)
+### 6.35 打印机统计卡片 (type: printer)
 
 打印机统计卡片用于展示打印机的**状态、今日作业、日/月/年用量、累计统计、四色耗材、页数统计、事件日志**，分 4 个选项卡。
 
@@ -5773,7 +5784,7 @@ card:
 
 ---
 
-### 6.37 飞牛 fnOS 全实体卡片 (type: fnos)
+### 6.36 飞牛 fnOS 全实体卡片 (type: fnos)
 
 飞牛 fnOS 全实体卡片以**单个聚合实体**驱动整台飞牛的面板：只读 `sensor.fnos_all_entities` 的 `attributes.groups[]`（整机 + 全部 Docker 容器 + 全部虚拟机 + 文件 / 相册 / 影视的实体目录），**卡片不写死任何实体 id**，集成侧新增容器 / 虚拟机 / 应用时卡片无需改一行配置。
 
@@ -5868,7 +5879,7 @@ standalone_type: fnos
 
 ---
 
-### 6.38 实体健康状态卡片 (type: entities_health)
+### 6.37 实体健康状态卡片 (type: entities_health)
 
 实体健康状态卡片用于以房间/状态两个维度展示全屋实体的在线/离线情况。数据来源为实体健康监控实体（`sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health`）的 `attributes`（`total` / `online` / `offline` / `entities[]`）。
 
@@ -5957,7 +5968,7 @@ standalone_type: fnos
 
 > **依赖说明**：实体健康卡片数据来源于实体健康监控实体（`sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card_entities_health`），需由统一存储系统生成该实体（`attributes.total/online/offline/entities[]`）。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
 
-### 6.39 今日家庭日报卡片 (type: daily_report)
+### 6.38 今日家庭日报卡片 (type: daily_report)
 
 今日家庭日报卡片用于展示后端统一存储系统聚合的「今日家庭状态日报」。数据来源为 `sensor` 实体（默认 `sensor.hashu_ju_tong_yi_cun_chu_xi_tong_frontend_card`），读取 `state`/`summary`/`overall`/`alerts`/`sections`/`lights`/`offline`/`generated_at` 等属性。
 
@@ -6046,7 +6057,7 @@ summary 长文本按全角分号 `；` 切成项，依据每项开头的语义�
 
 > **依赖说明**：日报卡片数据来源于后端统一存储系统生成的「今日家庭状态」实体（`state`/`attributes.summary` 等）。若配置了 `refresh` 按钮实体，后端需注册该 `button.*` 实体用于触发重新生成。页面纯 DOM 构建（无 `innerHTML` 拼接），CSS 全部外置到 `room-elves-card-styles.css`。
 
-### 6.40 设备回放卡片 (type: replay)
+### 6.39 设备回放卡片 (type: replay)
 
 把「户型图 + 设备事件时间轴」做成可播放的一天回放：上半部分是户型平面图，回放中的设备按配置坐标摆放、随时间点亮/熄灭，还可叠加传感器数值气泡；下半部分是每个设备一条轨道的时间轴，底部时间滑块可拖动、可变速播放，并可切换日期回看历史某一天。
 
@@ -6257,7 +6268,7 @@ rooms:
 
 > 引擎实例的 `destroy()`（内部即 `disconnectedCallback`）会清理：事件订阅、托管定时器与 `rAF`、`ResizeObserver`、日期选择器弹窗、文档级监听与各类缓存 —— 弹窗关闭或被替换时由 `onClose` / `onDestroy` 调用。
 
-### 6.41 定时精灵卡片 (type: timer)
+### 6.40 定时精灵卡片 (type: timer)
 
 「延时 / 定时执行设备动作」的控制台：主界面显示倒计时时间框与进行中的任务，点击可打开**设置弹窗**新建设备定时器（选设备 → 选时长或时间点 → 选动作），也可以在**任务列表弹窗**里查看、取消已有任务与历史记录。
 
@@ -6401,7 +6412,7 @@ tap_action:
 - **数据来源**：任务由后端统一存储系统管理，卡片本身不持久化任务；后端未就绪时卡片显示「等待 Hass 连接」状态，状态指示点用于提示连接情况。
 - **原独立卡片已退役**：本卡片由独立卡片 `timer-control-card.js`（LitElement + Shadow DOM）迁移而来，配置需按上面的四种方式重写。
 
-### 6.42 温湿度面板卡片 (type: wenshidu)
+### 6.41 温湿度面板卡片 (type: wenshidu)
 
 全屋温湿度面板：**时间轴控制区 + 温度户型图 + 湿度户型图**，支持拖时间轴回放历史时刻、点房间看历史曲线、切 3D 温度视图。房间多边形、房间实体、配色全部由配置给出。
 
@@ -6601,7 +6612,7 @@ card:
 
 ---
 
-### 6.43 通讯模块卡片 (type: comm)
+### 6.42 通讯模块卡片 (type: comm)
 
 读取运营商账户信息（话费 / 流量 / 通话 / 套餐权益）与通讯记录，**弹窗形态**，弹窗内两个面板：「账户」「通讯记录」。
 
@@ -6615,7 +6626,7 @@ card:
 >
 > 底部一组小圆点指示当前面板，**圆点也可点击** —— 桌面端、键盘（Tab 聚焦 + 回车）与无障碍用户靠它切换，点击同样播放滑动动画。**卡片高度固定为「账户」面板的高度**：记录面板绝对定位、不参与高度计算，流水在面板内部滚动，因此翻页时卡片高度纹丝不动。
 
-**数据来源**：`shaobo_pocket_carrier` 集成生成的**「数据总览」实体**（如 `sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan`）。该实体的每个属性节点对应一个子传感器（节点内为 `entity_id` / `state` / `icon` / `单位` + 子实体全部属性），卡片一次性读取全部节点，无需逐个配置子实体。
+**数据来源**：`shaobo_pocket_carrier` 集成生成的**「数据总览」实体**（如 `sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan`）。该实体的每个属性节点对应一个子传感器（节点内为 `entity_id` / `state` / `icon` / `单位` + 子实体全部属性），卡片一次性读取全部节点，无需逐个配置子实体。
 
 **推荐写法：只写电话号码**，卡片按「电话号码 + 后缀」自动拼接整套实体：
 
@@ -6624,7 +6635,7 @@ tap_action:
   action: card
   card:
     type: comm
-    tel_1: 13363902961
+    tel_1: 133xxxxxxxx
     name: 通讯
     width: 430px
 ```
@@ -6641,7 +6652,7 @@ tap_action:
   action: card
   card:
     type: comm
-    entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+    entity: sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan
     name: 通讯
     width: 430px
 
@@ -6650,12 +6661,12 @@ tap_action:
   action: popup_card
   card:
     type: comm
-    entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+    entity: sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan
 ```
 
 | 参数 | 必填 | 类型 | 说明 |
 |------|:----:|------|------|
-| `tel_N` | ❌ | `string` | **推荐**：电话号码（`tel_1: 13363902961`），自动拼接整套实体；多个号码写 `tel_1` / `tel_2`… |
+| `tel_N` | ❌ | `string` | **推荐**：电话号码（`tel_1: 133xxxxxxxx`），自动拼接整套实体；多个号码写 `tel_1` / `tel_2`… |
 | `tel_N_name` | ❌ | `string` | 该号码的**显示名**（`tel_1_name: 我的`），显示在头部号码块的下行；未配则回落运营商 |
 | `entity` | ❌ | `string` | 单个「数据总览」实体 ID（旧写法，与 `tel_N` 可并存） |
 | `entities` | ❌ | `array` | 多个数据总览实体（多号码 / 多运营商），元素为字符串或 `{ entity, name }`；配置 **2 个及以上**时头部出现号码切换行 |
@@ -6679,7 +6690,7 @@ tap_action:
   action: card
   card:
     type: comm
-    tel_1: 13363902961
+    tel_1: 133xxxxxxxx
     tel_1_name: 我的
     tel_2: 17702925695
     tel_2_name: CM
@@ -6690,7 +6701,7 @@ tap_action:
 
 ```yaml
     entities:
-      - entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+      - entity: sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan
         name: 我的
       - entity: sensor.zhong_guo_lian_tong_xxxxxxxxxxx_shu_ju_zong_lan
         name: 联通
@@ -6745,10 +6756,10 @@ tap_action:
   action: card
   card:
     type: comm
-    entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
-    button: button.zhong_guo_dian_xin_13363902961_tong_hua_xiang_dan_er_ci_ren_zheng
-    code: text.zhong_guo_dian_xin_13363902961_tong_hua_xiang_dan_yan_zheng_ma
-    date: date.zhong_guo_dian_xin_13363902961_tong_hua_xiang_dan_cha_xun_qi_shi_ri_qi
+    entity: sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan
+    button: button.zhong_guo_dian_xin_133xxxxxxxx_tong_hua_xiang_dan_er_ci_ren_zheng
+    code: text.zhong_guo_dian_xin_133xxxxxxxx_tong_hua_xiang_dan_yan_zheng_ma
+    date: date.zhong_guo_dian_xin_133xxxxxxxx_tong_hua_xiang_dan_cha_xun_qi_shi_ri_qi
     name: 通讯
     width: 430px
 ```
@@ -6930,7 +6941,7 @@ tap_action:
 ```yaml
 type: custom:room-elves-card
 standalone_type: comm
-entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+entity: sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan
 name: 通讯
 ```
 
@@ -6940,7 +6951,7 @@ name: 通讯
 type: custom:room-elves-card
 standalone_type: comm
 entities:
-  - entity: sensor.zhong_guo_dian_xin_13363902961_shu_ju_zong_lan
+  - entity: sensor.zhong_guo_dian_xin_133xxxxxxxx_shu_ju_zong_lan
   - entity: sensor.zhong_guo_lian_tong_xxxxxxxxxxx_shu_ju_zong_lan
     name: 联通
 fields:
@@ -6977,7 +6988,7 @@ fields:
 
 ---
 
-### 6.44 ESXi 虚拟化卡片 (type: esxi)
+### 6.43 ESXi 虚拟化卡片 (type: esxi)
 
 > **只配一个聚合实体，就能展示与控制 ESXi 主机 + 全部虚拟机 + 屏幕画面。**
 >
@@ -7120,7 +7131,7 @@ tap_action:
 - 集成的兜底设备（如承载 vCenter 许可证的「ESXi 统计」）可能只有零散实体，用 `exclude` 排掉更清爽。
 - 画面是否更新取决于集成侧是否产出了新截图（`image` 实体本身给出新地址）；这与 HA 内置 `picture` 卡片同源，也受同一限制。
 
-### 6.45 个人账单卡片 (type: bill)
+### 6.44 个人账单卡片 (type: bill)
 
 > **把 ha_data_store 里的个人账单画成一张卡：五个选项卡 + "一个窗口内一路下钻"的图表。**
 >
@@ -7569,7 +7580,7 @@ recent_days: 7
 - 卡片与它所有弹窗**不引第三方图表库**：环形图是 SVG（`stroke-dasharray`）、柱图是 flex 高度百分比。
 - 明细行的「数据来源 / 类型 / 方式…」点击查询、以及查询页的「来源 ▾」筛选 / 「排序条」，口径都以**后端接口的过滤字段名**为准（`source` / `category` / `pay_method` / `status` / `bill_no` / `keyword` / `start` / `end` / `direction` …）。
 
-### 6.46 iKuai 全实体卡片 (type: ikuai_card)
+### 6.45 iKuai 全实体卡片 (type: ikuai_card)
 
 > **一张卡看全一台爱快：只配一个聚合实体，卡片自己认设备、认角色。**
 >
@@ -7624,7 +7635,7 @@ recent_days: 7
 | 键 | 必填 | 类型 | 说明 |
 |----|:----:|------|------|
 | `entity` | ❌ | string | 聚合实体（默认 `sensor.ikuai_all_entities`） |
-| `name` / `icon` | ❌ | string | 头部标题 / 图标（默认「爱快」/ `mdi:router-network`） |
+| `name` / `icon` | ❌ | string | 头部标题 / 图标（默认「爱快路由器」/ `mdi:router-network`） |
 | `accent` | ❌ | string / object | 主色调（走框架 `applyAccent`：命名色 / hex+rgb / auto / 实体驱动） |
 | `width` / `popup_width` / `popup_position` | ❌ | number / string | 卡片宽度、弹窗宽度与弹出方位 |
 | `confirm_power_off` | ❌ | bool | 关机类操作是否二次确认（默认开） |
@@ -7694,7 +7705,7 @@ recent_days: 7
 
 ---
 
-### 6.47 叮咚门铃卡片 (type: dingdong)
+### 6.46 叮咚门铃卡片 (type: dingdong)
 
 > **只配一个「实体清单」实体，就能把一台叮咚（移康 eques）门铃装进一张卡：抓拍 / 实时画面 + 按天回看的事件时间轴 + 设置 + 诊断。**
 >
@@ -7854,6 +7865,199 @@ tap_action:
 
 ---
 
+### 6.47 NPS 隧道管理卡片 (type: nps)
+
+> **一张卡管一台 NPS 内网穿透服务端：只配一个「所有实体」聚合实体，出「概览 / 隧道 / 客户端」三个页签 —— 启停、新增、编辑、删除都能在卡里做完。**
+>
+> ⚠️ **前置条件：必须先安装自定义集成 [`nps`](https://github.com/chjspp520/nps)（必需，同样由 chjspp520 维护）**
+> —— 卡片**不与 NPS 服务端直接通信**，数据全部来自集成生成的聚合实体
+> `sensor.nps_server_<主机地址>_all_entities`；而**新建 / 编辑 / 删除隧道与客户端就在卡片里做**
+> （写操作走集成为前端注册的 WebSocket 命令 `nps/action`，`@websocket_api.require_admin`，**必须是管理员**）。
+> **没装 / 没配置集成时，这张卡没有数据可显示**（只会给一句提示，不是卡片坏了）。
+>
+> 📌 **本节对应版本：v6.8.0（2026-10-22）** —— 这张卡随 v6.8.0 入库；
+> 逐条改动（新增页签 / 编辑表单 / 删除按钮 / 访问控制区块 / 行首编辑按钮 / 复制 URL）见 `CHANGELOG.md` 的 **v6.8.0** 段。
+
+#### 依赖集成：`nps`（必需）
+
+本卡片**不能独立工作**，数据与写操作全部来自自定义集成 **`nps`**：
+
+- **仓库地址**：https://github.com/chjspp520/nps （下载 / 更新都从这里取，作者 **chjspp520**）
+- **安装位置**：`<配置目录>/custom_components/nps`（开发机映射盘 `Y:\custom_components\nps`）
+- **安装步骤**：
+  1. 从上面仓库下载，把整个 `nps` 目录放进 HA 配置目录的 `custom_components/`；
+  2. 重启 Home Assistant；
+  3. 「设置 → 设备与服务 → 添加集成」，搜索 **NPS**，填 NPS 服务端地址（如 `47.108.189.87:8080`）与面板 `auth_key`。
+- **它提供什么**：为整台 NPS 服务端建实体（隧道开关 / 客户端开关 / 隧道类型计数 / 流量 / 速率 / 域名映射 / 面板访问开关 / 面板访问密钥…），
+  并生成**聚合实体 `sensor.nps_server_<主机地址>_all_entities`**（主机里的 `.`、`:` 会被 slugify 成 `_`）——
+  卡片就是靠它"一次拿到全部实体"，所以配置里**只要一个实体**，不必逐个写。
+- ✅ **前端可写（重点）**：卡片**本身就是一套可写控制台** —— 隧道的启停 / **新建** / 编辑 / 删除、
+  客户端的连接断开 / **新建** / 编辑 / 删除，全部在卡片里完成，**不需要打开 NPS 管理面板**。
+  写入走集成注册的 WebSocket 命令 `nps/action`（→ 由集成调 NPS 服务端 API），
+  完成后集成自己 `coordinator.async_refresh()`，卡片 5 秒 tick 自动跟上。
+- ⚠️ **面板访问相关**：集成另外提供「管理面板访问」开关（`switch.*_panel_access`）与「面板访问密钥」
+  （`sensor.*_panel_access_key`，state = 剩余分钟）—— 本卡「访问控制」区块用的就是这两个实体；密钥/访问地址
+  被集成排除在 recorder 之外（不写历史库），且**加盐只在内存里，HA 重启后密钥会换新**。
+
+#### 三种入口（与其它卡片一致）
+
+**① 独立卡片（`standalone_type: nps`）** —— 整卡常显，高度由内容决定；
+卡片自带 5 秒值级刷新，所以不参与独立模式的 1 秒轮询。
+
+```yaml
+type: custom:room-elves-card
+standalone_type: nps
+name: 内网穿透
+entity: 集成提供的“所有实体”的实体（单个实体）
+```
+
+**② 点按钮弹出卡片自带的弹窗（`action: card` → `showNpsPopup`）**
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: nps
+    name: 内网穿透
+    entity: 集成提供的“所有实体”的实体（单个实体）
+```
+
+**③ 内嵌进 HA 原生弹窗（`action: popup_card`）**
+
+```yaml
+tap_action:
+  action: popup_card
+  card:
+    type: nps
+    name: 内网穿透
+    entity: 集成提供的“所有实体”的实体（单个实体）
+```
+
+> 这里的「入口」只指**卡片内容怎么展示**。要注意两点别搞混：
+> ① **隧道的启停 / 新建 / 编辑 / 删除、客户端的连接断开 / 新建 / 编辑 / 删除，都在卡片里直接做**，
+> 不需要打开 NPS 管理面板（`隧道` / `客户端` 页右下角有加号，行首有编辑铅笔）；
+> ② 只有**管理面板整页页面**（NPS 后台那一套：域名映射、服务器配置等）不由本卡承载，
+> 仍走集成自己的侧边栏面板 `/nps`。
+
+#### 配置项
+
+全部可选 —— 最简就是一张空卡（自动发现聚合实体）：
+
+| 键 | 必填 | 类型 | 说明 |
+|----|:----:|------|------|
+| `entity` | ❌ | string | 「所有实体」聚合实体（默认自动发现 `sensor.*_all_entities`；也可写本设备任一实体，按 id 前缀回退找聚合实体） |
+| `name` / `icon` | ❌ | string | 头部标题 / 图标（默认「NPS 隧道」/ `mdi:tunnel`） |
+| `accent` | ❌ | string | 主色（默认科技青蓝 `#1fb6ff`，走框架 `applyAccent`） |
+| `initial_tab` | ❌ | string | 初始页签：`overview`（默认）/ `tunnels` / `clients` |
+| `popup_width` | ❌ | string | 弹窗宽度（默认 `760px`，兼容 `width`） |
+| `popup_position` | ❌ | string | 弹窗位置（默认 `center`） |
+
+#### 三个页签
+
+| 页签 | 内容 |
+|------|------|
+| **概览** | ① hero：实时速率大字（`KB/s`，≥1024 自动换 `MB/s`）+ 在线隧道数 + 右侧在线客户端数；② **流量环**：入口 + 出口拼成一个环形（环心 = 总量，GB / TB 自动换），右侧两行图例；③ **指标条**：隧道总数 / 客户端在线·总 / 连接总数 / 域名映射；④ **访问控制**（见下节）。服务器 IP / 网桥协议常态是空值，**不摆空行** |
+| **隧道** | 状态胶囊（全部 / 在线 / 离线）+ 类型胶囊（TCP·UDP·SOCKS5·HTTP·P2P·文件·秘密，**只显示当前存在的类型**）；每行：**行首铅笔（编辑）** + 状态点 + `remark` 备注名 + 类型徽标 + 本地目标（等宽）+ 服务端口 + 进出流量 + 右侧启停开关。点行 → 详情气泡（头部 remark + 类型·端口·目标 + 在线/离线胶囊；入口/出口两块流量卡；其余属性两列网格） |
+| **客户端** | 只在**确实有客户端实体**时才出现。每行：状态点 + 客户端**名称** + 脱敏 IP（`1.85.*.*`）+ 版本 + 连接数 + 右侧「连接 / 断开」开关；点行 → 详情气泡（名称 + 脱敏 IP·版本 + 流量卡 + 属性网格） |
+
+#### 概览页「访问控制」区块
+
+| 行 | 内容 |
+|----|------|
+| **管理面板访问** | 开关 = `switch.*_panel_access`（点击先弹统一确认框「停用/启用管理面板访问」）；副标题给「已启用 · 面板链接可用 / 已停用 · 访问链接与接口请求均被拒绝」。**点这一行** → 详情气泡 |
+| **密钥剩余时长** | 读数 = `sensor.*_panel_access_key` 的 state（分钟）+ 整点进度条（按 60 分钟算）；副标题给「整点换新 · `15:00` 过期」（取属性「过期时间」）。开关关着时直接显示「面板访问已停用，密钥暂不提供」 |
+
+**详情气泡**（点「管理面板访问」行）：状态胶囊 + **访问地址块（复制 URL）** + 属性网格（状态 / Entry ID / 密钥剩余 / 密钥过期）+ 一句提示。
+
+- 地址取值优先级：`switch` 的 `panel_url` 属性（集成签好的 `authSig` 地址，24 小时有效）→ 密钥传感器的「访问地址」（`?key=` 短链）。
+- 签名串太长，气泡里**只显示到路径**（`http://192.168.1.102/nps/console?…`）；「复制 URL」按钮复制的是**完整值**（复制成功按钮变「已复制」并 toast）。
+- 地址带签名，**可直接打开面板，请勿外传**；开关关闭后地址不可用，按钮置灰。
+
+#### 新增 / 编辑 / 删除（写入）
+
+- **加号**（右下角半透明圆钮，颜色跟随页签激活色）**只在「隧道」「客户端」两页出现**，概览页隐藏；点它加什么看当前页。
+- 弹窗分「隧道 / 客户端」两页，字段与集成面板 `nps-panel.js` 的 `_openTunnelForm` / `_openClientForm` **一一对齐**（高级项收进「高级选项」折叠区，移动端不占屏）。
+- **编辑**：点行首铅笔 → 先 `hass.callWS({ type:'nps/action', action:'list' })` 拉集成快照，按 `Id` 取**原始对象**回填 ——
+  ⚠️ **不要用实体属性回填**：属性是精简过的（`vkey` 只暴露前 16 位、`flow_limit` 是 `"1.00 GB"` 这种格式化串、白/黑名单与到期时间不暴露），拿它回填再提交会写坏数据。
+- **删除**：编辑弹窗左下红色「删除」→ 统一确认框 → `action: 'tunnel_del'` / `'client_del'`（带 `id`）。**新增弹窗不出现该按钮**。
+- 提交：`hass.callWS({ type:'nps/action', action: 'tunnel_add'|'tunnel_edit'|'client_add'|'client_edit', data: {…} })`，
+  后端完成后自己 `coordinator.async_refresh()`，本卡再补两次延迟刷新。
+
+#### 实体角色识别（不写死任何 entity_id）
+
+聚合实体的 `attributes.entities[]` 每项是 `{ entity_id, name, icon, state }` —— 卡片**只把它当"实体目录"**：
+
+- **实时值一律回 `hass.states` 读**（清单里的 `state` 是集成 60 秒才合并一次的快照，只作"查不到实体"时的兜底）；
+- 角色按 **entity_id 后缀**认（HA 里 id 被占号会带 `_2` 后缀，识别时先剥掉尾部 `_数字`）：
+
+| 后缀 | 角色 | 后缀 | 角色 |
+|------|------|------|------|
+| `_all_entities` | 聚合清单 | `_tunnel_total` | 隧道总数 |
+| `_panel_access` | 管理面板访问开关 | `_tcp_tunnels` / `_udp_tunnels` / `_socks5_tunnels` | 各类型隧道（附 `tunnels[]` 明细） |
+| `_panel_access_key` | 面板访问密钥 | `_http_proxy_tunnels` / `_secret_tunnels` / `_p2p_tunnels` / `_file_tunnels` | 同上 |
+| `_client_total` / `_clients_online` | 客户端总数 / 在线 | `_host_mappings` | 域名映射 |
+| `_total_connections` | 连接总数 | `_realtime_rate` | 实时速率 |
+| `_inlet_traffic` / `_export_traffic` | 入口 / 出口流量 | `_server_ips` / `_bridge_protocols` | 服务器 IP / 网桥协议 |
+
+- **隧道 vs 客户端**：两者都是 `switch.*`，靠**属性**区分（都有 `client_id`，不能拿它判）——
+  有 `tunnel_id` → 隧道；有 `vkey` / `version` / `online` / `connections` → 客户端；
+  实体还没可用（拿不到属性）时按清单里的 `icon` 兜底（`mdi:lan-connect` / `lan-disconnect` → 隧道，`mdi:ethernet` → 客户端）。
+- **隧道的 `remark` 备注**只出现在「按类型的隧道清单」传感器里（`sensor.*_tcp_tunnels` 等）`attributes.tunnels[].remark`，
+  `switch` 实体自己只有拼出来的 `friendly_name`（拆不干净）—— 卡片按 `tunnel_id` 把两边对齐，所以换备注名会立刻跟上。
+
+#### 操作与刷新
+
+- **启停 / 连接断开**：先弹**二次确认**（宿主统一 `showConfirmDialog`，正文是 DOM 节点），确认后走统一动作系统
+  （`_executeTapAction({ action: 'toggle', entity })`，自动写操作记录），并做**乐观更新**（8 秒内 hass 没追上就放弃）+
+  `1.2s` / `3.2s` 两次补刷（集成侧 `turn_on/off` 后要 `await sleep(3)` 才刷新数据）。
+- **5 秒值级刷新**（`_registerLowFreqTask` 挂在宿主共享 tick 上）：只做文本 / 类名 / 宽度的脏检查写入，
+  页面不可见跳过、卡片脱离 DOM 自动注销；实体变化另由订阅集（`_dynamicEntitySubscriptions`）立即驱动。
+- **整卡高度 70vh**（`fit: 'exact'`），超出部分由各页自己的滚动区处理；结构签名没变时只刷值、不重建 DOM。
+- 集成侧新增 / 删除隧道后实体是**动态增删**的，卡片 5 秒 tick 自动跟上（不必重载集成）；
+  若新建隧道长期不出现，去日志搜 `Error while setting up nps platform for switch`。
+
+#### 完整配置示例
+
+```yaml
+# 独立卡片 + 把可选项都写出来（不给 entity 也能用：自动找第一个 sensor.*_all_entities）
+type: custom:room-elves-card
+standalone_type: nps
+name: 内网穿透                       # 头部标题（默认「NPS 隧道」）
+icon: mdi:tunnel                     # 头部图标
+accent: '#1fb6ff'                    # 主色（默认科技青蓝）
+initial_tab: overview                # 初始页签：overview / tunnels / clients
+entity: sensor.nps_server_xx_xx_xx_xx_8080_all_entities   # 聚合实体
+popup_width: 820px                   # 弹窗宽度（默认 760px）
+popup_position: center               # 弹窗位置
+```
+
+```yaml
+# 多台 NPS 服务端：一张卡配一个聚合实体，各自写自己的 entity
+type: custom:room-elves-card
+room_name: 机房
+buttons:
+  - type: button
+    name: 主穿透
+    icon: mdi:tunnel
+    tap_action:
+      action: popup_card
+      card:
+        type: nps
+        entity: sensor.nps_server_xx_xx_xx_xx_8080_all_entities
+
+  - type: button
+    name: 备用穿透
+    icon: mdi:tunnel-outline
+    tap_action:
+      action: popup_card
+      card:
+        type: nps
+        entity: sensor.nps_server_192_168_1_10_8080_all_entities
+        initial_tab: tunnels
+```
+
+---
+
 ## 七、通用动作系统（tap_action）
 
 所有支持 `tap_action` 的位置（按钮、title_entities、entities 区域、传感器卡片等）共享同一套动作执行引擎。动作类型统一，配置方式一致，`set_value` 和 `toggle` 还支持 `entities` 多实体批量操作。
@@ -7865,7 +8069,7 @@ tap_action:
 | `toggle` | 切换开关状态（on↔off），自动推断服务 | ✅ | `entity` 或 `entities` |
 | `set_value` | 设置实体目标值，自动推断服务（最灵活） | ✅ | `entity` 或 `entities` + `value` |
 | `loop_assign` | 循环赋值：每次点击把实体推进到 `values` 序列下一个值，到末尾回绕 | ✅ | `entity`/`loop` + `values` |
-| `process_execute` | 流程执行：按 `steps` 序列依次执行多实体操作，每步独立延时，复用情景推断引擎 | ❌ | `steps` |
+| `process_execute` | 流程执行：按 `steps` 序列依次执行多实体操作，每步独立延时，复用情景推断引擎 | ✅（每步的 `entities` 会自动展开） | `steps` |
 | `quick-action` | 快捷操作，弹出情景模式气泡执行多步骤操作 | — | `scenes` 或 `actions` |
 | `more-info` | 弹出 HA 标准详细信息弹窗 | ❌ | `entity` |
 | `navigate` | 页面导航 | ❌ | `navigation_path` |
@@ -7908,7 +8112,7 @@ tap_action:
 
 ### set_value — 设置目标值（最灵活）
 
-根据实体域和 `value` 值自动推断应调用的 HA 服务，与情景模式（6.17 节）共享同一套服务推断引擎。无需手动指定服务名，只需提供目标值即可控制灯光、空调、遮盖、风扇等任意设备。
+根据实体域和 `value` 值自动推断应调用的 HA 服务，与情景模式（6.16 节）共享同一套服务推断引擎。无需手动指定服务名，只需提供目标值即可控制灯光、空调、遮盖、风扇等任意设备。
 
 ```yaml
 # ---- 灯光 ----
@@ -8109,7 +8313,7 @@ tap_action:
 | 其他域 | `"on"` / `"off"` | `turn_on` / `turn_off` | 通用开关 |
 | 其他域 | 其他 | `homeassistant.turn_on` | 通用回退 |
 
-> 此对照表与 6.17 节情景模式的推断逻辑完全一致，因为底层共享同一个 `_inferSceneService` 引擎。
+> 此对照表与 6.16 节情景模式的推断逻辑完全一致，因为底层共享同一个 `_inferSceneService` 引擎。
 
 ### loop_assign — 循环赋值（每次点击轮换到下一个值）
 
@@ -8269,9 +8473,9 @@ tap_action:
 | `media` | 媒体控制面板 | 播放/暂停/音量 |
 | `health` | 健康数据面板 | 步数/心率等 |
 | `scene_mode` | 情景模式气泡 | 气泡选择/执行进度 |
-| `esxi` | ESXi 虚拟化面板 | 主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡（见 6.44） |
-| `bill` | 个人账单面板 | 概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表（见 6.45） |
-| `dingdong` | 叮咚门铃面板 | 抓拍 / 实时画面 + 按天回看的时间轴（事件·抓拍·录像混轴）+ 设置 + 诊断四选项卡（见 6.47） |
+| `esxi` | ESXi 虚拟化面板 | 主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡（见 6.43） |
+| `bill` | 个人账单面板 | 概览 / 分析 / 日历 / 查询 / 历史五选项卡 + 窗口内下钻图表（见 6.44） |
+| `dingdong` | 叮咚门铃面板 | 抓拍 / 实时画面 + 按天回看的时间轴（事件·抓拍·录像混轴）+ 设置 + 诊断四选项卡（见 6.46） |
 
 **配置示例：**
 
@@ -8363,7 +8567,7 @@ tap_action:
 
 ### quick-action — 快捷操作
 
-在任意支持 `tap_action` 的位置触发情景模式快捷操作，弹出气泡选择器并执行多步骤操作。桥接情景模式执行引擎（6.17 节），支持执行进度展示、状态验证、延时执行等全部功能。
+在任意支持 `tap_action` 的位置触发情景模式快捷操作，弹出气泡选择器并执行多步骤操作。桥接情景模式执行引擎（6.16 节），支持执行进度展示、状态验证、延时执行等全部功能。
 
 **完整模式（scenes 数组）：** 配置多个情景，点击弹出气泡选择器
 
@@ -8409,7 +8613,7 @@ tap_action:
 | 配置项 | 必填 | 类型 | 说明 |
 |--------|:----:|------|------|
 | `action` | ✅ | `string` | 固定为 `quick-action` |
-| `scenes` | ❌* | `array` | 情景列表，格式与 `scene_mode`（6.17 节）完全一致 |
+| `scenes` | ❌* | `array` | 情景列表，格式与 `scene_mode`（6.16 节）完全一致 |
 | `actions` | ❌* | `array` | 操作列表（简写模式，与 `scenes` 二选一） |
 | `name` | ❌ | `string` | 操作名称，用于气泡标题，默认 `快捷操作` |
 | `scene_mode` | ❌ | `string` | `bubble`（气泡选择）/ `direct`（直接执行），不配置时自动判断 |
@@ -8452,7 +8656,7 @@ tap_action:
   value: "off"
 ```
 
-> `entity`（单实体）和 `entities`（多实体）二选一，同时配置时 `entities` 优先。
+> `entity`（单实体）与 `entities`（多实体，支持字符串数组或 `{别名: 实体}` 对象）可以只配一个；两者同时配置时会对**全部实体依次执行**（先 `entity`，再 `entities`，自动去重），不是二选一。
 
 ### 适用位置
 
@@ -8517,7 +8721,6 @@ tap_action:
 | `rows` | ❌ | `array` | `[]` | 选项卡内容行（自由布局弹窗格式） |
 | `disabled` | ❌ | `boolean` | `false` | 是否禁用此选项卡（禁用后不可点击、灰色显示、不参与自动跳转） |
 | `badge` | ❌ | `string` / `number` | 无 | 选项卡角标固定值（显示在名称右上角的小数字） |
-| `badge_entity` | ❌ | `string` | 无 | 选项卡角标实体（动态取值，条件选项卡专用） |
 | `config_id` | ❌ | `string` | 无 | 注册 ID，将该选项卡配置注册到全局 Store，供 `tabs_config` 引用（见第十八节） |
 
 ### 8.3 选项卡图标（icon）
@@ -8639,17 +8842,14 @@ tabs:
     rows: [...]
 ```
 
-### 8.8 选项卡角标（badge / badge_entity）
+### 8.8 选项卡角标（badge）
 
-为选项卡添加角标，显示在名称右上角的小数字，用于提示数量或状态。
+为选项卡添加角标，显示在名称右上角的小数字，用于提示数量或状态。角标只支持**固定值**（文本或数字原样显示，不支持按实体动态取值）：
 
 ```yaml
 tabs:
   - name: 客厅
-    badge: 3                             # 固定角标值
-    rows: [...]
-  - name: 卧室
-    badge_entity: sensor.bedroom_active_count  # 动态角标（从实体取值）
+    badge: 3                             # 固定角标值（原样显示）
     rows: [...]
 ```
 
@@ -10360,7 +10560,7 @@ buttons:
   - entity: switch.plug               # 没有 row_column 会自动排列
 ```
 
-> 序号只决定排列顺序，不决定最终位置。系统会自动检测碰撞，优化布局。
+> 序号只用于标识与重复校验，**不参与排序**：按钮按 `buttons` 数组顺序以 Z 字型依次落位，系统自动跳过已占用格子。
 
 ---
 
@@ -10685,7 +10885,7 @@ cards:
 | `type` | ❌ | `string` | 模式类型：`action` 表示快捷操作模式（需配合 `scenes`） |
 | `entity` | ❌* | `string` | 单实体 ID（传感器模式必填，与 `entities` 二选一） |
 | `entities` | ❌* | `array` | 多实体 ID 数组（控制按钮模式，与 `entity` 二选一） |
-| `scenes` | ❌* | `array` | 情景列表（快捷操作模式必填，格式与 6.17 节一致） |
+| `scenes` | ❌* | `array` | 情景列表（快捷操作模式必填，格式与 6.16 节一致） |
 | `icon` | ❌ | `string` | 图标（如 `mdi:stove`） |
 | `name` | ❌ | `string` | 显示名称（控制按钮模式下建议必填，否则只显示图标） |
 | `show_name` | ❌ | `boolean` | 是否显示名称，默认 `true` |
@@ -10716,7 +10916,7 @@ cards:
 
 **`set_value` 详细说明：**
 
-`set_value` 动作会根据实体域（`light.`、`climate.` 等）自动推断应调用的 HA 服务，与情景模式（6.17 节）共享同一套服务推断引擎。无需手动指定服务名，只需提供目标 `value` 即可：
+`set_value` 动作会根据实体域（`light.`、`climate.` 等）自动推断应调用的 HA 服务，与情景模式（6.16 节）共享同一套服务推断引擎。无需手动指定服务名，只需提供目标 `value` 即可：
 
 ```yaml
 # 灯光：value "on" → light.turn_on，value "off" → light.turn_off
@@ -10745,7 +10945,7 @@ tap_action:
   value: "制冷"
 ```
 
-> 完整的"实体类型与服务自动推断"对照表见 6.16 节。
+> 完整的"实体类型与服务自动推断"对照表见 6.15 节。
 
 > **弹窗顶层标题**也支持 `title_entities`（配置在 `service_data.title_entities` 中），功能与 row 级别一致。
 
@@ -10753,19 +10953,17 @@ tap_action:
 
 在自由布局弹窗（`show_free_layout_popup` / `popup_card`）的 `rows[].items` 中，支持以下卡片类型。每个 item 通过 `type` 字段指定类型。
 
+> ⚠️ 表中**没有**的类型不要写：`slider` 已删除，`toggle` / `light` / `cover` / `fan` 从未在卡片类型表中注册 —— 它们会退到 HA 原生卡片兜底，最终什么也不渲染。
+
 | 类型 | 说明 | 主要配置项 |
 |------|------|-----------|
 | `sensor` | 显示传感器数值 | `entity`、`name`、`layout: mini/full`、`unit`、`icon` |
 | `switch` | 开关控制 | `entity`、`name`、`icon` |
-| `toggle` | 开关切换按钮 | `entity`、`on_icon`、`off_icon`、`on_color`、`off_color` |
 | `button` | 按压按钮 | `entity`、`name`、`icon`、`show_duration`、`confirm` |
-| `light` | 单灯控制（亮度/色温） | `entity`、`name` |
-| `cover` | 窗帘/遮盖控制 | `entity`、`name` |
 | `curtain` | 窗帘详细控制面板 | `entity`、`fabric_entity`、`sheer_entity` |
 | `select` | 下拉选择器 | `entity`、`name` |
 | `number` | 数值输入 | `entity`、`min`、`max`、`step` |
 | `text` | 文本显示 | `entity`、`name` |
-| `slider` | 滑块控制 | `entity`、`min`、`max`、`step` |
 | `radio` | 单选按钮组 | `entity`、`options` |
 | `timeline` | 时间轴（当天状态变化） | `entity`、`map_table`、`api_base_url` |
 | `picture` | 图片展示（详见下方） | `bg_image`、`halo_entity`、`bg_image_position` |
@@ -10782,7 +10980,7 @@ tap_action:
 | `daily_report` | 今日家庭日报卡片 | `entity`、`refresh`、`hide_room`、`env_from_config_id`、`width` |
 | `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`、`hosts`、`vms`、`exclude`、`default_vm`、`show_screen`、`show_refresh`、`show_sync`、`confirm_power_off`、`width` |
 | `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`、`key`、`name`、`icon`、`subtitle`、`accent`、`page_size`、`recent_days`、`source`、`direction` |
-| `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`、`name`、`date`、`show_live`、`events_limit`、`shots_limit`、`videos_limit`、`hero_ratio`、`hero_max_height`（见 6.47） |
+| `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`、`name`、`date`、`show_live`、`events_limit`、`shots_limit`、`videos_limit`、`hero_ratio`、`hero_max_height`（见 6.46） |
 
 #### radio 卡片（单选按钮组）
 
@@ -11455,6 +11653,22 @@ buttons:
 
 > **注意**：`tabs` 数组内的 `config_id` 和 `tap_action` 内的 `config_id` 互不冲突，因为它们注册的内容类型不同（tab 级 vs action 级），同一 ID 不应重复使用。
 
+**位置3：`buttons` / `buttons_2` … 的分组对象上（新增，注册整组设备）**
+
+写在没有 `tap_action` 的分组按钮本身（`type: lights` / `ac` 等带 `card` 的分组）上时，注册的是**整组配置**（含 `card` 里的设备清单），供「最近使用设备」等需要按实体反查设备节点的场景使用（`RoomElvesStore.getGroupDeviceById(groupId, entityId)`）。
+
+```yaml
+head: true
+buttons:
+  - type: lights
+    config_id: all_lights            # 注册整组配置（含 card 设备清单）
+    card:
+      - entity: light.living_ceiling
+      - entity: light.bedroom
+```
+
+> 三种位置之外（例如写在 `tabs_config` 对象上）不会被扫描、也不会报错，`config_id` 会被静默忽略。
+
 #### 使用 tabs_config 组合引用
 
 在另一个按钮的 `service_data.tabs` 中，使用 `tabs_config` 将上述已注册的配置组合为新的弹窗：
@@ -11628,19 +11842,20 @@ tabs:
 优先级：replace_config > 引用项覆盖字段 > 原配置值
 ```
 
-#### tabs_config 自身的 config_id（可选）
+#### 关于 `tabs_config` 自身的 `config_id`
 
-如果组合后的弹窗本身也想被其他地方引用，可以在 `tabs_config` 上添加 `config_id`：
+`tabs_config` 上**不要**写 `config_id`：扫描器只登记 `tap_action` / `hold_action` / `double_tap_action` / `icon_action` / `entities_tap_action` 内的 `config_id`、`tabs[]` 选项卡上的 `config_id`、以及 `buttons` / `buttons_N` 分组上的 `config_id`。写在 `tabs_config` 上会被静默忽略（不报错、不生效）。
 
 ```yaml
 tabs:
   - tabs_config:
-      config_id: chuju_all            # 可选：注册组合后的配置
       from_config_id:
         - config_id: bingxiang
           name: 冰箱
         - config_id: weibolu
 ```
+
+> 如需在别处再次引用这段组合结果，当前版本没有"注册组合配置"的入口，请把同一份 `tabs_config` 片段复制过去。
 
 #### 循环引用保护
 
@@ -11839,7 +12054,7 @@ rooms:
 ```yaml
 person:
   - main_entity: binary_sensor.living_motion
-    room_point_from: /local/point.json    #如果放在/local/pobaby_package/point.json，则可以不填写，否则手动指定
+    room_point_from: /local/point.json    # 如果放在 /local/pobaby_package/point/point.json，则可以不填写，否则手动指定
     rooms:
       客厅: binary_sensor.living_motion
       卧室: binary_sensor.bedroom_motion
@@ -11947,7 +12162,7 @@ report_name_priority: alias,name,entity_id
 
 **加载策略：** 优先使用本地文件，当目录中没有对应文件时，卡片会自动从 CDN 拉取。
 
-**依赖 ECharts 的图表类型：** `chart_line`、`chart_pie`、`chart_pie_full`、`chart_nightingale`、`chart_heatmap`、`chart_calendar`、`chart_mixed`，以及插座桑基图。详见 [6.21 图表卡片概览](#621-图表卡片概览)。
+**依赖 ECharts 的图表类型：** `chart_line`、`chart_pie`、`chart_pie_full`、`chart_nightingale`、`chart_heatmap`、`chart_calendar`、`chart_mixed`，以及插座桑基图。详见 [6.20 图表卡片概览](#621-图表卡片概览)。
 
 **无需 ECharts 的图表类型：** `chart_gauge`（纯 SVG）、`chart_progress`（纯 CSS）、`chart_bar`（纯 CSS）。
 
@@ -12030,10 +12245,10 @@ Room Elves Card 的弹窗系统是所有交互控制的核心载体——点击�
 
 ```yaml
 popup_position: "clone_button_down, 30px"    # 按钮下方，偏移30px
-popup_position: "center, -10px"               # 居中，向上偏移10px
+popup_position: "up, -10px"                   # 向上弹出，再上移 10px
 ```
 
-默认偏移量为 25px。
+默认偏移量为 25px。偏移量只对 `clone_button_*` / `up` / `down` / `left` / `right` 这类"相对按钮或屏幕边缘"的定位生效；`center` 是严格居中，附加的偏移量会被忽略。
 
 #### 自动定位算法（不配置 popup_position 时）
 
@@ -12083,6 +12298,96 @@ buttons:
 
 > 移动端会自动限制弹窗高度不超过视口的 60%，确保操作便利性。
 
+> **宽度上限与视口宽度识别**：配置了固定宽度时，上限是 `calc(var(--revw, 100vw) - 8px)`；
+> 未配置时沿用原来的比例语义（`calc(var(--revw, 100vw) * 0.9)` 等）。`showPopup` /
+> `showBubble` 会把内联 `width` / `max-width` 里的 `vw` 自动换成 `--revw` 表达式，所以卡片里
+> 写 `90vw` 也会走实测值。`--revw` 的取值分两层（`modules/infra/viewport.js`）：
+>
+> 1. **全局层**（写在 `documentElement`）：`documentElement.clientWidth` / `window.innerWidth` /
+>    `100vw` 探针 rect / `visualViewport.width` / 移动端屏幕口径，**取最大**（2 倍内才可信）；
+> 2. **局部层**（写在弹窗/气泡自身上）：`全局宽 / 卡片坐标空间缩放系数 k`。k 由"100px 探针分别
+>    放进卡片 shadowRoot 与 document.body 后比较 rect"得出。
+>
+> 之所以不用 `vw`：鸿蒙（ArkWeb）上内核解析的 `vw`/`vh` 仍是缩放前的尺寸，会把用户配置的
+> `width` 压掉（表现为"width 不起作用、退回默认宽度"）。**实测鸿蒙 + HA App 缩放 85% 时
+> 上面所有全局口径全都不变（366、scale=1），卡片子树也测不出缩放（WebView 层缩放）**，
+> 这种情况只能用卡片顶层配置 `harmony_scale: 85%` 告知（见上方配置表），
+> 或控制台 `roomElvesHarmonyScale('85%')` / `roomElvesViewportWidth(430)`。
+>
+> 排查命令：`roomElvesDebug('dump', 'viewport')`（各口径 + 采用值）、
+> `roomElvesDebug('viewport')` 开关后开弹窗会打印"配置 / 上限 / 实际 / 可用视口 / 视觉视口"；
+> 鸿蒙缩放声明状态在独立模块：`roomElvesDebug('dump', 'harmony-scale')`。
+
+### 21.5.1 鸿蒙系统（App 缩放）适配与临时兼容层（v6.7.0）
+
+> 一句话：**鸿蒙 + HA App 把页面缩放到 85% 后，`vw`/`vh` 等"视口口径"仍停在缩放前的尺寸，
+> 而且页面内测不出来**。卡片的做法是「声明式告知 + 全部换算走实测值」，**不写任何平台判断**，
+> 所以正常内核（iOS / 安卓 / 桌面）上与旧行为完全等价。
+
+#### 一、什么时候需要配 `harmony_scale`
+
+满足任意一条，就说明该设备需要声明缩放（症状都是"只有鸿蒙有、iOS/安卓没有"）：
+
+| 症状 | 表现 |
+|---|---|
+| 弹窗宽度不对 | 配了 `width: 400px` 却明显变窄；或弹窗比屏幕窄一截 |
+| 弹窗高度不对 | 配了高度上限却被压矮、内容被切 |
+| 弹窗/气泡位置偏 | 弹窗不是贴着按钮弹出，箭头指不到点击处 |
+| 径向遮罩错位 | 气泡打开后"清晰孔"不在你点的那个格子/按钮上 |
+| 户型图文字 | 房间名要再点一下空白处才出现，或出现时不在房间中间 |
+| 内容只有弹窗一部分 | 内容比弹窗外壳窄，右侧留一条空白带（v6.7.0 已修，无需再配） |
+
+#### 二、参数配置
+
+```yaml
+type: custom:room-elves-card
+# ……其它配置……
+harmony_scale: 85%            # 鸿蒙 App 缩放比例：85% / 0.85 / 85 三种写法都认
+# harmony_scale_force: true   # 仅用于在非鸿蒙平台验证同一套效果，日常不要开
+```
+
+| 参数 | 说明 | 必须 |
+|---|---|:--:|
+| `harmony_scale` | 声明"页面实际被缩放到多少"。卡片据此把可用空间换算成 `视口 ÷ 缩放`（366 → 430、800 → 941）。**写在任意一张卡片上即可**，值会持久化到 `localStorage` 并被其它卡片/刷新后继承 | 否 |
+| `harmony_scale_force` | `true` 时不受"仅鸿蒙 UA 生效"限制，便于其它平台验证 | 否 |
+
+要点：
+
+- **调了 App 的缩放比例就要同步改这个值**（例如从 85% 改到 90%，这里也要写 90%），
+  否则弹窗会按旧比例排布，表现为溢出或变窄；
+- 只在鸿蒙 UA（`OpenHarmony` / `ArkWeb` / `HarmonyOS`）下生效，其它平台自动忽略；
+- 控制台等价命令：`roomElvesHarmonyScale('85%')`（强制生效并持久化）、
+  `roomElvesHarmonyScale(0)`（清除）；查看现状：`roomElvesDebug('dump', 'harmony-scale')`。
+
+#### 三、v6.7.0 补齐的补偿点
+
+| # | 症状 | 机制 | 落点 |
+|---|---|---|---|
+| 1 | 弹窗宽/高被压、`width` 不生效 | 内联 `vw`/`vh` → `calc(var(--revw,100vw) * 比例)` | `popup/popup-core.js` 的 `_rewriteSizeUnits()` / `_rewriteSizeUnitsDeep()`；CSS 类写死的见 `.overview-control-popup` |
+| 2 | 弹窗/气泡整体错位（`fixed` 基准被祖先 `transform`/`filter` 劫持） | 两点标定出 `视觉 = origin + 写入 × scale` 再反算 | `infra/viewport.js` 的 `applyFixedPosition()` / `applyFixedBox()` |
+| 3 | **气泡箭头指偏、径向遮罩清晰孔不在点击处** | 箭头横向偏移、遮罩中心是**元素局部坐标**，不经过 `applyFixedPosition`，必须按标定出的 `scale/origin` 单独换算（`visualToLocal()`） | `infra/viewport.js` 的 `visualToLocal()`；`popup/bubble-popup.js` |
+| 4 | **内容只占弹窗一部分、右侧空白带** | 内容层不要再自己算 `94vw`（那是收缩放前口径），直接用 `100%` 跟外壳等宽 | `cards/device-usage.js` 的 `applyMobileLayout()` |
+| 5 | **户型图房间名等 SVG 文字要再点一下才出现 / 位置偏** | `<text>` 在入场动画层里首次可能未绘制、`text-anchor: middle` 用的是回退字体度量；在"插入后 / 字体就绪 / 动画落定"三个时间点各重排一次文本 | `infra/svg-text-paint.js`（由 `cards/floorplan.js` 的 `drawFloorPlan()`、`cards/wenshidu.js` 的 `_buildFloorPlans()` 调用） |
+
+#### 四、临时兼容层清单（App 修好后可整体删除）
+
+| 文件 | 作用 | 删除时要同步清掉的引用 |
+|---|---|---|
+| `modules/infra/harmony-scale.js` | `harmony_scale` 的解析 / 持久化 / 订阅，提供"实测可用宽高" | `infra/viewport.js` 的 import 与折算、`room-elves-card.js` 的 import 与 `setConfig` 调用（文件头列了完整 4 处）；删完 `--revw/--revh` 回落 `100vw/100vh`，弹窗与气泡无需改动 |
+| `modules/infra/svg-text-paint.js` | SVG `<text>` 强制重排 | 两处 `import` + 两处调用（`floorplan.js` 的 `drawFloorPlan()` 末尾、`wenshidu.js` 的 `_buildFloorPlans()` 末尾），无其它依赖 |
+
+两个模块都**不判断平台、不做无缩放时的行为变更**，留着只是"No-op 成本"（几毫秒重排），
+不删也不影响正确性。
+
+#### 五、排查命令
+
+| 命令 | 用途 |
+|---|---|
+| `roomElvesDebug('dump', 'harmony-scale')` | 缩放声明是否已生效、当前可用宽高 |
+| `roomElvesDebug('dump', 'viewport')` | `clientWidth` / `innerWidth` / `100vw` 探针 / `visualViewport` / 局部坐标空间 五套口径与采用值 |
+| `roomElvesDebug('viewport')` | 开关后每次开弹窗打印"配置 / 上限 / 实际 / 可用视口 / 视觉视口" |
+| 气泡耗时日志（`perfLog` 开启时） | 含 `标定 sx,sy · 锚点 · 写入 left/top · 可用 WxH · 气泡 WxH`：`标定 1,1` 说明坐标系正常（问题在锚点选择）；出现 `0.85` 之类就是缩放补偿在起作用 |
+
 ### 21.6 自动关闭定时器（close_time）
 
 部分弹窗类型支持配置自动关闭倒计时，用户无操作到达时间后弹窗自动关闭。
@@ -12098,6 +12403,7 @@ buttons:
 
 | 配置值 | 效果 |
 |--------|------|
+| 不配置（默认） | **3 秒**后自动关闭 |
 | `0` | 不自动关闭 |
 | `> 0` 的数字 | 指定秒数后自动关闭 |
 
@@ -12178,7 +12484,7 @@ buttons:
 
 | 配置值 | 效果 |
 |--------|------|
-| 不配置 | `min-width: 380px, max-width: 95%` |
+| 不配置 | `min-width: 380px`；`max-width` = 可用视口宽度 - 8px（`calc(var(--revw, 100vw) - 8px)`，不再是固定 95%） |
 | `"auto"` | 不限制宽度，由内容决定 |
 | `"500px"` | 固定宽度 500px |
 | `"80%"` | 视口宽度的 80% |
@@ -12280,10 +12586,10 @@ buttons:
 
 | 按钮类型 | 弹窗配置项 | 默认值 | 说明 |
 |----------|-----------|--------|------|
-| `lights` / `light` | `close_time` | `0` | 自动关闭倒计时（秒） |
+| `lights` / `light` | `close_time` | `3` | 自动关闭倒计时（秒），`0` = 不自动关闭 |
 | `lights` / `light` | `show_duration` | `false` | 按钮上显示已开启时长 |
 | `curtain` | `width` | `560px` | 弹窗宽度 |
-| `curtain` | `popup_position` | `null` | 弹窗位置 |
+| `curtain` | `popup_position` | `center` | 弹窗位置 |
 | `curtain` | `layer_mode` | `double` | 单层/双层模式 |
 | `curtain` | `open_mode` | `double` | 对开/同向开合 |
 | `ac` | `width` | `auto` | 弹窗宽度 |
@@ -12476,23 +12782,18 @@ tabs:
 
 ### 21.18 弹窗内支持的卡片类型
 
-自由布局弹窗内置了 30+ 种卡片类型，可直接在 `items` 中使用：
+自由布局弹窗内置了 30+ 种卡片类型，可直接在 `items` 中使用（下表为**实际可渲染**的类型；`slider` 已删除，`toggle` / `light` / `cover` / `fan` 未注册，写了不会渲染）：
 
 | type 值 | 说明 | 主要配置项 |
 |---------|------|-----------|
 | `sensor` | 传感器数值 | `entity`, `name`, `unit`, `icon`, `layout`(mini/full) |
 | `switch` | 开关控制 | `entity`, `name`, `icon` |
-| `toggle` | 切换开关 | `entity`, `on_icon`, `off_icon`, `on_color`, `off_color` |
 | `select` | 下拉选择器 | `entity`, `name` |
 | `number` | 数值输入 | `entity`, `name`, `min`, `max`, `step` |
 | `text` | 文本输入 | `entity`, `name` |
-| `slider` | 滑块控制 | `entity`, `min`, `max`, `step` |
 | `button` | 按压按钮 | `entity`, `name`, `icon`, `show_duration`, `confirm` |
-| `light` | 灯光控制 | `entity`, `name`（含亮度/色温调节） |
-| `cover` | 遮盖控制 | `entity`, `name` |
 | `curtain` | 窗帘控制 | `entity`, `fabric_entity`, `sheer_entity` |
 | `ac` | 空调控制 | `entity` |
-| `fan` | 风扇控制 | `entity` |
 | `media` | 媒体控制 | `entity` |
 | `clothes_dryer` | 晾衣架控制 | `entity`, `light_entity` |
 | `radio` | 单选按钮组 | `entity`, `options`, `compact` |
@@ -12520,7 +12821,7 @@ tabs:
 | `daily_report` | 今日家庭日报卡片 | `entity`, `refresh`, `hide_room`, `env_from_config_id`, `width` |
 | `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`, `hosts`, `vms`, `exclude`, `default_vm`, `show_screen`, `show_refresh`, `show_sync`, `confirm_power_off`, `width` |
 | `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`, `key`, `name`, `icon`, `subtitle`, `accent`, `page_size`, `recent_days`, `source`, `direction` |
-| `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`, `name`, `date`, `show_live`, `events_limit`, `shots_limit`, `videos_limit`, `hero_ratio`, `hero_max_height`（见 6.47） |
+| `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`, `name`, `date`, `show_live`, `events_limit`, `shots_limit`, `videos_limit`, `hero_ratio`, `hero_max_height`（见 6.46） |
 | `card` | 自定义卡片 | 标准 HA 卡片配置 |
 | `conditional_tabs` | 条件选项卡 | 条件控制 Tab 显示 |
 
@@ -12749,7 +13050,6 @@ tabs:
 | `rows` | ❌ | `array` | `[]` | 选项卡内容行（与 items 格式相同） |
 | `disabled` | ❌ | `boolean` | `false` | 是否禁用（灰色不可点击） |
 | `badge` | ❌ | `string/number` | 无 | 角标固定值 |
-| `badge_entity` | ❌ | `string` | 无 | 角标动态取值实体（实体值作为角标数字） |
 | `config_id` | ❌ | `string` | 无 | 注册 ID（供 tabs_config 引用，详见第十八节） |
 
 #### 选项卡分组（belong）
@@ -13273,7 +13573,7 @@ dock:
 
 ### 22.7 外观行为
 
-- dock 栏高度自适应条目数量，最小高度 120px
+- dock 栏高度自适应条目数量，最小高度 200px；最大不超过 `calc(100vh - 80px)`
 - 面板上下各留 40px 间距，不顶到屏幕边沿
 - 继承 `show_animation` 设置（关闭时禁用按钮动画）
 
@@ -13347,8 +13647,8 @@ overview:
 
 ### 23.5 交互行为
 
-- **点击房间**：在 3D 地图上点击任意房间，会在点击位置附近弹出气泡，显示该房间的能耗概况（总用电量、运行/设备数、设备能耗排行 Top 8）。
-- **点击空白**：关闭气泡，排行榜恢复为全屋排行。
+- **点击房间**：在 3D 地图上点击任意房间，下方排行榜切换为该房间的设备能耗排行（按能耗倒序，最多显示 Top 20）；再次点击同一房间取消选择，回到全屋排行。
+- **点击空白**：取消房间选择，排行榜恢复为全屋排行。
 - **拖拽/缩放**：单指拖动旋转视角，双指捏合缩放（移动端），滚轮缩放（桌面端）。
 
 ### 23.6 数据来源
@@ -13440,7 +13740,7 @@ items:
     tap_action:
       action: more-info
 ```
-- 卡片背景使用 CSS 变量 `--room-popup-bg`，跟随卡片主题
+- 卡片背景为固定的半透明黑 `rgba(0,0,0,0.12)`（水位填充色随主题/取值变化，容器底色本身不随主题切换）
 
 ---
 
@@ -14015,8 +14315,34 @@ roomElvesPerf.logText()      // 打印事件流（最新在前）；也可用面
 | `entities_tap_action` | 全局 entities 点击动作配置 | 否 |
 | `prohibit_homepage_scroll` | 禁止滚动 | 否 |
 | `performance_mode` | 性能模式（auto/desktop/mobile） | 否 |
+| `harmony_scale` | 鸿蒙页面缩放声明（如 `85%` / `0.85` / `85`），见下方说明 | 否 |
+| `harmony_scale_force` | `true` 时不受"仅鸿蒙生效"限制（便于其它平台验证） | 否 |
 | `head_columns` | head模式列数，默认6 | 否 |
-| `head_rows` | head模式行数，默认auto | 否 |
+| `head_rows` | 预留字段（目前仅 auto 生效） | 否 |
+
+> **`harmony_scale`（鸿蒙专用 · 临时兼容层）**：HA 移动端 App 在鸿蒙上把页面缩放到 85% 后，
+> 内核解析的 `vw`/`vh` 仍停在缩放前的尺寸，且 `clientWidth` / `innerWidth` / `100vw` 探针 /
+> `visualViewport` **四套口径全都不变**（页面内没有任何可测信号）。于是弹窗/气泡的
+> 宽度、高度上限会把用户配置的 `width` 压掉（表现为"宽度不起作用、退回默认宽度"）。
+> 配置 `harmony_scale: 85%` 即告知卡片"页面实际被缩到 85%"，卡片据此把可用空间换算成
+> `视口 / 0.85`（366 → 430，高 800 → 941）再算上限。要点：
+>
+> - **写在任意一张卡片上即可**，值会持久化到 `localStorage`，其余卡片与刷新后自动继承；
+> - 只在鸿蒙 UA（`OpenHarmony` / `ArkWeb` / `HarmonyOS`）下生效，其它平台忽略（可用
+>   `harmony_scale_force: true` 强制生效做验证）；
+> - 调 App 缩放比例后要**同步改这个值**，否则弹窗会按旧比例排布而溢出/变窄；
+> - 控制台等价命令：`roomElvesHarmonyScale('85%')`（强制生效、持久化）、
+>   `roomElvesHarmonyScale(0)` 清除；查看现状：`roomElvesDebug('dump', 'harmony-scale')`。
+> - **实现是独立的临时模块** `modules/infra/harmony-scale.js`（对 App 缺陷的兼容层）。
+>   HA 鸿蒙端 App 修好（视口口径正确反映缩放）后，整个文件可直接删除 —— 文件头列了
+>   需要同步清掉的 4 处引用（`viewport.js` 的 import / 折算块 / 局部短路 / 订阅，
+>   `room-elves-card.js` 的 import 与 `setConfig` 调用，以及本文档这两行配置）；
+>   删完 `--revw`/`--revh` 回到纯自动口径，弹窗与气泡无需任何改动。
+> - **v6.7.0 起**这套补偿不只管"弹窗宽高"，还管**气泡箭头/径向遮罩的局部坐标换算**
+>   （`infra/viewport.js` 的 `visualToLocal()`）与**户型图 SVG 文字重排**
+>   （`infra/svg-text-paint.js`，同为可删的临时兼容层）。
+>   完整症状对照、参数说明与兼容层清单见 **§21.5.1「鸿蒙系统（App 缩放）适配与临时兼容层」**，
+>   以及 `CHANGELOG.md` 第 290~301 节。
 
 | 按钮配置 | 说明 | 必须 |
 |---------|------|:----:|
@@ -14035,7 +14361,7 @@ roomElvesPerf.logText()      // 打印事件流（最新在前）；也可用面
 | `badge_entity` | 角标实体 | 否 |
 | `badge` | 条件角标数组（独立按钮） | 否 |
 | `confirm` | 需要确认 | 否 |
-| `close_time` | 弹窗自动关闭秒数 | 否 |
+| `close_time` | 弹窗自动关闭秒数（默认 3，0 = 不关闭） | 否 |
 | `show_duration` | 显示持续时长 | 否 |
 | `width` | 弹窗宽度 | 否 |
 | `per_line` | 每行几个 | 否 |
@@ -14052,7 +14378,7 @@ roomElvesPerf.logText()      // 打印事件流（最新在前）；也可用面
 
 | 图表卡片类型 | 渲染方式 | 数据源 | 说明 |
 |-------------|----------|--------|------|
-| `chart_gauge` | SVG | 单实体 | 仪表图，支持 severity 颜色分段 |
+| `chart_gauge` | SVG | 单实体 | 仪表图，弧线按 30% / 70% 自动三段配色 |
 | `chart_progress` | CSS | 多实体(cards) | 多进度条，自动颜色分级 |
 | `chart_bar` | CSS | 单实体历史 | 柱状图，支持聚合计算 |
 | `chart_line` / `chart` | ECharts | 单实体历史 | 平滑曲线趋势图 |
@@ -14113,6 +14439,6 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 ## 二十八、后记
 
-Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 15 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
 
 
