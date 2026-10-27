@@ -3,7 +3,7 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.8.0及其以前的版本)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.9.0及其以前的版本)
 
 # Room Elves Card - 房间精灵卡片 完整使用说明
 
@@ -37,6 +37,7 @@
 - **iKuai 全实体卡片（`ikuai_card`）**：把一台爱快路由器**整台装进一张卡** —— 只配一个聚合实体（默认 `sensor.ikuai_all_entities`）就自动认设备与角色（**不写死任何实体 id**），顶层四个页签（路由 / Docker / 虚拟机 / 日志），路由页再分六个子页签（网络 / 线路 / DHCP / 客户端 / 本地认证 / 设置）；虚拟机带远程控制台与画面预览。配置见 6.45
 - **叮咚门铃卡片（`dingdong`）**：只配一个「实体清单」实体，就把一台叮咚（移康 eques）门铃装进一张卡 —— 抓拍 / 实时 / 反转三态画面 + 按天回看的事件·抓拍·录像混合时间轴 + 跨天双向时间轴 + 设置 + 诊断；不写死实体 id（按「域 + 后缀」从清单反查角色）。依赖 `eques_dingdong` 集成，配置见 6.46
 - **NPS 隧道管理卡片（`nps`）**：只配一个「所有实体」聚合实体，就把一台 NPS 内网穿透服务端装进一张卡 —— 概览（实时速率 / 入出流量环 / 指标条 / **访问控制**：管理面板访问开关 + 密钥剩余时长 + 点开复制面板 URL）+ 隧道（备注 / 类型 / 端口 / 启停 / 编辑）+ 客户端（名称 / 脱敏 IP / 连接·断开 / 编辑）三个页签，还能**新增 / 编辑 / 删除**隧道与客户端（写入走集成的 `nps/action`，需管理员）；不写死实体 id（按 entity_id 后缀认角色）。依赖 [nps 集成](https://github.com/chjspp520/nps)，配置见 6.47
+- **实体编组卡片（`entity_groups`）**：把 `ha_data_store` 的「实体编组」搬到卡片上 —— 一行一个编组，行内直接调**亮度 / 色温 / 色相**（灯光卡同款滑杆，松手才提交）、**窗帘位置**、**空调温度**与**模式·风速·摆风**（自绘下拉，弹层配色跟主题）；新建 / 改类型 / 增删成员 / 启停 / 删除走卡片自带的管理弹窗。**`entity` 可整条省略**（默认 `sensor.ha_data_store_entity_groups`），加 `show_heard: true` 还能去掉标题头与外壳、只留一行行的编组。依赖 [ha_data_store 集成](https://github.com/chjspp520/ha_data_store)，配置见 6.48
 - **平面户型图**：支持 JSON 坐标数据的平面户型图渲染，实时显示各房间人员占用状态，拖动时间轴可回溯历史活动
 - **人员/天气/导航**：用户卡片支持多人头像布局（当前登录用户大头像居中）、在/离家状态检测、实时定位、高德地图导航路线规划、多地区天气预报（支持和风天气 API 与 HA 实体双数据源）
 - **情景模式**：一键执行预定义操作列表，支持气泡选择/直接执行模式、延时执行、执行进度实时展示、状态验证、执行历史记录，服务调用自动推断（覆盖 light/climate/cover/fan/media_player/vacuum/lock/automation/script 等所有域）。还可作为统一卡片类型（`type: action`）或 `tap_action: quick-action` 在弹窗、title_entities 等任意位置使用
@@ -596,9 +597,9 @@ name: 客厅空调                    # 显示名称（可选）
 
 > **其中 `replay`（设备回放）/ `timer`（定时精灵）/ `wenshidu`（温湿度面板）三张，原先是在本卡片之外单独安装的独立卡片**（`device-replay-card.js` / `timer-control-card.js` / `wenshidu-card.js`），现已**整体并入房间精灵卡片**成为**内部子卡片**：独立 custom element 不再注册，配置改成本卡片的写法（分别见 6.39 / 6.40 / 6.41）。也就是说，用这三张现在**只需要房间精灵卡片本身**，不必再另装一张卡片。
 
-> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` / `fnos` / `nps` 五张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
+> ⚠️ **下表里 `esxi` / `ikuai_card` / `bill` / `fnos` / `nps` / `entity_groups` 六张卡依赖外部集成，必须先自行安装，否则卡片没有数据**：
 > [`esxi_control`](https://github.com/chjspp520/esxi_control) · [`ikuai`](https://github.com/chjspp520/ikuai) ·
-> [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，个人账单） ·
+> [`ha_data_store`](https://github.com/chjspp520/ha_data_store)（v5.0.0+，个人账单；**「实体编组」卡片也依赖它**） ·
 > [`fnos`](https://github.com/chjspp520/fnos)（飞牛 fnOS 全实体卡片） ·
 > [`nps`](https://github.com/chjspp520/nps)（NPS 隧道管理卡片）。
 > 安装方式与依赖细节见各自小节（6.36 / 6.43 / 6.44 / 6.45 / 6.47），**光装房间精灵卡片本身不够**。
@@ -625,6 +626,7 @@ name: 客厅空调                    # 显示名称（可选）
 | `ikuai_card` | iKuai 全实体卡片（路由 / Docker / 虚拟机 / 日志四页签，只配一个聚合实体即认全设备）**⚠️ 需先装 `ikuai` 集成** | 新集成 `ikuai` 的聚合实体 `sensor.ikuai_all_entities`（见 6.45） |
 | `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用五页签，只配一个聚合实体即认全设备）**⚠️ 需先装 [`fnos`](https://github.com/chjspp520/fnos) 集成** | 飞牛 fnOS 集成的聚合实体 `sensor.fnos_all_entities`（见 6.36） |
 | `nps` | NPS 隧道管理卡片（概览 / 隧道 / 客户端三页签，可启停·新增·编辑·删除，含管理面板访问控制）**⚠️ 需先装 [`nps`](https://github.com/chjspp520/nps) 集成** | nps 集成的聚合实体 `sensor.nps_server_<主机地址>_all_entities`（见 6.47） |
+| `entity_groups` | 实体编组卡片（一行一个编组，行内调亮度/色温/色相、窗帘位置、空调温度+模式·风速·摆风；新建/编辑/启停/删除走管理弹窗，可 `show_heard: true` 只留行）**⚠️ 需 `ha_data_store` 集成已启用「实体编组」** | 目录实体 `sensor.ha_data_store_entity_groups`（可省略，见 6.48） |
 | `sensor` | 传感器卡片（数值显示） | `sensor` |
 | `switch` | 开关卡片 | `switch` / `input_boolean` |
 | `select` | 选择下拉卡片 | `select` / `input_select` |
@@ -819,6 +821,27 @@ icon: mdi:tunnel                    # 标题图标（默认 mdi:tunnel，可省�
 > ⚠️ 需先安装 [`nps`](https://github.com/chjspp520/nps) 集成；**只配一个「所有实体」聚合实体**（`entity` 省略时自动发现 `sensor.*_all_entities`）就能认全概览 / 隧道 / 客户端三页签，**卡片不写死任何实体 id**（按 entity_id 后缀认角色）。
 > 高度写死 **70% 视口高**（`createTabBar({ height: '70%', fit: 'exact' })`，**不是配置项**）：三页签等高、不随内容跳动，超出的内容由各页自己滚；自带 **5 秒值级刷新**（挂宿主共享 tick，不参与独立模式的 1 秒轮询）。
 > 隧道启停 / 客户端连接断开都会先弹确认框；**新增 / 编辑 / 删除**在卡里直接做（写入走集成 WebSocket `nps/action`，**需管理员**）。完整页签、访问控制与写入说明见 6.47。
+
+**实体编组独立卡片**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: entity_groups
+# entity 可省：默认就是 sensor.ha_data_store_entity_groups（想读别的目录实体时才写）
+entity: sensor.ha_data_store_entity_groups
+name: 实体编组                       # 头部标题（默认「实体编组」）
+icon: mdi:folder-multiple            # 头部图标（可省）
+show_heard: true                     # 只留一行行编组：隐藏头部与卡片外壳
+# allow_edit: false                  # 只读：不显示新建「＋」、行首铅笔
+# 独立使用时（没有顶层配置可继承）自己写后端地址与 Key：
+api_base_url: http://192.168.1.10:8123/api/ha_data_store
+key: 你的API Key                     # 同源 + 后端开启「API 访问」总开关时也可不填（走登录态）
+```
+
+> ⚠️ 需先安装 [`ha_data_store`](https://github.com/chjspp520/ha_data_store) 并在集成里**启用「实体编组」**（否则卡片只显示「还没有编组」）。
+> **读**只配 1 个目录实体（hass 推送即到），**写**全部走 `/api/ha_data_store/entity_groups`。
+> `show_heard: true` 时新建入口变成右下角悬浮「＋」；`allow_edit: false` 时这颗按钮不出现。
+> 独立使用要自己配 `api_base_url` / `key`；**作为房间精灵子卡片时（`action: card` / `popup_card` / 自由布局 `type: card`）无需配置，自动继承顶层**。完整字段、行内控件与常见问题见 6.48。
 
 **窗帘独立卡片**
 
@@ -1177,6 +1200,111 @@ buttons:
 
 > `global_exception` 同样适用于 `type: socket` 的 card 子项。此配置项仅在灯光/插座等聚合按钮的弹窗批量操作中生效，不影响单个按钮的点按操作。
 
+#### 6.1.1 编组成员合并（`entity_groups`）
+
+> **把「已经被编组的成员」在弹窗里合成一张组卡，成员堆叠隐藏在组卡后面，点开才展开。**
+> 不配置这个字段时，弹窗行为与以前**完全一致**。
+
+```yaml
+type: custom:room-elves-card
+head: true
+primary: true
+# 编组目录实体（读 groups 用）——以下两种写法都行
+entity_groups: sensor.ha_data_store_group_entities
+# entity_groups:
+#   entity: sensor.ha_data_store_group_entities
+#   expanded: false        # 打开弹窗时是否默认展开成员（默认 false = 收起）
+#   min_members: 1         # 命中几个成员才合并（默认 1，单成员也合并）
+#   show_members: true     # false = 只显示组卡，不给「成员 N」按钮
+
+buttons:
+  - type: lights
+    name: 客厅灯光
+    card:
+      - entity: light.keting_dadeng
+        name: 大灯
+      - entity: light.ceshi1          # ← 属于「编组虚拟灯光」
+        name: 测试灯光1
+      - entity: light.ceshi2          # ← 同属该编组
+        name: 测试灯光2
+```
+
+**效果**：`测试灯光1 / 2` 这两张卡会合并成一张 **「编组虚拟灯光」组卡**（控制目标是编组的
+**聚合实体** `light.hds_eg_ceshilight`），成员堆在组卡后面、默认收起。
+
+展开方式（两种都可以）：
+
+- 点组卡**右上角的折角三角**（绝对定位，不占卡片高度；和开关左右错开，不会误触）；
+- 点组卡下面露出的**纸片区**（收起态整条可点）。
+
+展开后成员卡是**完整功能**（亮度 / 色温 / 收藏色 / 情景模式全都照旧）；点成员卡**不会**收起，
+收起只能再点一次右上角折角。
+
+| 规则 | 说明 |
+|---|---|
+| 数据源 | 固定读 `entity_groups` 指定的**编组目录实体**的 `attributes.groups`（推荐 `sensor.ha_data_store_group_entities`：字段少、聚合 `entity_id` 现成给） |
+| 命中口径 | **部分命中**：只要有 1 个成员出现在这个弹窗里就合并；展开后只列**本弹窗里配置过**的成员 |
+| 组卡位置 | 成员中**最先出现**的那个位置（不打乱现有顺序）；组卡占满整行 |
+| 组卡控制 | 就是普通设备卡，`entity` 换成聚合实体 —— 开关 / 亮度滑杆直接作用于整组 |
+| 按房间分组 | 组卡落在首个成员所在的房间（`room` 取该成员） |
+| tabs 模式 | **按每个选项卡各自匹配**：同一编组在 A 页、B 页都有成员时，两页各出一张组卡，只堆本页成员，互不影响 |
+| 批量按钮 | 「全开 / 全关 / 取反」和房间级全开全关按**组算 1**（未编组成员 + 各组聚合实体），不会重复下发 |
+| 选项卡角标 | 同样按组算 1（组卡按聚合实体是否开启计数） |
+| 展开状态 | 默认收起，关掉重开一律回到收起（不记忆） |
+| 降级 | 目录实体不存在 / `groups` 为空 / 某组的**聚合实体不存在** → 该组不合并，成员照常单列 |
+
+**配置粒度**：写在顶层卡片上对整张卡生效；也可以写在 `type: lights` / `type: socket`
+**组上覆盖**（组级优先，顶层兜底）：
+
+```yaml
+buttons:
+  - type: lights
+    name: 客厅灯光
+    entity_groups: sensor.ha_data_store_group_entities   # 只让这一组用编组合并
+```
+
+> ⚠️ **两个东西别搞混**：
+> · 本节说的是**灯光 / 插座弹窗里的“组卡”**（这里现场画的，控制编组聚合实体）；
+> · 而 `type: entity_groups` 那张**实体编组管理卡片**（见 6.48）只负责**建组 / 改类型 / 增删成员**，
+>   是“设置用的卡片”，**不参与**弹窗里的合并渲染。
+
+**服务域说明**：组卡的域取自聚合实体本身。如果某组的聚合实体是 `switch.*`
+（如 `mixed` / `socket` 编组），组卡只有开关、没有亮度滑杆；灯光弹窗里也能正常合并。
+
+**只写一张卡，其余卡片继承（`entity_groups` 全局继承）：**
+
+`entity_groups` 是**每张卡片**的顶层配置项。想在所有房间都显示编组，不必每张卡都写一遍——任意一张房间精灵卡写一次，其余卡片自动复用：
+
+```yaml
+# 任意一张房间精灵卡（写一次即可，会记进 localStorage）
+type: custom:room-elves-card
+entity_groups:
+  entity: sensor.ha_data_store_group_entities
+  min_members: 2
+```
+
+```yaml
+# 其他房间精灵卡：什么都不用写 → 自动继承上面那份
+type: custom:room-elves-card
+room_name: 客厅
+
+# 某一张不想继承（例如车库不需要编组）
+# entity_groups: false
+```
+
+| 本卡写法 | 行为 |
+|---|---|
+| `entity_groups: sensor.xxx` / 配置对象 | 本卡使用，**同时记为全局值**（其他卡继承） |
+| `entity_groups: true` | 归一化为 `sensor.ha_data_store_group_entities` |
+| 不写 / 写空串 | 用**全局值**（没有全局值 = 不启用，行为与以前一致） |
+| `entity_groups: false` | 本卡不启用，**且不覆盖**全局值 |
+
+- 持久化在 `localStorage['room-elves:entity_groups']`，刷新后“先渲染的卡片”也能拿到别的卡写过的值。
+- 控制台：`roomElvesEntityGroups()` 查看当前全局值，`roomElvesEntityGroups('clear')` 清除（YAML 里删掉配置后，残留的全局值要这一步清）。
+- 对象内部的 `min_members` / `expanded` / `show_members` 随对象一起继承。
+- **首次**给某张卡加上配置时，已经在渲染的其他卡不会自动重跑 `setConfig`，刷新一次页面即可。
+- 独立卡片模式（`standalone_type: entity_groups`）不参与继承，仍用自己的默认目录实体。
+
 ### 6.2 单灯 (type: light)
 
 控制单个灯。功能与灯光组类似，但只控制一个设备。同样支持 `collect_brightness`、`collect_colour_temperature`、`collect_colors` 收藏快捷按钮。
@@ -1269,6 +1397,33 @@ buttons:
 ```
 
 > **角标说明：** 单台空调（使用 `entity` 字段）不显示角标；多台空调（使用 `card` 数组）时按钮上显示已开启的数量。
+
+**编组成员合并（v6.9.2）：**
+
+若 `card` 数组里的空调已在「实体编组」里建过组（`entity_groups` 指向编组目录实体），弹窗会把**同一编组的成员合并成一张「组卡」**：
+
+- 组卡就是**普通空调卡的 UI**（不是新组件），但控制目标是后端投影的聚合实体 `climate.hds_eg_*` —— 开关 / 温度 / 模式 / 风速 / 摆风都是"整组广播"；
+- 原来那几台空调折叠在组卡下方，**温度显示后面的胶囊按钮**（`⌄ N`，与温度同一行、压在空调图片之上）展开 / 收起，**首次展开时才建卡**（默认打开弹窗只建 1 张组卡）；
+- 组卡**宽度与第一台空调一致**：第一台配了 `width` 就沿用同一个值，没配时按「容器宽 - 32px」居中；
+  展开的成员卡**再窄 20px 并靠左**（左边缘与组卡对齐），一眼能看出层级；
+- 组卡**落在首个成员的位置**（"开着的排前面"排序之后），不额外置顶；
+- 组卡**不显示**单台口径的内容：`power_entity` / `power_display_entity` / `humidity_entity` / `features` / `page_1` 一律不继承（否则会显示"某一台"的数值），右上角「今天 x 小时」角标与关机时的「使用情况统计」也会隐藏；组级用电 / 时长看顶部信息栏（口径不变，仍按真实成员统计）；
+- 只合并 climate 域的编组；成员数不足 `min_members`、或聚合实体没投影出来时**不合并**（行为与未配置编组时完全一致）。
+
+```yaml
+# 卡片顶层（或空调组节点）指向编组目录实体
+entity_groups:
+  entity: sensor.ha_data_store_group_entities
+  expanded: false      # true = 打开弹窗即展开成员
+  min_members: 2       # 少于 2 个成员不合并
+buttons:
+  - type: ac
+    card:
+      - entity: climate.living_room
+        name: 客厅空调
+      - entity: climate.bedroom
+        name: 卧室空调
+```
 
 **多空调组顶部信息栏 + 用电合计日历（v5.3.3）：**
 
@@ -1814,6 +1969,44 @@ features:
     per_line: 2
     shwo_sankey: false                       # 是否显示功率流向桑基图（需ECharts）
 ```
+
+> 💡 **编组成员合并**：插座弹窗同样支持 `entity_groups`（顶层卡片或 `type: socket` 组上配置），
+> 规则、批量口径、tabs 行为与灯光完全一致，见 **6.1.1 编组成员合并**。
+
+> 💡 **编组插座的多指标胶囊（功率 / 日用电 / 月用电 / 年用电）**：组卡头部那颗胶囊
+> 位置与普通插座卡一致，数据来自**成员 `entities` 里按名称认的传感器**（口径与插座桑基图完全相同）：
+>
+> | 指标 | 名称关键字（包含匹配） | 单位兜底 |
+> |---|---|---|
+> | 功率 | `功率` / `功耗` | `W` / `kW` |
+> | 日用电 | `日用电` / `今日用电` / `今日电量` / `日电量` | `kWh` / `Wh` / `度` |
+> | 月用电 | `月用电` / `本月用电` / `本月电量` / `月电量` | 同上 |
+> | 年用电 | `年用电` / `今年用电` / `今年电量` / `年电量` | 同上 |
+>
+> - 胶囊取值优先级 **功率 > 日用电 > 月用电 > 年用电**（取第一个有成员配置的）；
+>   显示的是用电量时胶囊换蓝调阴影，跟实时功率区分；
+> - **全组一个指标都没配 → 这颗胶囊不显示**；只要有一个成员配了任意一项就显示；
+> - 点胶囊 → 环形图弹窗：顶部页签**只列"有成员配置"的指标**，切页签时环形图 / 合计 / 明细同步换；
+> - **没配当前指标的成员按 `0` 显示**（明细行置灰，副标题标注「N 个未配置按 0」），不会漏行。
+>
+> ```yaml
+> - type: socket
+>   name: 书房插座
+>   card:
+>     - entity: switch.plug_desk
+>       name: 电脑插座
+>       entities:
+>         - entity: sensor.plug_desk_power
+>           name: 功率
+>         - entity: sensor.plug_desk_daily        # 日用电（kWh）
+>           name: 日用电
+>         - entity: sensor.plug_desk_monthly      # 月用电（kWh）
+>           name: 月用电
+>         - entity: sensor.plug_desk_yearly       # 年用电（kWh）
+>           name: 年用电
+>     - entity: switch.plug_lamp
+>       name: 台灯插座        # 一个指标都没配 → 弹窗明细里按 0 占位
+> ```
 
 ### 6.5 耗材/电池 (type: consumables)
 
@@ -4088,9 +4281,9 @@ buttons:
     background_image: /local/window_bg_1.png
 ```
 
-#### 方式三：聚合多设备（buttons 中使用 card 数组）
+#### 方式三：多台窗帘编组（buttons 中使用 card 数组）
 
-多台窗帘时使用 `card` 数组配置，按钮上**显示角标**（已开启数量），点击弹出聚合列表。**PC 端一行 2 个，移动端一行 1 个**：
+多台窗帘用 `card` 数组配置，按钮上**显示角标**（已开启数量）。**默认把整组当成一台窗帘**：弹窗里只有一个帘布舞台，拖一次 = 同时控制全部成员。
 
 ```yaml
 buttons:
@@ -4101,29 +4294,36 @@ buttons:
     off_icon: mdi:curtain
     on_color: '#d4b896'
     off_color: '#7f8c8d'
-    show_open: true                             # 可选，仅显示已打开的窗帘
-    layer_mode: double                          # 全局默认层级模式（子项未配时使用）
-    open_mode: double                           # 全局默认开合方式（子项未配时使用）
-    background_image: /local/room.jpg           # 全局默认背景图
-    width: 700px
+    layer_mode: single                          # 整组舞台的画法（组级说了算）
+    open_mode: double
+    background_image: /local/window_bg_1.png
+    width: 400px                                # 成员舞台宽 = width - 40px（给横杆出头）
     card:
       - name: 客厅窗帘
-        height: 400px
         fabric_entity: cover.ke_ting_bu_lian
-        sheer_entity: cover.ke_ting_sha_lian
-        layer_mode: double
+        sheer_entity: cover.ke_ting_sha_lian    # 布帘 + 纱帘算「一个成员」
       - name: 卧室窗帘
         fabric_entity: cover.wo_shi_bu_lian
-        layer_mode: single
-        open_mode: single-left
-      - name: 书房窗帘
-        fabric_entity: cover.shu_fang_bu_lian
-        background_image: /local/study_bg.png
 ```
 
-> **角标说明：** 单设备（使用 `entity` / `fabric_entity` 字段）不显示角标；多设备（使用 `card` 数组）时按钮上显示已开启的窗帘数量（布帘位置 > 10% 视为开启）。
+**编组舞台的行为：**
+
+| 项 | 说明 |
+|---|---|
+| 舞台数量 | **1 个**（整组共用）。拖拽与「全开 / 50% / 全关」对所有成员一起下发 `cover.set_cover_position` |
+| 画法来源 | 只看**组级** `layer_mode` / `open_mode` / `background_image` / `height`；成员级的同名字段**不生效** |
+| 位置读数 | 取所有成员 `current_position` 的**平均值** |
+| 布帘 + 纱帘 | 成员写 `sheer_entity` → 两者算一个成员：布帘参与位置平均，纱帘跟着一起开合 |
+| 开关式电机 | 成员全是 `switch.*`（没有 `current_position`）→ 不给舞台，只给「全开 / 停止 / 全关」 |
+| 分帘控制 | 舞台标题最右端有「⌄ 分帘 N」按钮；展开后每个成员一个独立舞台，按**成员自己**的 `layer_mode` / `open_mode` / `height` 渲染 |
+| 收起态提示 | 舞台下方露两层「纸片」，暗示后面还压着 N 个窗帘；点纸片区也能展开 |
+| 成员尺寸 | 成员舞台宽度 = 顶层 `width` − 40px（横杆左右各伸 20px），所以**成员的 `width` 字段被忽略** |
+
+> **想保留「一帘一舞台」的网格**（旧行为）：加一行 `separate_stages: true`，弹窗恢复 PC 双列 / 移动端单列的独立舞台列表。
 >
-> **配置继承：** `layer_mode`、`open_mode`、`background_image` 等公共配置可以写在顶层，子项 `card` 内未配置时自动继承顶层值。
+> **配置继承提醒：** 只有在 `separate_stages: true` 的旧网格下，成员未配的 `layer_mode` / `open_mode` / `background_image` 才继承顶层；默认编组舞台下这些字段**只认顶层**。
+
+> **角标说明：** 单设备（使用 `entity` / `fabric_entity` 字段）不显示角标；多设备（使用 `card` 数组）时按钮上显示已开启的窗帘数量（布帘位置 > `CURTAIN_OPEN_THRESHOLD`% 视为开启）。
 
 **配置字段说明：**
 
@@ -4140,11 +4340,12 @@ buttons:
 | `off_icon` | ❌ | `string` | `mdi:curtain` | 关闭时图标 |
 | `on_color` | ❌ | `string` | `#d4b896` | 开启时图标颜色 |
 | `off_color` | ❌ | `string` | `#7f8c8d` | 关闭时图标颜色 |
-| `width` | ❌ | `string` | `560px` | 弹窗宽度 |
+| `width` | ❌ | `string` | `560px` | 弹窗宽度。多成员编组时成员舞台宽 = `width` − 40px（横杆出头） |
 | `popup_position` | ❌ | `string` | `center` | 弹窗位置 |
 | `background_image` | ❌ | `string` | 无 | 弹窗背景图片 URL |
-| `show_open` | ❌ | `boolean` | `false` | 聚合模式：设为 `true` 时仅显示已打开的窗帘 |
-| `card` | ❌ | `array` | `[]` | 聚合模式：窗帘列表，每个子项为一个窗帘配置 |
+| `show_open` | ❌ | `boolean` | `false` | 编组模式：设为 `true` 时仅显示已打开的窗帘 |
+| `separate_stages` | ❌ | `boolean` | `false` | `true` = 回到「一帘一舞台」的独立舞台网格（旧行为）；默认整组一个舞台 |
+| `card` | ❌ | `array` | `[]` | 编组模式：窗帘列表，每个子项为一个成员 |
 
 **card 子项配置字段：**
 
@@ -4154,16 +4355,19 @@ buttons:
 | `fabric_entity` | ❌ | `string` | 布帘实体 ID，也可用 `entity` 字段 |
 | `sheer_entity` | ❌ | `string` | 纱帘实体 ID（双层模式时需要） |
 | `height` | ❌ | `string` | 自定义该窗帘舞台高度，如 `400px` |
-| `layer_mode` | ❌ | `string` | 层级模式，覆盖全局默认 |
-| `open_mode` | ❌ | `string` | 开合方式，覆盖全局默认 |
-| `background_image` | ❌ | `string` | 背景图片，覆盖全局默认 |
+| `width` | ❌ | `string` | **默认编组舞台下被忽略**（统一按顶层 `width` − 40px）；只有 `separate_stages: true` 时才可能用到 |
+| `layer_mode` | ❌ | `string` | 层级模式：默认编组舞台下**不生效**（只认顶层）；`separate_stages: true` 时覆盖全局默认 |
+| `open_mode` | ❌ | `string` | 开合方式：默认编组舞台下**不生效**（只认顶层）；`separate_stages: true` 时覆盖全局默认 |
+| `background_image` | ❌ | `string` | 背景图片：默认编组舞台下**不生效**（只认顶层）；`separate_stages: true` 时覆盖全局默认 |
 
-**聚合弹窗响应式布局：**
+**独立舞台网格的响应式布局（仅 `separate_stages: true`，以及「分帘」展开后的成员列表）：**
 
 | 设备 | 布局 | 说明 |
 |------|------|------|
 | PC / 平板 (≥768px) | 一行 2 个 | 弹窗自动扩展宽度，双列网格 |
 | 移动端 (<768px) | 一行 1 个 | 单列布局，垂直滚动 |
+
+「分帘」展开出来的成员在编组弹窗内固定**单列左对齐**（弹窗宽度是按单台窗帘配的，双列会挤）。
 
 **角标说明：** 单个窗帘不显示角标；多台窗帘（使用 `card` 数组）时按钮上显示已开启窗帘的数量（布帘位置 > `CURTAIN_OPEN_THRESHOLD`% 视为开启）。所有窗帘关闭时角标不显示。
 
@@ -6138,12 +6342,14 @@ tap_action:
 | `device_track_font-size` | 否 | `number` | `12` | 轨道左侧设备标签的字号（px） |
 | `device_label_align` | 否 | `string` | `left` | 轨道标签文字对齐：`left` / `center` / `right` |
 | `min_duration_filter` | 否 | `number` | `0` | 过滤掉持续时长小于该值（秒）的事件，避免瞬时抖动刷屏 |
-| `rooms` | 否 | `object` | 内置配色 | 轨道标签底色映射，`房间名: 颜色`，见下方 |
+| `rooms` | 否 | `object` | 内置配色 | 房间配置，**两种写法**（可混用）：①`房间名: 颜色` = 只做轨道标签底色（旧写法）；②`房间名: [{color}, {xyf}]` = 额外在户型图上回放该房间温湿度（`xyf` = `x,y,字号`）。见下方 |
 | `energy.entities` | 否 | `array` | — | 户型图上叠加的传感器数值气泡，见下方 |
 | `api_base_url` | 否 | `string` | — | 后端统一存储系统地址（如 `http://192.168.1.10:8000/api/ha_data_store/`）。未配置时只回放 HA 当天状态变化 |
 | `key` | 否 | `string` | — | 后端接口鉴权 key |
 | `check_entity` | 否 | `string` | — | 后端可用性检查实体；配置后才启用历史日期与「有数据」标记 |
 | `test_mode` | 否 | `boolean` | `false` | 编辑模式（保留给调试用） |
+| `width` | 否 | `string`/`number` | `min(760px, 92vw)` | **弹窗形态的弹窗宽度**，未配置时回落到 `card_width`。注意它和 `card_width` 含义不同：`card_width` 是内部设计基准（等比缩放用），`width` 只决定外壳宽度 |
+| `popup_position` | 否 | `string` | 不配置 = 自动定位 | **弹窗形态的弹窗位置**：`center` / `top` / `bottom` / `left` / `right` / `clone_button_top` / `clone_button_down` / `clone_button_left` / `clone_button_right`（支持 `clone_button_top, 20px` 这类偏移写法，`center` 不吃偏移）。仅按钮 `type: replay` 与 `action: card` 两种弹窗入口生效 |
 | `name` / `icon` | 否 | `string` | — | 作为按钮/卡片位时的显示名与图标（通用字段） |
 
 > **透传继承**：这四种入口都支持直接复用外层卡片的 `api_base_url` / `key` —— 外层配置过就不必在回放卡里重复填写。
@@ -6187,7 +6393,9 @@ energy:
 | `color` | 否 | `string` | 文字色 |
 | `sensor_background_color` | 否 | `string` | 气泡底色 |
 
-#### rooms 配置（轨道标签底色）
+#### rooms 配置（标签底色 / 房间温湿度回放）
+
+**写法一：旧配置（只有颜色）** —— 行为与以前完全一致，只作为轨道标签底色：
 
 ```yaml
 rooms:
@@ -6198,13 +6406,43 @@ rooms:
 
 设备未显式配 `room` 时，按设备名里包含的房间关键字匹配；都匹配不到用内置默认色。
 
+**写法二：新配置（带 `xyf`）** —— 除了标签底色，还在户型图上叠加该房间的**温湿度回放**
+（随回放时间变化，两行：温度 `23.5℃` / 湿度 `58%`）：
+
+```yaml
+rooms:
+  客厅:                                  # 新配置：数组里两个对象
+    - color: '#ea5506'                   # 数字颜色（同时作为标签底色，取 20% 淡色）
+    - xyf: 25.55,36.33,12                # x,y,字号 （x/y 为设计基准坐标，随容器等比缩放）
+  主卧:                                  # 也接受合并成一个对象
+    color: '#47885e'
+    xyf: 25.55,36.33,12
+  次卧: '#008899'                        # 旧配置：混用完全没问题
+```
+
+| 字段 | 必填 | 类型 | 默认 | 说明 |
+|------|:----:|------|------|------|
+| `xyf` | — | `string` | — | **`x,y,字号`**（设计基准坐标，与设备图标同一坐标系、同样叠加 `background_left/top` 偏移）。只写 `x,y` 时字号按 `12`。也接受 `[x, y, 字号]` 数组或 `{x, y, fontSize}` 对象。**不写 `xyf` = 旧配置，只染标签色、不做回放** |
+| `color` | 否 | `string` | 主题主文字色 | 温湿度数字的颜色；同时作为该房间轨道标签底色（自动取 20% 淡色，避免深底深字看不清） |
+
+**数据源与口径**：
+
+- 数值来自后端**房间环境**接口：`?type=rooms_daily&category=environment&metric=temperature,humidity&date=YYYY-MM-DD`
+  （一天 48 条 / 30 分钟一条，返回 `data.rooms[房间].temperature / .humidity`）。
+- **今天**：优先用 HA 历史（`history/history_during_period`，一次请求取全部实体）—— 实时、无 30 分钟延迟；
+  HA 拿不到该项才回落 API 数值。今天 API 尚未落库时，会借**前一天**的 API 数据只为拿「房间 → 实体」映射，
+  数值仍走 HA（不会把昨天的数据当成今天显示）。
+- **历史日期**：直接用 API 数值。
+- 视图内每 5 分钟自动补取一次（仅今天），只刷新数字、不整图重绘。
+- 需要 `api_base_url` + `key`；两者没配或接口失败时静默跳过（回放卡的设备/轨道路径不受影响）。
+
 #### 卡片布局
 
 ```
 ┌──────────────────────────────────────────┐
 │ 户型平面图                                │
 │   背景图 + 设备图标（随回放时间点亮/熄灭）  │
-│   + 传感器数值气泡                        │
+│   + 传感器数值气泡 + 房间温湿度（rooms.xyf）│
 ├──────────────────────────────────────────┤
 │ ◀  2026-09-27  ▶  此刻    1x ▾   [播放]   │  ← 控制条
 ├──────────────────────────────────────────┤
@@ -6234,6 +6472,7 @@ rooms:
 | 实时事件 | HA WebSocket `subscribe_events(state_changed)`（订阅失败时自动降级为 2 秒轮询） |
 | 状态历史 | HA WebSocket `history/history_during_period` |
 | 环境数据（气泡数值） | `?type=env_history&key=...` |
+| 房间温湿度（`rooms.xyf`） | `?type=rooms_daily&key=...&category=environment&metric=temperature,humidity&date=YYYY-MM-DD`（今天另取 HA 历史覆盖） |
 | 房间日统计 | `?type=rooms_daily&key=...` |
 | 日期选择器（年月 / 天标记） | `?type=device_data_periods&key=...`（`level=year` / `level=month&year=YYYY` / `level=day&month=YYYY-MM` 三档，**全局口径**不带 `entity_id`） |
 
@@ -7790,9 +8029,9 @@ tap_action:
 | `name` | ❌ | `string` | 清单实体的设备名（去掉尾巴"实体清单"） | 卡片标题 |
 | `accent` | ❌ | `string` | 主题主色 | 外壳主色（走框架 `applyAccent`） |
 | `date` | ❌ | `string` | 最近有数据的那天，没有就今天 | 初始选中日期 `YYYY-MM-DD` |
-| `events_limit` | ❌ | `number` | `5` | 该日时间轴最多几条**事件**（1~20） |
-| `shots_limit` | ❌ | `number` | `4` | 该日时间轴最多几张**抓拍**（0~12，`0` = 轴上不放抓拍） |
-| `videos_limit` | ❌ | `number` | `5` | 该日时间轴最多几段**录像**（0~12，`0` = 轴上不放录像） |
+| `events_limit` | ❌ | `number` | 全部（不截断） | 该日时间轴最多几条**事件**；`0` / 不填 = 当天全部事件都摆出来，填正数才截断 |
+| `shots_limit` | ❌ | `number` | 全部（不截断） | 该日时间轴最多几张**抓拍**；不填 = 当天全部，`0` = 轴上不放抓拍，填正数才截断 |
+| `videos_limit` | ❌ | `number` | 全部（不截断） | 该日时间轴最多几段**录像**；不填 = 当天全部，`0` = 轴上不放录像，填正数才截断 |
 | `show_live` | ❌ | `bool` | `true` | 是否给「实时 / 反转」画面源（关掉 = 只留「最后一条」，**电池设备的省电开关**） |
 | `hero_ratio` | ❌ | `string` | 空 = 实测实时视频比例，量不到按 `16:9` | 锁死画面区比例，写 `16:9` / `4/3` / `1.78` 都认；**切换画面源不会改变高度** |
 | `hero_max_height` | ❌ | `string` / `number` | 空 = 不限 | 画面区最高多少，`320`（自动补 `px`）或 `40vh` |
@@ -8055,6 +8294,190 @@ buttons:
         entity: sensor.nps_server_192_168_1_10_8080_all_entities
         initial_tab: tunnels
 ```
+
+---
+
+### 6.48 实体编组卡片 (type: entity_groups)
+
+> **把 `ha_data_store` 的「实体编组」搬到卡片上：一行一个编组，行内就能调亮度 / 色温 / 色相、窗帘位置、
+> 空调温度与模式·风速·摆风；开关和编辑都在行里。新建 / 改类型 / 增删成员 / 启停 / 删除走卡片自带的管理弹窗。**
+
+> ⚠️ **前置条件**：需要 `ha_data_store` 集成已启用「实体编组」功能并生成目录实体
+> `sensor.ha_data_store_entity_groups` —— 它的 `attributes.groups` 里带着每个编组的
+> `id / kind / name / icon / members / enabled / rev`。
+> **读**走这个实体的状态推送（集成每次变更后重建，hass 推送即到）；**写**走 REST
+> `/api/ha_data_store/entity_groups`。没装 / 没建编组时卡片只会显示「还没有编组」。
+
+> 📌 **本节对应版本：v6.9.0** —— `show_heard`、bare 悬浮加号、空调三下拉、窗帘位置滑杆都在 v6.9.0
+> 内完成，逐条改动见 `CHANGELOG.md` 第 333 ~ 345 节。
+
+> 🕘 **点图标看历史记录**：卡片行左侧的图标（如 `mdi:air-conditioner`）**可以点** —— 弹出该编组
+> **聚合实体**的历史操作记录气泡（复用 `showEntityHistoryTimeline`，与「最近使用」左侧图标同一条链路）。
+> 管理弹窗里同理：编组块头部图标 → 编组实体，成员行图标 → 该成员实体。
+> 可点图标 hover 时会放大并转为主题色，作为「这里能点」的提示。
+
+#### 四种入口（与其它卡片一致）
+
+**① 独立卡片（`standalone_type: entity_groups`）—— 最常用**
+
+```yaml
+type: custom:room-elves-card
+standalone_type: entity_groups
+# entity 可省略：默认就是 sensor.ha_data_store_entity_groups
+```
+
+只要「一行行的编组」、不要标题头和外框：
+
+```yaml
+type: custom:room-elves-card
+standalone_type: entity_groups
+show_heard: true      # 隐藏头部与卡片外壳，右下角保留一颗悬浮「＋」
+```
+
+**② 点按钮弹出卡片自带弹窗（`action: card`）**
+
+```yaml
+tap_action:
+  action: card
+  card:
+    type: entity_groups
+```
+
+**③ 内嵌进 HA 原生弹窗（`action: popup_card`）**
+
+```yaml
+tap_action:
+  action: popup_card
+  card:
+    type: entity_groups
+```
+
+**④ 作为自由布局弹窗里的子元素（`rows[].items` 里 `type: card` + `card_config`）**
+
+把「实体编组」当成自由布局弹窗（`modern_room_card.show_free_layout_popup`）里的一个 item，
+和别的卡片（sensor / switch / ac …）混排在同一条 `row` 里：
+
+```yaml
+buttons:
+  - name: 设置
+    icon: mdi:cog
+    icon_animation: none
+    width: 430px
+    per_line: 1
+    off_color: '#007b43'
+    tap_action:
+      action: call-service
+      service: modern_room_card.show_free_layout_popup
+      service_data:
+        title: 设置
+        width: 430px
+        popup_position: clone_button_down
+        tabs:
+          - name: 实体编组
+            icon: mdi:door
+            rows:
+              - row: 1
+                title: 实体编组编辑器       # show_heard: true 时用它当标题
+                per_line: 1
+                items:
+                  - type: card              # 包装器：真正的类型写在 card_config 里
+                    card_config:
+                      type: entity_groups
+                      entity: sensor.ha_data_store_entity_groups  # 可省略
+                      show_heard: true        # 只留一行行编组（无标题头/外壳）
+```
+
+要点：
+
+- **`type: card` 只是包装器**：卡片工厂（`createUniversalCard`）会把 `card_config` 递归解包，
+  真正渲染的是 `card_config.type`；外层写了 `name` 会覆盖内层 `name`。
+- **`api_base_url` / `key` 不用写**：弹窗由顶层 `room-elves-card` 打开，子卡片自动继承顶层配置；
+  只有独立卡片 / 独立视图（`standalone_type`）才需要自己配。
+- **宽度别在 `card_config` 里写**：宽度由弹窗 `width` + 该行 `per_line`（或 item 的 `row_column`）决定，
+  `card_config.width` 会把子卡强制成固定宽度。
+- **实时刷新照常**：子卡以 `dataset.cardType = 'entity_groups'` 挂进弹窗，hass 推送 / 编组变更走
+  注册表的更新方法（`updateEntityGroupsCard`），不用重开弹窗。
+- 弹窗里点行首铅笔或悬浮「＋」会再叠一层**管理弹窗**（嵌套弹窗）；保存后集成重建目录实体，
+  外层卡片跟着刷新。
+- `show_heard: true` 后卡片自己没有标题栏，建议用 row 的 `title` 补一个标题（如上例）。
+
+#### 配置项
+
+| 键 | 必填 | 类型 | 默认 | 说明 |
+|----|:----:|------|------|------|
+| `entity` | ❌ | string | `sensor.ha_data_store_entity_groups` | 编组目录实体。**省略 / 空串 = 用内置的**；只有想读另一个目录实体时才写 |
+| `name` | ❌ | string | `实体编组` | 头部标题 |
+| `icon` | ❌ | string | `mdi:folder-multiple` | 头部图标 |
+| `show_heard` | ❌ | bool | `false` | `true` = 隐藏头部（`.egm-card-head`）与卡片外壳，只显示 `.egm-row`；新建入口改成右下角悬浮「＋」 |
+| `allow_edit` | ❌ | bool | `true` | `false` = 只读：不显示新建「＋」、行首铅笔、悬浮加号（行内控件仍可用） |
+| `api_base_url` | ❌ | string | 继承顶层 / 同源 `/api/ha_data_store` | 后端地址，也可写 `http://ip:8123/api/ha_data_store/`。**独立使用（`standalone_type`）时需要自己配**；作为房间精灵子卡片（`action: card` / `popup_card` / 自由布局 `type: card`）时自动继承顶层卡片配置 |
+| `key` | ❌ | string | 继承顶层 / — | API Key。**独立使用时需要自己配**；子卡片模式自动继承顶层。`ha_data_store` 关掉「API 访问」总开关时可不填（同源走登录态），跨域则必填 |
+| `width` | ❌ | string | `660px` | 管理弹窗宽度 |
+| `popup_position` | ❌ | string | `center` | 管理弹窗位置 |
+
+#### 卡片长什么样
+
+**头部**：图标 + 标题 + 编组数徽标 + 「n 个编组 · m 个成员」+ 右侧「＋」（新建编组）。
+
+**每一行 = 一个编组**：行首图标（按类型着色）+ 名称 + 状态副标题 + 右侧 iOS 开关 + 编辑铅笔，
+下面按类型挂精简控件：
+
+| 编组类型 `kind` | 行内控件 |
+|---|---|
+| `lights` / `light` | 灯开着时出现：**亮度滑杆**（灯光卡同款：40px 胶囊拇指 + 拇指上的数值气泡，拖动只改本地、**松手才提交**）、**色温滑杆**（范围取 `min_color_temp_kelvin` / `max_color_temp_kelvin`）、**调色行**（色相滑杆 + 收藏色；收藏色只在编组对象带 `collect_colors` 时出现） |
+| `curtain` | **位置滑杆**（0–100%，纯色类型色填充；位置读 `current_position`） |
+| `ac` | **温度滑杆**（范围/步长取 `min_temp` / `max_temp` / `target_temp_step`）+ 同一行的**模式 / 风速 / 摆风三个自绘下拉**（不是原生 `<select>`，弹层配色跟主题走）。整行底色与图标随 `hvac_mode` 变：制冷蓝 / 制热橙 / 除湿青 / 自动绿 / 送风浅蓝 |
+| `media` | 播放·暂停 + 音量滑杆 |
+| `socket` / `switch` 等 | 只有开关，不挂滑杆 |
+| `mixed` / `device` | 没有总开关，点行首铅笔进管理弹窗 |
+
+> 关着的灯、关着的窗帘不挂滑杆（省地方，也让"关"这一态更干净）；
+> 空调关着仍保留控件，方便先设好再开机。
+
+#### 管理弹窗（新建 / 编辑 / 删除）
+
+点头部「＋」或行内铅笔打开，字段与后端一一对应：
+
+- **新建**：名称 + 类型（`lights` / `light` / `curtain` / `ac` / `media` / `socket` / `mixed` / `device`）
+  + ID 后半段（`eg_` 前缀固定，后缀 2~32 位小写字母/数字/下划线，不能以 `_` 开头）+ 成员实体；
+- **编辑**：改名称 / 类型 / ID 后半段 / 成员（可增删）；改 ID 由后端重建聚合实体；
+- **启停**：列表里的开关改 `enabled`，停用的编组在卡片上置灰但仍显示，便于恢复；
+- **删除**：确认后调 `DELETE`，同时删掉聚合实体。
+
+写入全部走 `ha_data_store` 的 REST 接口（`POST` 新增 / `PATCH` 修改 / `DELETE` 删除 + 成员子路径），
+完成后集成重建目录实体，卡片收到 hass 推送即刷新。
+
+#### 聚合实体 id 规则
+
+每个编组在 HA 里对应一个聚合实体，id = 「域 + `hds_eg_` + 编组 id 去掉 `eg_` 前缀」：
+
+| `kind` | 域 | 例子（编组 id `eg_ke_ting`） |
+|---|---|---|
+| `lights` / `light` | `light` | `light.hds_eg_ke_ting` |
+| `curtain` | `cover` | `cover.hds_eg_ke_ting` |
+| `ac` | `climate` | `climate.hds_eg_ke_ting` |
+| `media` | `media_player` | `media_player.hds_eg_ke_ting` |
+| `socket` / `mixed` / `device` | `switch` | `switch.hds_eg_ke_ting` |
+
+卡片只认目录实体里的 `groups`，不写死任何实体 id；行内控件就是对这个聚合实体调服务
+（`light.turn_on{brightness_pct}` / `cover.set_cover_position` / `climate.set_temperature` …），
+再由聚合实体下发给成员。
+
+#### 常见问题
+
+- **卡片空白、只显示「还没有编组」**：`sensor.ha_data_store_entity_groups` 不存在或 `attributes.groups` 为空 ——
+  先确认集成已启用「实体编组」并至少建了一个编组。
+- **不写 `entity` 能用吗**：能。省略 / 空串 / 纯空格都会回落内置目录实体（`_egmNormalizeConfig` 统一补齐）；
+  配置了就以你的为准。
+- **`show_heard: true` 后新建入口在哪**：右下角悬浮「＋」；`allow_edit: false` 时这颗按钮不出现。
+- **下拉点开一片空白**：浮层挂在卡片所在的 shadow root 上（这样才拿得到样式），
+  请确认版本 ≥ v6.9.0；仍异常时看控制台是否有报错。
+- **改了配置没生效**：`entity` / `show_heard` 都在卡片签名里，改完刷新页面即可。
+- **自由布局弹窗里写了 `type: entity_groups` 却不显示**：`rows[].items` 里要写成
+  `type: card` + `card_config: { type: entity_groups, ... }`（外层 `card_config` 才会被解包渲染），
+  详见上面「④ 作为自由布局弹窗里的子元素」。
+- **子卡片需要配 `api_base_url` / `key` 吗**：不用，自动继承顶层 `room-elves-card` 的配置；
+  只有 `standalone_type: entity_groups` 独立使用时才需要自己配。
 
 ---
 
@@ -10978,6 +11401,7 @@ tap_action:
 | `printer` | 打印机用量统计卡片（日历热力图 / 墨盒详情 / 用墨占比环形图） | `entity`、`name`、`colors`、`api_base_url`、`key`、`today_print` |
 | `fnos` | 飞牛 fnOS 全实体卡片（主机 / 存储 / Docker / 虚拟机 / 应用） | `entity`、`name`、`icon`、`accent`、`popup_width`、`popup_position`、`confirm_power` |
 | `daily_report` | 今日家庭日报卡片 | `entity`、`refresh`、`hide_room`、`env_from_config_id`、`width` |
+| `entity_groups` | 实体编组管理卡片（一行一个编组，行内调亮度/色温/窗帘/空调；新建·编辑·启停·删除走管理弹窗） | `entity`（可省略）、`name`、`icon`、`show_heard`、`allow_edit`、`api_base_url`、`key`（见 6.48） |
 | `esxi` | ESXi 虚拟化卡片（主机状态 / 虚拟机批量操作 / 屏幕墙三选项卡） | `entity`、`hosts`、`vms`、`exclude`、`default_vm`、`show_screen`、`show_refresh`、`show_sync`、`confirm_power_off`、`width` |
 | `bill` | 个人账单卡片（概览 / 分析 / 日历 / 查询 / 历史五选项卡） | `api_base_url`、`key`、`name`、`icon`、`subtitle`、`accent`、`page_size`、`recent_days`、`source`、`direction` |
 | `dingdong` | 叮咚门铃卡片（抓拍 / 实时画面 + 按天回看时间轴 + 设置 + 诊断四选项卡） | `entity`、`name`、`date`、`show_live`、`events_limit`、`shots_limit`、`videos_limit`、`hero_ratio`、`hero_max_height`（见 6.46） |
@@ -14439,6 +14863,6 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 ## 二十八、后记
 
-Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 20 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
 
 
