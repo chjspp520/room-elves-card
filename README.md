@@ -3,7 +3,7 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.14.4及其以前的版本)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.14.34及其以前的版本)
 
 # Room Elves Card - 房间精灵卡片 完整使用说明
 
@@ -8629,6 +8629,7 @@ tap_action:
 | `loop_assign` | 循环赋值：每次点击把实体推进到 `values` 序列下一个值，到末尾回绕 | ✅ | `entity`/`loop` + `values` |
 | `process_execute` | 流程执行：按 `steps` 序列依次执行多实体操作，每步独立延时，复用情景推断引擎 | ✅（每步的 `entities` 会自动展开） | `steps` |
 | `quick-action` | 快捷操作，弹出情景模式气泡执行多步骤操作 | — | `scenes` 或 `actions` |
+| `history_chart` | **打开该实体的历史曲线气泡**（本地 UI 动作，可配统计方法与聚合粒度） | ❌ | `entity`（可省，默认取所在项） |
 | `more-info` | 弹出 HA 标准详细信息弹窗 | ❌ | `entity` |
 | `navigate` | 页面导航（别名 `url`） | ❌ | `navigation_path` |
 | `call-service` | 调用 HA 服务 | ❌ | `service` |
@@ -9244,6 +9245,66 @@ tap_action:
 | entities 区域 | `entities[].tap_action` | 卡片左侧传感器区域 |
 | 传感器卡片 | `tap_action` | 自由布局弹窗内的 sensor 类型卡片 |
 | 设备状态卡片 | `tap_action` | 设备状态弹窗内的卡片 |
+
+---
+
+### history_chart — 打开历史曲线气泡
+
+本地 UI 动作：点一下直接弹出该实体的历史曲线气泡（**不调用服务、不写「最近使用」操作记录**）。
+气泡由统一的图表组件渲染：标题行（含**时长下拉**）+ 曲线 + 右端实时值 + 最高/最低统计行。
+
+```yaml
+tap_action:
+  action: history_chart
+  entity: sensor.ertongfang_diannao_day   # 可省：默认取所在项的 entity
+  duration: 1440                          # 可省：默认图表时长（分钟，10 档之一）
+  stat_methods: [sum, max]                # 可省：统计方法（每个方法一条线）
+  stat_bucket: 1d                         # 可省：聚合粒度（默认 auto）
+  title: 日用电                            # 可省：标题名
+  color: '#f59e0b'                        # 可省：曲线基色
+```
+
+**参数**
+
+| 参数 | 说明 |
+|---|---|
+| `entity` | 目标实体；缺省取所在项（按钮 / `title_entities` / 传感器卡片）的 `entity` |
+| `duration` | 默认时长（**分钟**），必须是 10 档之一（见下）；缺省 24 小时 |
+| `stat_methods` | 统计方法（可选）：每个方法画一条线（**最多 3 条**），同时决定图表下方统计行；传 `[]` = 不聚合 + 不显示统计行；不写 = 原始曲线 + 默认「最高/最低」 |
+| `stat_bucket` | 聚合粒度：`auto`（默认）/ `30s` / `1m` / `5m` / `15m` / `30m` / `1h` / `3h` / `6h` / `12h` / `1d` |
+| `title` / `name` | 标题名。优先级：`tap_action.name` → `tap_action.title` → 所在项 `name` → 实体 `friendly_name` → `entity_id` |
+| `color` | 曲线基色（多方法时以此色压暗出多条线） |
+
+**时长 10 档**：5分钟 / 10分钟 / 30分钟 / 1小时 / 12小时 / 24小时 / 2天 / 3天 / 5天 / 7天
+（切换后标题括号与取数窗口一起变，只影响当前气泡，关掉重开恢复默认值）
+
+**内置统计方法（20 个）**
+
+| 类别 | 方法 |
+|---|---|
+| 基础 | `mean` 平均、`median` 中位数、`min` 最低、`max` 最高、`first` 首值、`last`/`state` 末值、`sum` 合计、`change` 变化（累计型跨归零重置）、`integral` 积分（W/kW/MW 自动折算 kWh） |
+| 派生 | `delta` 波动、`stdev` 标准差、`cv` 变异系数、`p90` / `p95` 分位、`slope` 斜率（单位/小时）、`change_pct` 变化率、`count` 采样数 |
+| 开关型 | `on_count` 开启次数、`on_duration` 开启时长、`on_ratio` 开启占比（仅 `binary_sensor` 这类开关语义实体有效） |
+
+> 多条线若量纲不同（如 `sum` + `count`），只画第一个量纲的线，其余只进统计行。
+> 桶数超过 500 会自动放大一档（避免 7天 × 30秒 把页面算卡）。
+
+**点击区域（自由布局弹窗内的按钮 / 传感器卡片）**
+
+| 点击位置 | 行为 |
+|---|---|
+| **图标区域** | 该实体的**历史记录气泡**（`timeline-history-bubble`，与未配 `tap_action` 时完全一致） |
+| **其余区域**（名称 / 数值 / 整块） | 执行 `tap_action` —— 配 `history_chart` 时即弹出历史曲线气泡 |
+
+**常用组合**
+
+| 场景 | `stat_methods` | `stat_bucket` |
+|---|---|---|
+| 温度 / 湿度 | `[mean, max, min]` | `auto` |
+| 功率 | `[max, mean]` | `auto` |
+| 日用电 | `[sum, max]` | `1d` |
+| 累计电量（总表） | `[change, max]` | `auto` |
+| 开关 / 门磁 | `[on_count, on_ratio]` | `auto` |
 
 ---
 
@@ -10526,10 +10587,11 @@ overview:
 
 - **入口**：概览栏**最左侧固定入口列**（`.ov-entry-col`，约 70px）中与"自动化管理"横向并排一格，显示"常用"文本 + 去重后的设备个数；固定入口列自带右分隔线，与中间动态指标列（`.ov-left-col`）隔开，点击入口列间隙/边距不会误开"全量概览"弹窗。
 - **气泡宽度**：可通过 `width` 参数自定义（如 `430px`），未配置时默认 440px。
-- **数据集选项卡「卡片 / 全部」**（`recently-used-header` **右端**，胶囊样式 `.recently-used-view-tabs`；默认「卡片」，无 `devices` 数据时自动落到「全部」）：
-  - **卡片**（默认）：数据源为实体 `attributes.devices[]`（用户操作过的设备卡片，含 `user_name` / `config_id`），即原有内容；标题「卡片内最近使用（N）」。
-  - **全部**：数据源为实体 `attributes.all[]`（全部受监控设备，**无用户维度**：`room` → 房间名，无 `user_name` / `config_id`，点击按实体反查配置树）；**列表行布局、图标/状态标签、房间标签、右侧控件、点击弹窗、实时状态同步与「卡片」完全一致**，只是数据不同；标题「全部最近使用（N）」。
-  - 切换选项卡时重建下方子选项卡行（用户筛选 + 时间线 + 时空），两个选项卡各自的「时空 / 时间线」惰性渲染状态互相独立；标题括号内数量为**该数据集**去重后的设备总数，不随用户筛选变化。
+- **数据集选项卡「卡片 / 全部」**（`recently-used-header` **右端**，**分段控件与调试卡片 `.dbg-tabs` 同构**：`.recently-used-view-tabs` 淡色圆角轨道 + `.recently-used-view-tab` 小圆角块，选中态 `.active` 由 `createTabBar(adopt)` / 左右翻页模块统一写；配色走框架 accent（`--re-accent-grad` / `-soft` / `-shadow`，未配 accent 回退青蓝渐变）；默认「卡片」，无 `devices` 数据时自动落到「全部」）：
+  - **卡片**（默认）：数据源为实体 `attributes.devices[]`（用户操作过的设备卡片，含 `user_name` / `config_id`），即原有内容；标题行主标题「卡片内最近使用」，副标题「N 个设备 · M 次操作」。
+  - **全部**：数据源为实体 `attributes.all[]`（全部受监控设备，**无用户维度**：`room` → 房间名，无 `user_name` / `config_id`，点击按实体反查配置树）；**列表行布局、图标/状态标签、房间标签、右侧控件、点击弹窗、实时状态同步与「卡片」完全一致**，只是数据不同；标题行主标题「全部最近使用」，副标题「N 个设备」。
+  - **头部版式参照调试卡片**（`debug-card` 的 `.dbg-header` / 实体健康卡 `.eh-header` 同一套）：左端 38px 渐变图标块 `.recently-used-header-icon` + 两行标题 `.recently-used-title`（16px/700）与 `.recently-used-subtitle`（11px 次要色）；主标题 = 数据集名、副标题 = 规模 —— 设备数为**该数据集**去重（含编组窗帘归并）后的总数，操作次数取实体 `total_actions`（「全部」数据集无用户维度，只报设备数）；两者都**不随用户筛选变化**，窄气泡下标题与副标题各自省略号截断。
+  - 切换选项卡时重建下方子选项卡行（用户筛选 + 时间线 + 时空），两个选项卡各自的「时空 / 时间线」惰性渲染状态互相独立。
 - **气泡列表**：按 `entity_id` 去重、按最近使用时间倒序；设备项之间显示分割线；`header` 固定不滚动、列表独立滚动；图标按实体/名称推断（实体域 `climate` → `mdi:air-conditioner`，名称含"灯"或"照片" → `mdi:lightbulb`，名称含"插座/插排" → `mdi:power-socket-au`）。
 - **用户筛选**：子选项卡行按 `user_name` 筛选（"全部" + 各用户选项卡，复用 `eh-tabs` 样式），默认选中当前登录用户；「全部」数据集无用户维度 → 不显示用户选项卡。
 - **"时间线"选项卡**（子选项卡行内固定项）：按时间倒序展示当日事件（日期导航 `◀ 日期 ▶` + 可滚动列表），条目 = 左侧节点（有用户 → 用户头像；无用户 → **事件来源图标**，底色按 `source` 区分）+ 设备名 + 状态徽章 + 房间/状态/用户 + 右下角操作控件。
@@ -11356,11 +11418,72 @@ tap_action:
 
 在弹窗 row 分组的标题右侧，可以显示一组实体状态值或控制按钮，支持 Way 计算引擎和点击动作。
 
-`title_entities` 支持三种模式：
+`title_entities` 支持四种模式：
 
 1. **传感器模式**（`entity` + `way`）— 显示实体状态值，适合展示传感器数据
 2. **控制按钮模式**（`entities` + `tap_action`）— 显示为可点击按钮，适合快捷控制
 3. **快捷操作模式**（`type: action`）— 显示为可点击按钮，点击弹出情景模式气泡
+4. **历史曲线模式**（`entity` 为 `sensor.*`，且未配 `way` / `tap_action`）— **点击直接弹历史曲线气泡**
+   （`render/chart-component.js` 通用图表组件：标题行 + 曲线 + 最高/最低统计行 + 时长下拉，
+   默认 24 小时，档位 5分钟 … 7天；再次点击同一项 = 关闭；关弹窗/关气泡即销毁图表）
+
+#### 历史曲线模式示例
+
+```yaml
+cards:
+  - row: 1
+    per_line: 2
+    title: 网络设备
+    title_entities:
+      - entity: sensor.jigui_wendu
+        icon: mdi:thermometer
+        name: 服务器温度
+        show_name: false
+      - entity: sensor.jigui_shidu
+        icon: mdi:water
+        name: 服务器湿度
+        show_name: false
+```
+
+> 点击「服务器温度」即弹出该实体的历史曲线（不必再跳“更多信息”）。
+> 想保留原来的行为，给该项加 `tap_action`（如 `action: more-info`）即可 —— 显式动作优先于历史曲线。
+
+#### 显式动作 `history_chart`（可配统计方法与桶粒度）
+
+任意支持 `tap_action` 的位置（按钮 / 实体卡片 / 传感器卡片 / `title_entities` / 概览行 …）都能写：
+
+```yaml
+tap_action:
+  action: history_chart
+  entity: sensor.ertongfang_diannao_day   # 可省：默认取所在项的 entity
+  duration: 10080                         # 分钟；10 档之一（缺省 1440 = 24 小时）
+  stat_methods: [sum, max]                # 可省；不写 = 原始曲线 + 最高/最低统计行
+  stat_bucket: 1d                          # 可省；默认 auto（按窗口自动选桶）
+  title: 日用电                            # 可省（默认实体名）
+  color: '#f59e0b'                        # 可省（多方法时作基色）
+```
+
+- **`stat_methods`**：每个方法画一条线（最多 3 条，按配置顺序截断），图表下方按方法显示统计值
+  （`max/min/first/last` 附发生时刻）。`[]` = 只画原始曲线、**不显示**统计行。
+- **内置方法（20 个）**：`mean` 平均、`median` 中位数、`min` 最低、`max` 最高、`first` 首值、
+  `last`/`state` 末值、`sum` 合计、`change` 变化（累计型跨重置）、`integral` 积分（W/kW/MW → kWh）、
+  `delta` 波动、`stdev` 标准差、`cv` 变异系数、`p90`/`p95` 分位、`slope` 斜率（单位/小时）、
+  `change_pct` 变化率、`count` 采样数、`on_count` 开启次数、`on_duration` 开启时长、`on_ratio` 开启占比。
+- **`stat_bucket`**：`auto`（默认）/ `30s` / `1m` / `5m` / `15m` / `30m` / `1h` / `3h` / `6h` / `12h` / `1d`；
+  桶数超过 500 会自动放大一档（避免 7 天 × 30 秒把页面算卡）。
+- **量纲保护**：多条线若量纲不同（如 `sum` + `count`），只画第一个量纲的线，其余只进统计行。
+- `on_*` 只对 `binary_sensor` 这类带开关语义的实体有效（数值实体上会显示 `—`）。
+- **不记入「最近使用」**：`history_chart` 是本地 UI 动作，不写操作记录。
+
+常用组合：
+
+| 场景 | `stat_methods` | `stat_bucket` |
+|---|---|---|
+| 温度 / 湿度 | `[mean, max, min]` | `auto` |
+| 功率 | `[max, mean]` | `auto` |
+| 日用电 | `[sum, max]` | `1d` |
+| 累计电量（总表） | `[change, max]` | `auto` |
+| 开关 / 门磁 | `[on_count, on_ratio]` | `auto` |
 
 #### 传感器模式示例
 
@@ -11540,7 +11663,7 @@ tap_action:
 | `text` | 文本显示 | `entity`、`name` |
 | `radio` | 单选按钮组 | `entity`、`map_table`、`per_row`、`compact`、`confirm` |
 | `timeline` | 时间轴（当天状态变化） | `entity`、`map_table`、`api_base_url` |
-| `picture` | 图片展示（详见下方） | `bg_image`、`halo_entity`、`bg_image_position` |
+| `picture` | 图片展示 / 设备图层叠加（详见下方） | `bg_image`、`bg_image_position`、`halo_entity`、`entities`（叠加图层，含 `group` / `priority`） |
 | `html` | 自定义 HTML | `content` |
 | `ac` | 空调控制面板 | `entity` |
 | `clothes_dryer` | 晾衣架控制面板 | `entity`、`light_entity` |
@@ -11595,7 +11718,17 @@ items:
 > 1. `{ "值1": {...}, "值2": {...} }` — 直接映射
 > 2. `{ "on": { "值1": {...} }, "off": { "值2": {...} } }` — 按主状态分组
 
-用于在弹窗中显示设备图片，支持背景图片、光晕效果和位置调整。
+#### picture 卡片（设备图层叠加）
+
+用于在弹窗中显示设备图片：**一张背景图 + 若干张按实体状态切换的叠加图层**，同时支持光晕效果与位置调整。
+
+图片由三层构成，从下往上：
+
+- **光晕**（`halo_entity`）：背景图下方的暖色发光，实体 on 时出现；
+- **背景图**（`bg_image`）：底层，通常是一张设备轮廓/框架图；
+- **叠加图层**（`entities`）：每张图由一个实体的状态驱动，画在背景图之上。
+
+##### 背景图与光晕
 
 ```yaml
 items:
@@ -11614,8 +11747,86 @@ items:
 | `bg_image_position` | ❌ | `array` | 图片变换，4 个浮点值 `[x, y, zoom, rotate]`，以 CSS `transform: translate() scale() rotate()` 应用（如 `[0,0,0.8,0]` = 缩放 0.8；**不是** `object-position`） |
 | `show_button_background` | ❌ | `boolean` | 是否显示按钮卡片的灰色背景，默认 `true`，设为 `false` 时仅显示图片 |
 | `halo_entity` | ❌ | `string` | 控制光晕效果的实体 ID。实体为 on 时图片下方显示暖色光晕 |
+| `height` | ❌ | `string` | 卡片高度（如 `165px`），同时作用于内部图片容器 |
+| `show_name` | ❌ | `boolean` | 是否在左下角显示 `name` 文字，默认 `true` |
+| `entities` | ❌ | `array` | 叠加图层配置，见下文[叠加图层](#叠加图层entities) |
+| `exclusive` | ❌ | `boolean` | 整卡互斥开关，默认 `false`；设为 `true` 时整卡只显示优先级最高的一张图（旧行为，一般不用） |
 
 > `halo_entity` 通常配置为对应设备的开关实体，设备开启时图片显示光晕效果，提供直观的视觉反馈。
+
+##### 叠加图层（entities）
+
+`entities` 里每一项对应**一张图**：按该实体**当前状态值**去 `map_table` 里取图，取到就画在背景图之上。典型用途是「设备本体图 + 灯效层 + 功能指示灯层」。
+
+```yaml
+items:
+  - type: picture
+    height: 165px
+    show_button_background: false
+    bg_image: /local/house/浴霸框_灰色.png
+    bg_image_position: [{ x: 0 }, { y: 0 }, { zoom: 1 }, { rotate: 0 }]
+    entities:
+      # ① 灯层：不写 group → 独立图层，灯亮只加这一张，不影响其它图层
+      - entity: switch.da_wei_sheng_jian_light
+        priority: 0
+        map_table:
+          'on':
+            image_path: /local/house/浴霸灯on.png
+            position: [{ x: 0 }, { y: 0 }, { zoom: 1 }, { rotate: 0 }]
+
+      # ② 功能图标层：同一个 group → 组内互斥，
+      #    暖风(0) 压住"开暖风时自动打开"的吹风(1)
+      - entity: switch.da_wei_sheng_jian_nuan_feng
+        priority: 0
+        group: mode
+        map_table:
+          'on':
+            image_path: /local/house/浴霸暖风.svg
+            position: [{ x: -112 }, { y: 0 }, { zoom: 0.75 }, { rotate: 0 }]
+
+      - entity: switch.da_wei_sheng_jian_chui_feng
+        priority: 1
+        group: mode
+        map_table:
+          'on':
+            image_path: /local/house/浴霸吹风.svg
+            position: [{ x: -112 }, { y: 0 }, { zoom: 0.75 }, { rotate: 0 }]
+```
+
+**`entities` 每项字段：**
+
+| 字段 | 必填 | 类型 | 默认值 | 说明 |
+|------|:----:|------|--------|------|
+| `entity` | ✅ | `string` | - | 驱动这张图显示的实体 |
+| `map_table` | ✅ | `object` | - | 状态值 → 图片配置。键为**任意状态值**（`'on'` / `'off'` / `'heat'` …），`default` 作为兜底 |
+| `priority` | ❌ | `number` | `999` | ① 同一 `group` 内谁胜出（数字小者赢）② 叠放层级：`z-index = 1000 - priority`，**数字越小越靠上** |
+| `group` | ❌ | `string` | - | 互斥组名，见下方「显示规则」。不需要互斥的图层**不要写** |
+
+**`map_table` 每项字段：**
+
+| 字段 | 必填 | 类型 | 说明 |
+|------|:----:|------|------|
+| `image_path` | ✅ | `string` | 图片地址（`.png` / `.svg` 均可） |
+| `position` | ❌ | `array` | `[x, y, zoom, rotate]` 或 `[{x:..},{y:..},{zoom:..},{rotate:..}]`，以图片中心为基准偏移/缩放/旋转 |
+
+> `map_table` 的值写成**数组**时，同一状态可以同时叠多张图（例如灯效 + 数字角标）。
+
+##### 显示规则
+
+| 情况 | 表现 |
+|------|------|
+| 实体**没配** `group` | 自成一层，只跟随自身状态 —— 灯亮不会影响其它图层 |
+| 多个实体配**同一个** `group` | 组内互斥：只显示 `priority` 最小的那个 **on** 实体；组内有 on 时，其它成员的 `off` 图一并隐藏 |
+| **不同** `group` 之间、未配 group 的实体 | 叠加显示，互不影响 |
+| `priority` 相同时 | 组内互斥看 `entities` 书写顺序（靠前者赢）；层级相同时后写的压在上面 |
+| 卡片级 `exclusive: true` | 退回旧行为：**整卡**只显示优先级最高的一张，其它 on/off 图全部隐藏 |
+
+##### 常见问题
+
+- **灯亮后其它图标全消失**：旧版本是整卡互斥。现在只有配了同一个 `group` 的实体才会互斥 —— 灯层**不要**写 `group`。
+- **暖风打开时吹风图标也亮起来**：两者配同一个 `group`，并让暖风 `priority` 比吹风小。
+- **灯图盖住了小图标**：`priority` 同时决定层级，让灯垫底就给它写大数字（如 `priority: 9`）。
+- **图片不显示**：确认 `image_path` 可访问，且实体**当前状态值**在 `map_table` 里有对应键（可加 `default` 兜底）。
 
 ---
 
@@ -13406,7 +13617,7 @@ tabs:
 | `chart_heatmap` | 日历热力图 | `entity`, `name` |
 | `chart_calendar` | 日历图 | `entity`, `name` |
 | `timeline` | 时间轴 | `entity`, `map_table`, `api_base_url` |
-| `picture` | 图片展示 | `bg_image`, `halo_entity`, `bg_image_position` |
+| `picture` | 图片展示 / 设备图层叠加 | `bg_image`, `bg_image_position`, `halo_entity`, `entities`（含 `group` / `priority`） |
 | `html` | 自定义 HTML | `content` |
 | `user` | 用户信息 | `persons` |
 | `usage` | 使用量统计 | `entity`, `name` |
@@ -14393,10 +14604,10 @@ buttons:
   - **版本历史气泡**（点击版本号）：带标题栏（`版本历史 · xxx`）+ 版本列表；**最新版本整行绿色高亮并标注 `Latest` 徽标**。
 - **版本历史缓存**：结果缓存在浏览器本地，**同一浏览器 6 小时内刷新页面不再重新请求 GitHub**（内存副本 10 分钟）；
   感到过时可在「版本」选项卡点手动刷新（会清掉持久缓存并重新拉取）。GitHub 限流（403/429）时会进入 1 小时冷却期，冷却状态同样持久化，避免反复撞限流。
-- **HA服务器信息**：数据源为后端实体 `sensor.ha_data_store_db_viewer_url` 的 `attributes.system`（每 10 分钟刷新）。精简概览卡展示 **HA版本 / 内存 / 硬盘 / 运行时长** 四项，各项独立交互：
-  - **HA版本**：`mdi:home-assistant` 图标 + "HA版本"文字 + 版本号；点击弹**版本信息气泡**（HA核心版本、前端版本、安装方式、服务器名称、更新于）。
-  - **内存 / 硬盘**：**圆环占用图**（58px 圆环，名称与占用百分比居中于环内，下方显示"已用 / 总量"）；实时百分比与已用/总量读取自 `sensor.ha_data_store_memory_usage` / `disk_usage`（30 秒刷新），缺失时回退仅显示总容量。
-  - **运行时长**：文字按规则本地化——≥ 24h 显示 `x.x 天`、1~24h 显示 `x.x 小时`、< 1h 显示 `x 分钟`；点击弹**安装时间 + 运行时长**气泡。
+- **HA服务器信息**：数据源为后端实体 `sensor.ha_data_store_db_viewer_url` 的 `attributes.system`（每 10 分钟刷新）。精简概览卡展示 **HA版本 / CPU / 内存 / 硬盘** 四项，各项独立交互：
+  - **HA版本**：`mdi:home-assistant` 图标 + "HA版本"文字 + 版本号；点击弹**版本信息气泡**，行序为「谁 → 什么版本 → 什么时候」：服务器名称、安装方式、HA核心版本、前端版本、安装时间、运行时长、数据更新于（末行为后端实体刷新时刻，不是升级时间）。
+  - **CPU / 内存 / 硬盘**：**圆环占用图**（58px 圆环，名称与占用百分比居中于环内，下方为值行）；实时百分比读取自 `sensor.ha_data_store_cpu_usage` / `memory_usage` / `disk_usage`（30 秒刷新）。内存/硬盘值行为"已用 / 总量"（缺失时回退仅显示总容量）；CPU 无容量概念，值行显示核心数/频率（后端 `system` 给了才有）。**点击任一圆环弹历史曲线气泡**（`render/chart-component.js` 的 `createHistoryChart`，经通用气泡壳 `_showEntityChartBubble`）：默认 24 小时、标题行带 10 档时长下拉、右端实时值 + 最高/最低统计行，同锚点再点关闭。
+  - **运行时长**：不再单独展示（概览卡无此项、标题行也不显示），只在 **HA版本信息气泡** 里以「安装时间 / 运行时长」两行呈现；文字按规则本地化——≥ 24h 显示 `x.x 天`、1~24h 显示 `x.x 小时`、< 1h 显示 `x 分钟`。
 - **系统资源**：内嵌一张 ECharts 折线图，近 24 小时 **CPU / 内存 / 硬盘** 三条占用曲线同图显示；首次切换到「版本」选项卡时自动懒加载。数据来自三个资源传感器：
   - `sensor.ha_data_store_cpu_usage`（CPU 占用率）
   - `sensor.ha_data_store_memory_usage`（内存占用）
@@ -15036,3 +15247,5 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 ## 二十八、后记
 
 Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+
+---
