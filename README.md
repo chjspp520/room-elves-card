@@ -3,7 +3,7 @@
 <img width="430" height="932" alt="1" src="https://github.com/user-attachments/assets/8d854761-0073-4f19-9f3b-0e7f14485919" />
 <img width="470" height="1002" alt="1" src="https://github.com/user-attachments/assets/f1525554-3592-44c1-855c-464b1b3e40ad" />
 
-# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v6.14.37及其以前的版本)
+# Room Elves Card - 房间精灵卡片 完整使用说明(适用于v7.0.1及其以前的版本)
 
 # Room Elves Card - 房间精灵卡片 完整使用说明
 
@@ -13,9 +13,20 @@
 
 **Room Elves Card**（房间精灵卡片）是一款功能极为强大的 Home Assistant 自定义卡片，旨在将一个房间（或全屋）的所有设备状态与控制能力集中到一张卡片中，实现"一卡掌控全家"的智能家居体验。
 
-> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai)、[飞牛 fnOS 集成](https://github.com/chjspp520/fnos)、[NPS 集成](https://github.com/chjspp520/nps) 均由 **chjspp520** 制作维护。
+它内置 30+ 种设备卡片与专属控制弹窗、统一的动作系统与选项卡/左右滑动交互、主题与配色派生、图表与统计、独立卡片模式，以及概览栏、程序扩展坞、平面户型图等全家级能力，并与 ha_data_store、iKuai、fnOS、NPS 等自研集成深度联动。
+
+**v7.0.0 起，它同时是一个卡片平台**：内置的界面框架、主题系统、弹窗/下拉、统一动作系统、缓存与请求层、历史图表等模块全部对外开放 —— 第三方只需要写一个 js 文件丢进 `www`、在任意一张卡片里声明一次路径，就能做出与内置卡片**同质感**的新卡片，无需重复造轮子（详见第二十八节「插件系统」与《插件开发指南.md》（`docs/插件开发指南.md`））。
+
+> **作者声明**：[电力卡片](https://github.com/chjspp520/electricity-info-card)、[HA 数据统一存储系统](https://github.com/chjspp520/ha_data_store)、[ESXi Control](https://github.com/chjspp520/esxi_control)、[iKuai 集成](https://github.com/chjspp520/ikuai)、[飞牛 fnOS 集成](https://github.com/chjspp520/fnos)、[NPS 集成](https://github.com/chjspp520/nps)、[WX ClawBot 微信推送集成](https://github.com/chjspp520/wx_clawbot) 均由 **chjspp520** 制作维护。
 >
 > **免责声明**：作者仅提供软件功能，不对数据泄露提供安全保障。数据安全由用户自行负责，使用本软件即代表接受本条款（适用法律以所在地为准）。
+>
+> **插件系统免责声明**（v7.0.0 起）：**第三方插件以卡片身份运行**，与官方代码共享同一页面、
+> 同一 Home Assistant 授权与同一 DOM 环境，具备同等执行能力。**插件作者对其插件执行的任何行为
+> 负责**；房间精灵作者不审核、不担保、不背书任何第三方插件 —— 因安装或运行第三方插件导致的
+> 任何问题（数据泄露/丢失、设备误操作、隐私与安全事件或其它损失），由**插件作者与安装者**自行
+> 承担。安装者有义务核实插件来源，只安装可信的插件文件（详见第二十八节 28.6）。发布、分发或
+> 安装插件即代表接受本条款。
 
 ### 核心特性
 
@@ -29,6 +40,7 @@
 - **左右滑动（全场景统一）**：弹窗选项卡、头部多页按钮、各卡片自己的分页（多房间 / 多用户 / 多档位 / 多数据集）都支持左右滑动，手感一致；纵向滚动仍归浏览器，起点落在按钮 / 输入框 / 日期导航上不算翻页，页面里的横向滚动区会主动让路；只有一页时不启用；**无需任何配置**（详见「八-A、左右滑动」）
 - **程序扩展坞（Dock）**：从屏幕右侧滑入的快捷启动栏，支持头部模式全部按钮类型和动作系统，点击触发按钮展开/收起
 - **独立卡片模式（Standalone）**：将单个设备控制面板直接作为一张卡片使用，支持空调、窗帘、媒体、晾衣架、图表等 20+ 种独立卡片类型
+- **插件系统（v7.0.0）**：**支持自己开发插件卡** —— 一个 js 文件丢进 `www`，在任意一张房间精灵卡里声明一次 `plugins` 即**全站生效**；插件可直接使用内置的统一头部、选项卡、分段选项卡、下拉、弹窗/气泡/日历/确认框、统一动作系统、历史图表、主题跟随、共享缓存与请求层，支持**仪表盘独立**（`standalone_type`）、**弹窗**（`popup_card`）与**卡片混排**三种用法，加载后控制台会提示插件来源与其权限（详见第二十八节）
 - **三张卡片已从"外置独立卡片"并入内建（内部子卡片）**：**温湿度面板**（`wenshidu`）、**设备回放**（`replay`）、**定时精灵**（`timer_elves`；旧 `timer` 为兼容别名）原先各自是**在本卡片之外单独安装的独立卡片**（`wenshidu-card.js` / `device-replay-card.js` / `timer-control-card.js`），现已**整体并入房间精灵卡片**，成为它的**内部子卡片** —— 独立 custom element 已退役（不再单独注册），改由本卡片以 `standalone_type: wenshidu / replay / timer_elves` 直接内置渲染，也能作为按钮 `type` 嵌进按钮网格；配置写法见 6.41 / 6.39 / 6.40，实现位于 `modules/cards/wenshidu.js` / `device-replay.js` / `timer-elves.js`（v6.12.41 起 `timer-control.js` 已从构建中移除）
 - **多页模式（头部模式）**：用 `buttons_2` / `buttons_3` … 把按钮分到多页，**左右滑动切换页面**（跟手拖动 + 松手吸附 + 圆点高亮跟手），底部圆点指示当前页；桌面端也可用滚轮翻页
 - **图表卡片系统**：内置 10 种图表图形（注册 11 个 type，`chart` 与 `chart_line` 是同一实现的两个别名）——仪表图（纯 SVG）、进度条（纯 CSS）、柱状图（纯 CSS）、曲线图/环形图/饼图/南丁格尔玫瑰图/热力图/日历图/混合图表（ECharts）；另有插座功率流向桑基图，它是 `type: socket` 的 `shwo_sankey` 配置，不是独立图表类型
@@ -39,6 +51,7 @@
 - **NPS 隧道管理卡片（`nps`）**：只配一个「所有实体」聚合实体，就把一台 NPS 内网穿透服务端装进一张卡 —— 概览（实时速率 / 入出流量环 / 指标条 / **访问控制**：管理面板访问开关 + 密钥剩余时长 + 点开复制面板 URL）+ 隧道（备注 / 类型 / 端口 / 启停 / 编辑）+ 客户端（名称 / 脱敏 IP / 连接·断开 / 编辑）三个页签，还能**新增 / 编辑 / 删除**隧道与客户端（写入走集成的 `nps/action`，需管理员）；不写死实体 id（按 entity_id 后缀认角色）。依赖 [nps 集成](https://github.com/chjspp520/nps)，配置见 6.47
 - **实体编组卡片（`entity_groups`）**：把 `ha_data_store` 的「实体编组」搬到卡片上 —— 一行一个编组，行内直接调**亮度 / 色温 / 色相**（灯光卡同款滑杆，松手才提交）、**窗帘位置**、**空调温度**与**模式·风速·摆风**（自绘下拉，弹层配色跟主题）；新建 / 改类型 / 增删成员 / 启停 / 删除走卡片自带的管理弹窗。**`entity` 可整条省略**（默认 `sensor.ha_data_store_entity_groups`），加 `show_heard: true` 还能去掉标题头与外壳、只留一行行的编组。依赖 [ha_data_store 集成](https://github.com/chjspp520/ha_data_store)，配置见 6.48
 - **电力中心卡片（`power_center`）**：把「电网结算 / 全屋实时 / 设备明细」三源用电数据装进一张卡 —— **时间 / 房间 / 查询**三页签；时间页自上而下三块联动图（主图按 **年 → 月 → 日 → 时** 点击下钻，房间图 / 设备图跟随），**日层级点设备柱**弹出该设备当日逐次开关明细气泡（运行中的记录按 `now_kwh - on_power` 估电并高亮）；房间页走「房间 → 设备」，查询页支持实体 id/名称模糊 + 日期范围。所有汇总、占比、配色、格式化文本均由后端算好，前端只渲染；另带日历浮层（格子里显示每天 kWh）与三源对账。依赖 [ha_data_store 集成](https://github.com/chjspp520/ha_data_store) **≥ 6.0.7**（改完需重启 HA），配置见 6.49
+- **微信推送（WX ClawBot）**：自动化管理卡片的动作区新增「＋ 微信 ClawBot」——向个人微信推送**文本 / 图片 / 视频 / 文件**（语音为实验性），内容支持固定文字、实体值（图片 / 视频实体，如摄像头抓拍）、本地文件路径，路径与正文均可写 **jinja2 模板**动态拼接；接收对象可选自己（默认）/ 最近发件人 / 别名，发送结果（含失败原因）写进自动化执行记录。依赖 [WX ClawBot 集成](https://github.com/chjspp520/wx_clawbot)（iLink 协议**扫码登录一次**即用，同样由 **chjspp520** 维护），不装该集成时自动化其余功能不受影响，配置见 11.10.2
 - **平面户型图**：支持 JSON 坐标数据的平面户型图渲染，实时显示各房间人员占用状态，拖动时间轴可回溯历史活动
 - **人员/天气/导航**：用户卡片支持多人头像布局（当前登录用户大头像居中）、在/离家状态检测、实时定位、高德地图导航路线规划、多地区天气预报（支持和风天气 API 与 HA 实体双数据源）
 - **情景模式**：一键执行预定义操作列表，支持气泡选择/直接执行模式、延时执行、执行进度实时展示、状态验证、执行历史记录，服务调用自动推断（覆盖 light/climate/cover/fan/media_player/vacuum/lock/automation/script 等所有域）。还可作为统一卡片类型（`type: action`）或 `tap_action: quick-action` 在弹窗、title_entities 等任意位置使用
@@ -69,12 +82,14 @@
 
 > ⚠️ 下面列出的集成，**卡片本身不含数据采集，缺集成就没有数据**。其中 `ha_data_store` 属于**深度依赖集成**（历史 / 播放列表 / 健康数据等多处共用，**不专属某一张卡片**）；其余四个各对应一张卡片：
 > `esxi_control` → `esxi`（ESXi 虚拟化）· `ikuai` → `ikuai_card`（iKuai 全实体卡）· `fnos` → `fnos`（飞牛 fnOS 全实体卡）· `nps` → `nps`（NPS 隧道管理卡）。
+> 另有 **WX ClawBot** 属**动作依赖集成**——不提供任何卡片数据，只是自动化管理卡片「微信发送」动作的发送后端（见 11.10.2）。
 
 - **HA 数据统一存储系统** ([ha_data_store](https://github.com/chjspp520/ha_data_store)) — ⚠️ **深度依赖集成（不绑定单张卡片）**。本卡片已深度适配该集成，通过其 API 接口读取历史数据、播放列表（媒体卡片）、健康数据等，多处功能共用，**建议优先安装配置**。它同时是 `type: bill` 个人账单卡片的必需集成（需 v5.0.0 及以上），见 6.44。
 - **ESXi Control** ([esxi_control](https://github.com/chjspp520/esxi_control)) — ⚠️ **`type: esxi` 卡片的必需集成**。为每台主机 / 虚拟机 / 数据存储 / 许可证建实体，并生成聚合实体 `sensor.esxi_all_entities`；**没装集成时 ESXi 卡片没有数据**（只显示提示），安装见 6.43。
 - **iKuai 集成** ([ikuai](https://github.com/chjspp520/ikuai)) — ⚠️ **`type: ikuai_card` 卡片的必需集成**。为整台爱快（系统 / 线路 / DHCP / 客户端 / Docker / 虚拟机 / 日志…）建实体，并生成聚合实体 `sensor.ikuai_all_entities`；**没装集成时爱快卡片没有数据**，安装见 6.45。注意**不是**旧的 `ikuai_router` 集成。
 - **飞牛 fnOS 集成** ([fnos](https://github.com/chjspp520/fnos)) — ⚠️ **`type: fnos` 卡片的必需集成**。为整台飞牛（主机 / 存储 / Docker / 虚拟机 / 文件·相册·影视）建实体，并生成聚合实体 `sensor.fnos_all_entities`；**没装集成时飞牛卡片没有数据**（只显示提示），安装与配置见 6.36。
 - **NPS 集成** ([nps](https://github.com/chjspp520/nps)) — ⚠️ **`type: nps` 卡片的必需集成**（同样由 **chjspp520** 维护）。为自建的 NPS 内网穿透服务端（ehang-io/nps 面板）建隧道 / 客户端 / 域名映射 / 面板访问等实体，并生成聚合实体 `sensor.nps_server_<主机地址>_all_entities`；卡片只用这一个实体拿"全部实体清单"，**没装集成时 NPS 卡片没有数据**（只显示提示）。新增 / 编辑 / 删除隧道走集成注册的 WebSocket 命令 `nps/action`（**需管理员**）。安装与配置见 6.47。
+- **WX ClawBot 微信推送** ([wx_clawbot](https://github.com/chjspp520/wx_clawbot)) — ⚠️ **自动化管理卡片「微信 ClawBot」发送动作的必需集成**（同样由 **chjspp520** 维护）。走 iLink 协议**扫码登录**个人微信后即可推送，支持**文本 / 图片 / 视频 / 文件**（语音为实验性）；内容可以是固定文字、实体值（图片实体 / 视频实体，如摄像头抓拍）、本地文件路径，路径与正文都支持 **jinja2 模板**动态拼接。**不发微信可以不装**，自动化其余功能完全不受影响。安装配置与动作写法见 11.10.2「微信发送动作」。
 - **电力卡片** ([electricity-info-card](https://github.com/chjspp520/electricity-info-card)) — 家庭用电信息展示卡片，支持功率、电量、电费等多维度数据
 
 ---
@@ -577,6 +592,9 @@ overview:                           # 概览栏（⚠️ 仅 head 模式可用�
 ### 独立卡片模式（standalone）
 
 除了将多种设备聚合到一张卡片的常规用法，房间精灵卡片还支持**独立卡片模式**——将单个设备控制面板直接作为一张卡片使用，无需配置按钮网格。
+
+> 💡 `standalone_type` 也支持**插件卡类型**（`v7.0.0` 起）——比如 `standalone_type: my-solar-card`，
+> 详见第二十八节「插件系统」。
 
 ### 适用场景
 
@@ -2555,7 +2573,7 @@ weather:
 > Apple 地图走 `maps.apple.com`。两者坐标系不同：高德用 GCJ-02，Apple 地图要 WGS-84，
 > 卡片内部自动反算。
 > **鸿蒙（OpenHarmony / ArkWeb / HarmonyOS UA）上这两个按钮不显示** —— ArkWeb 里点外链会退化成
-> 同窗口导航，把 HA 整页顶掉（白屏）。判定复用 `infra/harmony-scale.js` 的 `isHarmonyUA()`。
+> 同窗口导航，把 HA 整页顶掉（白屏）。判定复用 `infra/viewport.js` 的 `isHarmonyUA()`。
 
 **位置坐标获取优先级（`location` 未配置时的降级）：**
 1. `location` 实体 → `attributes.Location` 数组
@@ -10728,6 +10746,21 @@ buttons:
 - 独立弹窗写法不依赖概览分段，任意 `tap_action` 位置（按钮/设备）均可配置 `popup_card` + `card.type: automation` 触发
 - `entity` 未配置时默认 `sensor.ha_data_store_automation`（兼容点号写法，自动归一化为下划线）
 
+#### 微信发送动作（需 WX ClawBot 集成）
+
+「编辑」页新建 / 编辑自动化的动作区，点 `＋ 微信 ClawBot` 可添加**微信推送**动作。依赖 [WX ClawBot 集成](https://github.com/chjspp520/wx_clawbot)（同样由 **chjspp520** 维护）：把 `wx_clawbot` 放入 `config/custom_components/` 重启 HA → 设置 → 设备与服务 → 添加集成 → WX ClawBot → **扫码登录一次**即可；扫码后由集成自动维护会话 token，重启 HA 仍可主动推送。
+
+| 配置 | 说明 |
+|------|------|
+| 类型 | 文字 / 图片·实体 / 图片·路径 / 视频·路径 / 语音·路径 / 文件·路径 |
+| 内容 | 文字与路径均可写 **jinja2 模板**（含 `{{ }}` / `{% %}` 才渲染，否则原样使用）；图片的「实体」来源只支持 camera / image（走官方 snapshot，临时文件**发完即删**）；视频 / 语音 / 文件只收路径 |
+| 路径 | 相对路径以 HA config 目录为基准，也可写 `/config/...` 绝对路径；**必须位于 config 目录内**（ClawBot 的硬性限制）。大小上限：图片 / 音频 2MB，视频 / 文件 100MB |
+| 接收对象 | `@self`（默认，登录账号自己）/ `@last`（最近发件人）/ 别名或 to_user_id |
+
+- 卡片只负责"把内容交给集成"，发送失败原因（文件不存在 / 超限 / token 失效等）由集成返回并写进**自动化执行记录**，可在历史记录里查到（如「微信图片发送失败：文件不存在：…」）。
+- **不发微信可以完全不装该集成**：未安装时后端会给出「未找到 ClawBot 集成」的明确报错（并自动按服务注册表探测集成域名，集成改名不影响），自动化其余动作不受影响。
+- 纯 YAML / HA 原生自动化也能直接调集成服务：`wx_clawbot.send_message`（文字）与 `wx_clawbot.send_media`（媒体，`kind` + `media_path`），见该集成 README。
+
 ---
 
 ### 11.11 自定义右列（type: right-col）
@@ -13115,58 +13148,27 @@ buttons:
 > 2. **局部层**（写在弹窗/气泡自身上）：`全局宽 / 卡片坐标空间缩放系数 k`。k 由"100px 探针分别
 >    放进卡片 shadowRoot 与 document.body 后比较 rect"得出。
 >
-> 之所以不用 `vw`：鸿蒙（ArkWeb）上内核解析的 `vw`/`vh` 仍是缩放前的尺寸，会把用户配置的
-> `width` 压掉（表现为"width 不起作用、退回默认宽度"）。**实测鸿蒙 + HA App 缩放 85% 时
-> 上面所有全局口径全都不变（366、scale=1），卡片子树也测不出缩放（WebView 层缩放）**，
-> 这种情况只能用卡片顶层配置 `harmony_scale: 85%` 告知（见上方配置表），
-> 或控制台 `roomElvesHarmonyScale('85%')` / `roomElvesViewportWidth(430)`。
+> 之所以不用 `vw`：个别内核解析出的 `vw`/`vh` 可能落后于真实可用尺寸，会把用户配置的
+> `width` 压掉（表现为"width 不起作用、退回默认宽度"）。历史上鸿蒙 + HA App 曾把页面整体
+> 缩放到 85%，且**页面内四套口径全都不变**（366、scale=1），当时只能用卡片顶层
+> `harmony_scale: 85%` 声明告知 —— **该兼容层已于 v7.0.0.20 删除**：HA 前端现在会在加载
+> 仪表板前按设备定义 viewport，各机型实际缩放并不一致（有的就是 scale=1），写死比例必然
+> 虚报可用空间，表现正是"靠边弹窗越界、居中弹窗偏下"。`--revw/--revh` 现在只按实测口径算。
 >
 > 排查命令：`roomElvesDebug('dump', 'viewport')`（各口径 + 采用值）、
 > `roomElvesDebug('viewport')` 开关后开弹窗会打印"配置 / 上限 / 实际 / 可用视口 / 视觉视口"；
-> 鸿蒙缩放声明状态在独立模块：`roomElvesDebug('dump', 'harmony-scale')`。
+> 某台设备实测宽度明显偏小时，用 `roomElvesViewportWidth(430)` 手动兜底（持久化）。
 
-### 21.5.1 鸿蒙系统（App 缩放）适配与临时兼容层（v6.7.0）
+### 21.5.1 鸿蒙（ArkWeb）坐标标定；声明式缩放兼容层已于 v7.0.0.20 删除
 
-> 一句话：**鸿蒙 + HA App 把页面缩放到 85% 后，`vw`/`vh` 等"视口口径"仍停在缩放前的尺寸，
-> 而且页面内测不出来**。卡片的做法是「声明式告知 + 全部换算走实测值」，**不写任何平台判断**，
-> 所以正常内核（iOS / 安卓 / 桌面）上与旧行为完全等价。
+> 一句话：**不要按机型 / 缩放比例写死数值**。HA 前端在加载仪表板前按设备定义 viewport，
+> 各机型实际落到什么比例并不一致（作者的 P70 正常、Mate90 Pro 就是 scale=1）。
+> 任何"固定 0.85"的声明都会在一部分设备上把可用宽高**虚报 17.6%**，
+> 典型症状就是「靠边的弹窗越界、居中的弹窗偏下」。
+> v7.0.0.20 已删除该兼容层，`--revw/--revh` 只按实测口径
+> （`clientWidth` / `innerWidth` / `100vw` 探针 / `visualViewport` / 屏幕口径取大）。
 
-#### 一、什么时候需要配 `harmony_scale`
-
-满足任意一条，就说明该设备需要声明缩放（症状都是"只有鸿蒙有、iOS/安卓没有"）：
-
-| 症状 | 表现 |
-|---|---|
-| 弹窗宽度不对 | 配了 `width: 400px` 却明显变窄；或弹窗比屏幕窄一截 |
-| 弹窗高度不对 | 配了高度上限却被压矮、内容被切 |
-| 弹窗/气泡位置偏 | 弹窗不是贴着按钮弹出，箭头指不到点击处 |
-| 径向遮罩错位 | 气泡打开后"清晰孔"不在你点的那个格子/按钮上 |
-| 户型图文字 | 房间名要再点一下空白处才出现，或出现时不在房间中间 |
-| 内容只有弹窗一部分 | 内容比弹窗外壳窄，右侧留一条空白带（v6.7.0 已修，无需再配） |
-
-#### 二、参数配置
-
-```yaml
-type: custom:room-elves-card
-# ……其它配置……
-harmony_scale: 85%            # 鸿蒙 App 缩放比例：85% / 0.85 / 85 三种写法都认
-# harmony_scale_force: true   # 仅用于在非鸿蒙平台验证同一套效果，日常不要开
-```
-
-| 参数 | 说明 | 必须 |
-|---|---|:--:|
-| `harmony_scale` | 声明"页面实际被缩放到多少"。卡片据此把可用空间换算成 `视口 ÷ 缩放`（366 → 430、800 → 941）。**写在任意一张卡片上即可**，值会持久化到 `localStorage` 并被其它卡片/刷新后继承 | 否 |
-| `harmony_scale_force` | `true` 时不受"仅鸿蒙 UA 生效"限制，便于其它平台验证 | 否 |
-
-要点：
-
-- **调了 App 的缩放比例就要同步改这个值**（例如从 85% 改到 90%，这里也要写 90%），
-  否则弹窗会按旧比例排布，表现为溢出或变窄；
-- 只在鸿蒙 UA（`OpenHarmony` / `ArkWeb` / `HarmonyOS`）下生效，其它平台自动忽略；
-- 控制台等价命令：`roomElvesHarmonyScale('85%')`（强制生效并持久化）、
-  `roomElvesHarmonyScale(0)`（清除）；查看现状：`roomElvesDebug('dump', 'harmony-scale')`。
-
-#### 三、v6.7.0 补齐的补偿点
+#### 一、仍然保留的通用补偿点（v6.7.0 起）
 
 | # | 症状 | 机制 | 落点 |
 |---|---|---|---|
@@ -13176,23 +13178,25 @@ harmony_scale: 85%            # 鸿蒙 App 缩放比例：85% / 0.85 / 85 三种
 | 4 | **内容只占弹窗一部分、右侧空白带** | 内容层不要再自己算 `94vw`（那是收缩放前口径），直接用 `100%` 跟外壳等宽 | `cards/device-usage.js` 的 `applyMobileLayout()` |
 | 5 | **户型图房间名等 SVG 文字要再点一下才出现 / 位置偏** | `<text>` 在入场动画层里首次可能未绘制、`text-anchor: middle` 用的是回退字体度量；在"插入后 / 字体就绪 / 动画落定"三个时间点各重排一次文本。**自己画 SVG 的卡片要各自接入**（实体健康卡的户型图不是 `drawFloorPlan` 画的） | `infra/svg-text-paint.js`（由 `cards/floorplan.js` 的 `drawFloorPlan()`、`cards/wenshidu.js` 的 `_buildFloorPlans()`、`cards/entities_health.js` 的 `_createEhFloorplan()` 调用） |
 
-#### 四、临时兼容层清单（App 修好后可整体删除）
+#### 二、v7.0.0.20 已删除的兼容层（存档）
 
-| 文件 | 作用 | 删除时要同步清掉的引用 |
-|---|---|---|
-| `modules/infra/harmony-scale.js` | `harmony_scale` 的解析 / 持久化 / 订阅，提供"实测可用宽高" | `infra/viewport.js` 的 import 与折算、`room-elves-card.js` 的 import 与 `setConfig` 调用（文件头列了完整 4 处）；删完 `--revw/--revh` 回落 `100vw/100vh`，弹窗与气泡无需改动 |
-| `modules/infra/svg-text-paint.js` | SVG `<text>` 强制重排 | 三处 `import` + 三处调用（`floorplan.js` 的 `drawFloorPlan()` 末尾、`wenshidu.js` 的 `_buildFloorPlans()` 末尾、`entities_health.js` 的 `_createEhFloorplan()` 末尾 + 选项卡框架接管后补一次 `repaintSvgTexts`），无其它依赖 |
+| 项 | 说明 |
+|---|---|
+| `modules/infra/harmony-scale.js` | **整个文件已删除**。它把卡片顶层 `harmony_scale` 折算成"可用空间倍数"（366 → 430、800 → 941）喂给 `--revw/--revh` 与弹窗定位的 clamp。删除原因见上方"一句话" |
+| 卡片顶层 `harmony_scale` / `harmony_scale_force` | **配置项已失效**（写了也被忽略），建议从 lovelace 里删掉；`localStorage['room-elves:harmony-scale']` 为残留，可留可清 |
+| 控制台 `roomElvesHarmonyScale()` | 已移除 |
+| `isHarmonyUA()` | 迁移到 `infra/viewport.js`（与 `isMobileUA()` 同处维护）。仍有一个真实用途：**地图导航按钮在 ArkWeb 上不显示**（ArkWeb 点外链会顶掉整个 HA 页面） |
 
-两个模块都**不判断平台、不做无缩放时的行为变更**，留着只是"No-op 成本"（几毫秒重排），
-不删也不影响正确性。
+仍保留的另一个"鸿蒙向"模块是 `modules/infra/svg-text-paint.js`（SVG `<text>` 强制重排，
+三处 `import` + 三处调用，见上表第 5 行）。它**不判断平台、无缩放时是 No-op**，与定位无关。
 
-#### 五、排查命令
+#### 三、排查命令
 
 | 命令 | 用途 |
 |---|---|
-| `roomElvesDebug('dump', 'harmony-scale')` | 缩放声明是否已生效、当前可用宽高 |
+| `roomElvesViewportWidth(430)` | 手动指定可用宽度（持久化）；`roomElvesViewportWidth(0)` 还原自动 |
 | `roomElvesDebug('dump', 'viewport')` | `clientWidth` / `innerWidth` / `100vw` 探针 / `visualViewport` / 局部坐标空间 五套口径与采用值 |
-| `roomElvesDebug('viewport')` | 开关后每次开弹窗打印"配置 / 上限 / 实际 / 可用视口 / 视觉视口" |
+| `roomElvesDebug('viewport')` | 开关后每次开弹窗打印"配置 / 上限 / 实际 / 可用视口 / 视觉视口 / 计算 vs 最终" |
 | 气泡耗时日志（`perfLog` 开启时） | 含 `标定 sx,sy · 锚点 · 写入 left/top · 可用 WxH · 气泡 WxH`：`标定 1,1` 说明坐标系正常（问题在锚点选择）；出现 `0.85` 之类就是缩放补偿在起作用 |
 
 ### 21.6 自动关闭定时器（close_time）
@@ -13261,6 +13265,9 @@ buttons:
 ### 21.8 自定义卡片弹窗（popup_card）
 
 通过 `tap_action: popup_card` 可以在弹窗中嵌入任意 HA 卡片，实现完全自定义的控制面板。
+
+> 💡 `card.type` 也支持**插件卡类型**（`v7.0.0` 起）——比如 `card: { type: my-solar-card }`，
+> `popup_position` / `width` 等弹窗参数照常生效，详见第二十八节「插件系统」。
 
 #### 基本用法
 
@@ -15122,34 +15129,20 @@ roomElvesPerf.logText()      // 打印事件流（最新在前）；也可用面
 | `entities_tap_action` | 全局 entities 点击动作配置 | 否 |
 | `prohibit_homepage_scroll` | 禁止滚动 | 否 |
 | `performance_mode` | 性能模式（auto/desktop/mobile） | 否 |
-| `harmony_scale` | 鸿蒙页面缩放声明（如 `85%` / `0.85` / `85`），见下方说明 | 否 |
-| `harmony_scale_force` | `true` 时不受"仅鸿蒙生效"限制（便于其它平台验证） | 否 |
+| ~~`harmony_scale`~~ / ~~`harmony_scale_force`~~ | **已废弃（v7.0.0.20 删除）**，写了也被忽略，建议从配置里删掉；见 §21.5.1 | 否 |
 | `head_columns` | head模式列数，默认6 | 否 |
 | `head_rows` | 预留字段（目前仅 auto 生效） | 否 |
+| `plugins` | 插件文件路径列表（`/local/...`，**任意一张卡配置一次即全局生效**），见第二十八节 | 否 |
 
-> **`harmony_scale`（鸿蒙专用 · 临时兼容层）**：HA 移动端 App 在鸿蒙上把页面缩放到 85% 后，
-> 内核解析的 `vw`/`vh` 仍停在缩放前的尺寸，且 `clientWidth` / `innerWidth` / `100vw` 探针 /
-> `visualViewport` **四套口径全都不变**（页面内没有任何可测信号）。于是弹窗/气泡的
-> 宽度、高度上限会把用户配置的 `width` 压掉（表现为"宽度不起作用、退回默认宽度"）。
-> 配置 `harmony_scale: 85%` 即告知卡片"页面实际被缩到 85%"，卡片据此把可用空间换算成
-> `视口 / 0.85`（366 → 430，高 800 → 941）再算上限。要点：
->
-> - **写在任意一张卡片上即可**，值会持久化到 `localStorage`，其余卡片与刷新后自动继承；
-> - 只在鸿蒙 UA（`OpenHarmony` / `ArkWeb` / `HarmonyOS`）下生效，其它平台忽略（可用
->   `harmony_scale_force: true` 强制生效做验证）；
-> - 调 App 缩放比例后要**同步改这个值**，否则弹窗会按旧比例排布而溢出/变窄；
-> - 控制台等价命令：`roomElvesHarmonyScale('85%')`（强制生效、持久化）、
->   `roomElvesHarmonyScale(0)` 清除；查看现状：`roomElvesDebug('dump', 'harmony-scale')`。
-> - **实现是独立的临时模块** `modules/infra/harmony-scale.js`（对 App 缺陷的兼容层）。
->   HA 鸿蒙端 App 修好（视口口径正确反映缩放）后，整个文件可直接删除 —— 文件头列了
->   需要同步清掉的 4 处引用（`viewport.js` 的 import / 折算块 / 局部短路 / 订阅，
->   `room-elves-card.js` 的 import 与 `setConfig` 调用，以及本文档这两行配置）；
->   删完 `--revw`/`--revh` 回到纯自动口径，弹窗与气泡无需任何改动。
-> - **v6.7.0 起**这套补偿不只管"弹窗宽高"，还管**气泡箭头/径向遮罩的局部坐标换算**
->   （`infra/viewport.js` 的 `visualToLocal()`）与**户型图 SVG 文字重排**
->   （`infra/svg-text-paint.js`，同为可删的临时兼容层）。
->   完整症状对照、参数说明与兼容层清单见 **§21.5.1「鸿蒙系统（App 缩放）适配与临时兼容层」**，
->   以及 `CHANGELOG.md` 第 290~301 节。
+> **`harmony_scale`（已废弃 · v7.0.0.20 删除）**：该字段与 `harmony_scale_force` 均**已失效**
+> （写了也被忽略）。原因：HA 前端现在会在加载仪表板前按设备定义 viewport（如作者的 P70 正常、
+> Mate90 Pro 就是 scale=1），各机型实际缩放不一致，写死比例（如 85%）会在 scale=1 的设备上
+> 把可用宽高虚报 17.6%，表现为**靠边弹窗越界、居中弹窗偏下**。
+> 现在 `--revw`/`--revh` 与弹窗定位只按实测口径计算（`clientWidth` / `innerWidth` /
+> `100vw` 探针 / `visualViewport` / 屏幕口径取大）。
+> 实测宽度明显偏小的设备用 `roomElvesViewportWidth(430)` 兜底。
+> 完整说明见 **§21.5.1**；`infra/viewport.js` 的多口径识别、`applyFixedPosition()` 标定、
+> 气泡箭头 `visualToLocal()` 换算与 `svg-text-paint.js` 均**不受影响，继续生效**。
 
 | 按钮配置 | 说明 | 必须 |
 |---------|------|:----:|
@@ -15213,10 +15206,122 @@ roomElvesPerf.logText()      // 打印事件流（最新在前）；也可用面
 
 ---
 
-## 二十七、常见问题
+## 二十八、插件系统（Plugin System）
+
+> `v7.0.0` 起正式提供。**给使用者**看：怎么装插件、怎么用；**想自己写插件**的请看项目里的
+> 《插件开发指南.md》（`docs/插件开发指南.md`）。
+
+### 28.1 是什么
+
+第三方可以给房间精灵"加一种新卡片"，**不需要改主项目、不需要重复造轮子**：
+
+- 把一个 `.js` 文件丢进 HA 的 `www` 目录；
+- 在**任意一张**房间精灵卡里声明一次路径（**配一次，全站生效**，其它卡不用再写）；
+- 插件卡就能用房间精灵内置的全部模块：统一头部、选项卡、分段选项卡、下拉、
+  弹窗/气泡/日历/确认框、统一动作系统、主题跟随、共享缓存与请求层……
+
+### 28.2 安装（两步）
+
+**① 把插件文件丢进 `www`**
+
+```
+/config/www/chj/plugin-sample-solar.js
+```
+
+**② 在任意一张房间精灵卡里声明一次**
+
+```yaml
+type: custom:room-elves-card
+plugins:
+  - /local/chj/plugin-sample-solar.js
+```
+
+> ⚠️ 路径必须以 `/local/` 开头，对应 `config/www/` 下的文件。
+> 支持 `?v=` 破缓存写法：`- { url: /local/chj/xxx.js, v: '2' }`（改了插件文件刷新不生效时用）。
+
+### 28.3 三种用法（同一份插件，随你选）
+
+```yaml
+# ① 仪表盘独立使用（外层仍是房间精灵卡）
+type: custom:room-elves-card
+standalone_type: my-solar-card
+power_entity: sensor.pv_power          # ← 这些是传给插件的配置
+
+# ② 作为弹窗打开
+buttons:
+  - name: 屋顶光伏
+    icon: mdi:solar-power
+    tap_action:
+      action: popup_card
+      popup_position: center           # 弹窗参数照常生效
+      width: 520px
+      card:
+        type: my-solar-card
+        power_entity: sensor.pv_power
+
+# ③ 混排进主卡的卡片列表
+type: custom:room-elves-card
+cards:
+  - type: my-solar-card
+    power_entity: sensor.pv_power
+```
+
+三种形态共享同一套能力：主题跟随（明暗/黑/深灰/透明全跟随）、实体数据实时刷新、
+统一动作系统（操作自动记录到后端）、断开后自动回收定时器与弹窗。
+
+### 28.4 管理命令（浏览器控制台）
+
+```js
+RoomElves.plugins.list()            // 查看已登记的插件清单
+RoomElves.pluginTypes()             // 查看已成功注册的插件卡类型
+RoomElves.plugins.add('/local/chj/xxx.js')   // 追加一个插件（记进清单并加载）
+RoomElves.plugins.reset()           // 清空清单（之后刷新页面）
+```
+
+> 🧹 **排查神器**：如果控制台出现一堆历史测试路径的 404，
+> 先 `RoomElves.plugins.reset()` 再刷新 —— 清单里失效的路径在加载失败后也会**自动移除**。
+>
+> 🔔 **权限提示**：每个插件加载成功后，控制台会打印一条
+> `插件 <类型> 来自 <路径>，拥有控制设备的权限` —— 这是刻意为之的透明化提示：
+> 插件以卡片身份运行，具备与官方代码同等的权限（详见文档开头「免责声明」）。
+
+### 28.5 故障排查
+
+| 现象 | 含义 | 处理 |
+|---|---|---|
+| 卡片显示"插件加载中…" | 插件文件还在下载（正常 < 1 秒） | 超过几秒不动 → 看控制台 `E_LOAD_*` |
+| 卡片显示"插件未加载：xxx（检查 plugins 路径…）" | 路径 404 / 文件不在 www / 控制台报 E_LOAD_FAILED | 核对路径与文件位置 |
+| 控制台 `E_LOAD_TIMEOUT` | 加载超过 10 秒 | 检查文件是否可访问（浏览器直接打开 `/local/...` 试试） |
+| 控制台 `E_TYPE_EXISTS` | 两个插件用了同一个 `type` | 换一个更具体的类型名 |
+| 控制台 `E_API_VERSION` | 插件要求更新版本的主卡 | 升级房间精灵 |
+| 改了插件文件没变化 | 浏览器缓存 | 刷新页面；或用 `{url, v: '2'}` 换缓存键 |
+| 页面上没有任何房间精灵卡 | 插件宿主随房间精灵加载 | 保证至少有一张房间精灵卡（任意视图） |
+
+### 28.6 安全提醒与责任声明
+
+插件就是在你浏览器里运行的**任意代码**（能读实体、调服务、改页面），以卡片身份与官方代码
+共享同等权限。**只加载你自己放进 `www` 的、来源可信的插件文件**；不要配置来路不明的 URL。
+
+责任划分（完整条款见文档开头「免责声明」）：**插件作者对其插件执行的行为负责**；
+房间精灵作者不审核、不担保第三方插件 —— 因安装或运行插件产生的问题由插件作者与安装者自行承担。
+
+---
+
+## 二十九、常见问题
 
 ### Q: 卡片显示"加载中"或空白
 A: 检查 JS 和 CSS 文件是否已放到 HA 的 `www` 文件夹，并在仪表板资源中正确添加。
+
+### Q: 插件卡一直显示"插件加载中…"
+A: 见第二十八节 28.5 —— 通常是 `plugins` 路径 404（文件不在 `config/www/` 对应位置）。
+控制台 `RoomElves.plugins.list()` 看登记了哪些路径，`RoomElves.pluginTypes()` 看哪些注册成功。
+
+### Q: 插件控制台一堆历史测试路径的 404
+A: `RoomElves.plugins.reset()` 清空清单后刷新；失效路径在加载失败后也会自动移出清单（v7.0.0 起）。
+
+### Q: 想自己写一个插件卡
+A: 看《插件开发指南.md》（`docs/插件开发指南.md`）—— 一个 `defineCard({ type, render })` 约 40 行起步，
+头部/选项卡/下拉/弹窗/动作系统/主题全部直接用。
 
 ### Q: 按钮点了没反应
 A: 确认实体的 Entity ID 是否正确。可以在 HA 的"开发者工具 → 状态"中复制正确的 ID。
@@ -15244,8 +15349,58 @@ A: 在按钮上设置 `width: 500`（数字，单位为像素）。
 
 ---
 
-## 二十八、后记
+## 三十、后记
 
-Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 9 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
+Room Elves Card 是一个功能非常丰富的卡片，上面涵盖了它的绝大部分功能。由于卡片本身的代码规模接近 20 万行，功能点非常多，如果某个具体功能没有覆盖到，或者配置中遇到问题，欢迎进一步询问。
 
 ---
+
+## 三十一、更新日志（2026-11-08 · v6.14.4 → v6.14.26）
+
+> 详细实现与验证记录见仓库根目录 `CHANGELOG.md` 的第 543~565 节；本节只列**使用者能感知**的变化。
+
+### 1. 图表：从"各写一份"到**一个可复用组件**
+
+| 版本 | 变化 |
+|---|---|
+| v6.14.12 | 图表区块抽成通用件：标题行（自由布局行标题样式）+ 图表 + 最高/最低统计行 |
+| v6.14.14 | ECharts 配置骨架收进模块（坐标轴 / tooltip / 图例 / 网格 / x 轴刻度策略统一） |
+| **v6.14.15** | 新增**独立可复用组件** `render/chart-component.js`：`createHistoryChart({标题, 系列, fetchHistory, loadEcharts})` 一次调用完成取数 → 解析 → 插值/按天聚合 → 标题行 → 实时值 → 统计行 → 画图 → 尺寸重绘 → 销毁 |
+| v6.14.16 / v6.14.17 | 标题行右端新增「**时长**」下拉（10 档：5分钟 ~ 7天），标题括号随选择变化；触发器做成行标题同色系小胶囊 |
+| v6.14.18 | x 轴刻度恢复显示，**倾斜 45° + 自动抽稀**；统计行时刻**跨日补日期**（`11/07 19:52`） |
+| v6.14.19 | ESXi 虚拟机 / 主机的 CPU·内存 曲线气泡接入组件 |
+| v6.14.21 | 飞牛 fnOS 圆环的历史曲线接入组件 |
+| v6.14.20 | 「时长」候选固定为组件的 10 档（各卡片不再各配一套） |
+
+接入范围：概览「系统资源趋势」「户外温湿度」「用电趋势」「微气候」「能耗」「天然气/自来水 7 天用量」+ ESXi + fnOS。
+
+### 2. 统计方法 & 新动作
+
+| 版本 | 变化 |
+|---|---|
+| **v6.14.24** | 统计口径抽成两个纯模块：`utils/history-points.js`（历史点解析 / 插值 / 分桶）+ `utils/stat-methods.js`（**20 个统计方法**）；图表支持 `stat_methods`（每方法一条线）与 `stat_bucket`（聚合粒度）；新增 `tap_action.action: history_chart` |
+| v6.14.22 | 自由布局弹窗 `title_entities` 里的 `sensor.*` 点击可直接出历史曲线（`way` 项除外） |
+| v6.14.23 | 配了 `way` 的项**只弹 way 统计明细气泡**，与曲线气泡互斥 |
+| v6.14.25 | `history_chart` 修正：标题名称按 `tap_action.name → title → 配置 name → friendly_name → entity_id`；**点图标=历史记录气泡、点其余区域=图表气泡** |
+| v6.14.26 | `way` 引擎内部清理（点转换合并、`trend` 改用统一平均）；**输出与配置名完全不变** |
+
+### 3. 交互与界面
+
+| 版本 | 变化 |
+|---|---|
+| v6.14.4 | 鸿蒙（ArkWeb 页面缩放）下**统一下拉错位、压住输入框**修复 |
+| v6.14.6 / v6.14.7 | 「常用设备」气泡头部改版：38px 渐变图标块 + 两行标题 + 分段页签（配色跟随卡片 accent） |
+| v6.14.8 ~ v6.14.11 | 右侧趋势气泡两个图表：标题行统一、右端补实时值、统计行补时刻、标题口径统一为「xx（24h）」 |
+| v6.14.13 | 天然气 / 自来水 7 天趋势气泡接入同一套（统计行按天显示 `MM/DD`） |
+| v6.14.5 | 调试卡「卡片结构」清单按代码树全量刷新（core 23 / infra 19 / render 5 / popup 10 / frame 6 / cards 47+6 / events 3 / presets 2 / utils 18） |
+
+### 4. 想自己改的话
+
+| 想改什么 | 改哪里 |
+|---|---|
+| x 轴刻度文字显隐 | `render/chart-component.js` 的 `SHOW_X_LABELS` |
+| 「时长」下拉 10 档 | `render/chart-component.js` 的 `CHART_DURATIONS` |
+| 各气泡默认时长 | `cards/overview-history-charts.js` 的 `DEFAULT_CHART_DURATION` |
+| 统计方法（增删 / 算法） | `utils/stat-methods.js` 的 `STAT_METHODS` |
+| 分桶粒度自动表 | `utils/history-points.js` 的 `pickBucket` |
+
